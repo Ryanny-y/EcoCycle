@@ -1,4 +1,4 @@
-package com.ecocycle.backend.domain.entities;
+package com.ecocycle.backend.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,7 +21,7 @@ public class Role {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private ROLES name;
 
     @ManyToMany(mappedBy = "roles")
     @Builder.Default
@@ -37,5 +37,9 @@ public class Role {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public enum ROLES {
+        ADMIN, SUPER_ADMIN
     }
 }

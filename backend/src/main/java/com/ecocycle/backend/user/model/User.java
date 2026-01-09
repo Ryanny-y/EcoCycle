@@ -1,8 +1,7 @@
-package com.ecocycle.backend.domain.entities;
+package com.ecocycle.backend.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -40,6 +39,12 @@ public class User {
     )
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    @Column(name = "refresh_token_exp")
+    private LocalDateTime refreshTokenExp;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

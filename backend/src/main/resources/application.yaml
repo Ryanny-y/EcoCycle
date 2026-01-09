@@ -19,3 +19,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+
+
+# JWT
+jwt:
+  secretKey: ${JWT_SECRET_KEY}
+  accessTokenExp: ${JWT_ACCESS_TOKEN_EXP}
+  refreshTokenExp: ${JWT_REFRESH_TOKEN_EXP}
