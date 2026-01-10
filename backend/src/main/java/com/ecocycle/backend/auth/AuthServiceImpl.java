@@ -1,4 +1,4 @@
-package com.ecocycle.backend.auth.service;
+package com.ecocycle.backend.auth;
 
 import com.ecocycle.backend.auth.dto.request.LoginRequest;
 import com.ecocycle.backend.auth.dto.request.SignupRequest;
@@ -7,7 +7,7 @@ import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
 import com.ecocycle.backend.user.domain.Roles;
 import com.ecocycle.backend.user.domain.User;
-import com.ecocycle.backend.user.repositories.UserRepository;
+import com.ecocycle.backend.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
@@ -39,6 +39,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
 
+    @Override
     public User createUser(SignupRequest request) {
         User user = User.builder()
                 .username(request.getUsername())
@@ -51,8 +52,9 @@ public class AuthService {
     }
 
     @Transactional
+    @Override
     public UserDetails authenticate(LoginRequest request, HttpServletResponse response) {
-        User user = userRepository.findByUsername(request.getUsername())
+        User user = userRepository.findByUsernameWithRoles(request.getUsername())
                 .orElseThrow(() -> new InvalidCredentialsException("Username or Password is incorrect."));
 
         try {
@@ -78,6 +80,7 @@ public class AuthService {
         }
     }
 
+    @Override
     public String refreshToken(String token) {
         if(token == null || token.isBlank()) {
             throw new InvalidCookieException("Refresh Token is Missing.");
@@ -93,6 +96,7 @@ public class AuthService {
         return jwtService.generateAccessToken(userDetails);
     }
 
+    @Override
     public void logout(User user, HttpServletResponse response) {
         if(user != null) {
             user.setRefreshToken(null);

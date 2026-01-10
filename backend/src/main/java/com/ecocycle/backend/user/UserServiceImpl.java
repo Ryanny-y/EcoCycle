@@ -1,19 +1,22 @@
-package com.ecocycle.backend.user.service;
+package com.ecocycle.backend.user;
 
 import com.ecocycle.backend.user.domain.User;
-import com.ecocycle.backend.user.repositories.UserRepository;
+import com.ecocycle.backend.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
 
+    @Override
+    @Transactional
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
+        return userRepository.findByUsernameWithRoles(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + username));
     }
 }

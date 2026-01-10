@@ -2,6 +2,7 @@ package com.ecocycle.backend.common.exception;
 
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.common.web.ApiErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
+//  NOT FOUND ERRORS
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleIEntityNotFoundException(EntityNotFoundException ex) {
+        ApiErrorResponse response = ApiErrorResponse.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.NOT_FOUND.value())
+                .code(HttpStatus.NOT_FOUND.toString())
+                .timestamp(LocalDateTime.now())
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
     //  UNAUTHORIZED ERRORS
     @ExceptionHandler(InvalidCredentialsException.class)
@@ -68,18 +81,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
-//  FORBIDDEN ERROR
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleIEntityNotFoundException(EntityNotFoundException ex) {
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException ex) {
         ApiErrorResponse response = ApiErrorResponse.builder()
                 .message(ex.getMessage())
-                .status(HttpStatus.FORBIDDEN.value())
-                .code(HttpStatus.FORBIDDEN.toString())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .code("EXPIRED JWT")
                 .timestamp(LocalDateTime.now())
                 .build();
 
-        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
+//  FORBIDDEN ERROR
+
 
 
 //  INTERNAL SERVER ERRORS

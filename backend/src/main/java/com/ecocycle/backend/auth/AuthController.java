@@ -1,16 +1,16 @@
-package com.ecocycle.backend.auth.controllers;
+package com.ecocycle.backend.auth;
 
 import com.ecocycle.backend.auth.dto.request.SignupRequest;
 import com.ecocycle.backend.auth.dto.response.RefreshResponse;
 import com.ecocycle.backend.auth.dto.response.SignupResponse;
-import com.ecocycle.backend.auth.service.AuthService;
 import com.ecocycle.backend.common.web.ApiResponse;
 import com.ecocycle.backend.auth.dto.response.LoginResponse;
 import com.ecocycle.backend.auth.dto.request.LoginRequest;
 import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
+import com.ecocycle.backend.user.UserService;
 import com.ecocycle.backend.user.domain.User;
-import com.ecocycle.backend.user.service.UserService;
+import com.ecocycle.backend.user.UserServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -90,7 +90,7 @@ public class AuthController {
 
         ApiResponse<RefreshResponse> apiResponse = ApiResponse.<RefreshResponse>builder()
                 .success(true)
-                .message("Login Successful.")
+                .message("Refresh Token Successful.")
                 .data(refreshResponse)
                 .build();
 
