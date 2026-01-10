@@ -1,9 +1,11 @@
 package com.ecocycle.backend.auth.service;
 
 import com.ecocycle.backend.auth.dto.request.LoginRequest;
+import com.ecocycle.backend.auth.dto.request.SignupRequest;
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
+import com.ecocycle.backend.user.domain.Roles;
 import com.ecocycle.backend.user.domain.User;
 import com.ecocycle.backend.user.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,10 +16,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +33,20 @@ public class AuthService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
+    public User createUser(SignupRequest request) {
+        User user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .roles(new HashSet<>(Set.of(Roles.ADMIN)))
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        return userRepository.save(user);
+    }
+
+    @Transactional
     public UserDetails authenticate(LoginRequest request, HttpServletResponse response) {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new InvalidCredentialsException("Username or Password is incorrect."));

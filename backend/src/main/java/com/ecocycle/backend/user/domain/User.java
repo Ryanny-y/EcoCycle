@@ -2,6 +2,7 @@ package com.ecocycle.backend.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -36,8 +37,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(
             name = "role",
-            nullable = false,
-            columnDefinition = "VARCHAR(50) CHECK (role IN ('ADMIN', 'SUPER_ADMIN'))"
+            nullable = false
     )
     @Builder.Default
     private Set<Roles> roles = new HashSet<>();

@@ -18,4 +18,5 @@ public class ApiErrorResponse {
     private int status;
     private String code;
     private LocalDateTime timestamp;
+
 }
