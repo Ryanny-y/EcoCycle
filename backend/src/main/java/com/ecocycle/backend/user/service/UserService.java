@@ -1,6 +1,6 @@
 package com.ecocycle.backend.user.service;
 
-import com.ecocycle.backend.user.model.User;
+import com.ecocycle.backend.user.domain.User;
 import com.ecocycle.backend.user.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

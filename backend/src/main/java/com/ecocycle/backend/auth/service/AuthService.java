@@ -4,7 +4,7 @@ import com.ecocycle.backend.auth.dto.request.LoginRequest;
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
-import com.ecocycle.backend.user.model.User;
+import com.ecocycle.backend.user.domain.User;
 import com.ecocycle.backend.user.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

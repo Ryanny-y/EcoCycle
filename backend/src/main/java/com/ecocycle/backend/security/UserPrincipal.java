@@ -1,6 +1,6 @@
 package com.ecocycle.backend.security;
 
-import com.ecocycle.backend.user.model.User;
+import com.ecocycle.backend.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +16,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                new SimpleGrantedAuthority("ROLE_" + role.name()))
                 .toList();
     }
 

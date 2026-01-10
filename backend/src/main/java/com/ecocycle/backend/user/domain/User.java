@@ -1,4 +1,4 @@
-package com.ecocycle.backend.user.model;
+package com.ecocycle.backend.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,14 +31,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(
+            name = "role",
+            nullable = false,
+            columnDefinition = "VARCHAR(50) CHECK (role IN ('ADMIN', 'SUPER_ADMIN'))"
     )
     @Builder.Default
-    private Set<Role> roles = new HashSet<>();
+    private Set<Roles> roles = new HashSet<>();
 
     @Column(name = "refresh_token")
     private String refreshToken;
