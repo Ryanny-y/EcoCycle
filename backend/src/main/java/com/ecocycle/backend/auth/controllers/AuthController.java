@@ -7,6 +7,7 @@ import com.ecocycle.backend.auth.service.AuthService;
 import com.ecocycle.backend.common.web.ApiResponse;
 import com.ecocycle.backend.auth.dto.response.LoginResponse;
 import com.ecocycle.backend.auth.dto.request.LoginRequest;
+import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
 import com.ecocycle.backend.user.domain.User;
 import com.ecocycle.backend.user.service.UserService;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
@@ -72,7 +74,6 @@ public class AuthController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    TODO: REFRESH
     @PostMapping("/refresh-token")
     public ResponseEntity<ApiResponse<RefreshResponse>> refreshToken(
             @CookieValue(name = "refreshToken", required = false) String token
@@ -96,5 +97,16 @@ public class AuthController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    TODO: LOGOUT
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            HttpServletResponse response
+    ) {
+        User user = userPrincipal != null ? userPrincipal.getUser() : null;
+
+        authService.logout(user, response);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
