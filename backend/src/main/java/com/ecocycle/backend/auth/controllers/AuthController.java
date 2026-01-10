@@ -1,6 +1,7 @@
 package com.ecocycle.backend.auth.controllers;
 
 import com.ecocycle.backend.auth.dto.request.SignupRequest;
+import com.ecocycle.backend.auth.dto.response.RefreshResponse;
 import com.ecocycle.backend.auth.dto.response.SignupResponse;
 import com.ecocycle.backend.auth.service.AuthService;
 import com.ecocycle.backend.common.web.ApiResponse;
@@ -14,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 @RestController
@@ -75,7 +73,28 @@ public class AuthController {
     }
 
 //    TODO: REFRESH
+    @PostMapping("/refresh-token")
+    public ResponseEntity<ApiResponse<RefreshResponse>> refreshToken(
+            @CookieValue(name = "refreshToken", required = false) String token
+    ) {
+        String accessToken = authService.refreshToken(token);
+        String username = jwtService.extractUsername(token);
+        User user = userService.getUserByUsername(username);
 
+        RefreshResponse refreshResponse = new RefreshResponse(
+                accessToken,
+                user.getUsername(),
+                user.getRoles()
+        );
+
+        ApiResponse<RefreshResponse> apiResponse = ApiResponse.<RefreshResponse>builder()
+                .success(true)
+                .message("Login Successful.")
+                .data(refreshResponse)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
 
 //    TODO: LOGOUT
 }

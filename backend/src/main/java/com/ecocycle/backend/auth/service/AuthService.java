@@ -16,7 +16,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsService userDetailsService;
 
     public User createUser(SignupRequest request) {
         User user = User.builder()
@@ -72,6 +75,21 @@ public class AuthService {
         } catch (AuthenticationException ex) {
             throw new InvalidCredentialsException("Username or Password is incorrect.");
         }
+    }
+
+    public String refreshToken(String token) {
+        if(token == null || token.isBlank()) {
+            throw new InvalidCookieException("Refresh Token is Missing.");
+        }
+
+        if(!jwtService.isTokenValid(token)) {
+            throw new InvalidCookieException("Refresh token is expired or invalid.");
+        }
+
+        String username = jwtService.extractUsername(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        return jwtService.generateAccessToken(userDetails);
     }
 
     private void setRefreshTokenToCookie(
