@@ -2,11 +2,11 @@ package com.ecocycle.backend.common.exception;
 
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.common.web.ApiErrorResponse;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -81,8 +81,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(ExpiredJwtException.class)
-    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(ExpiredJwtException ex) {
+    @ExceptionHandler(InvalidCookieException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidCookieException(InvalidCookieException ex) {
         ApiErrorResponse response = ApiErrorResponse.builder()
                 .message(ex.getMessage())
                 .status(HttpStatus.UNAUTHORIZED.value())

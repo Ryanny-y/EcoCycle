@@ -2,8 +2,8 @@ package com.ecocycle.backend.record;
 
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.dto.request.UpdateRecordRequest;
-import com.ecocycle.backend.record.exceptions.RecordAlreadyExists;
-import com.ecocycle.backend.record.exceptions.RecordNotFound;
+import com.ecocycle.backend.record.exceptions.RecordAlreadyExistsException;
+import com.ecocycle.backend.record.exceptions.RecordNotFoundException;
 import com.ecocycle.backend.record.model.Gender;
 import com.ecocycle.backend.record.model.Record;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ public class RecordServiceIntegrationTest {
         recordService.createRecord(request);
 
         assertThatThrownBy(() -> recordService.createRecord(request))
-            .isInstanceOf(RecordAlreadyExists.class)
+            .isInstanceOf(RecordAlreadyExistsException.class)
             .hasMessage("Record with the full name already exists");
     }
 
@@ -67,7 +67,7 @@ public class RecordServiceIntegrationTest {
         UUID randomId = UUID.randomUUID();
 
         assertThatThrownBy(() -> recordService.getRecordById(randomId))
-            .isInstanceOf(RecordNotFound.class)
+            .isInstanceOf(RecordNotFoundException.class)
             .hasMessage("Record not found with ID: " + randomId);
     }
 
@@ -124,6 +124,18 @@ public class RecordServiceIntegrationTest {
                 .hasSize(1)
                 .allMatch(r -> r.getFirstName().equals("Maria"))
                 .allMatch(Record::getIsResident);
+    }
+
+    @Test
+    void deleteRecord_shouldDeleteRecord() {
+        Record created = recordService.createRecord(createRecordRequest());
+
+        Record deleted = recordService.deleteRecord(created.getId());
+
+        assertThat(deleted.getId()).isEqualTo(created.getId());
+
+        assertThatThrownBy(() -> recordService.getRecordById(created.getId()))
+                .isInstanceOf(RecordNotFoundException.class);
     }
 
     private static CreateRecordRequest createRecordRequest() {
