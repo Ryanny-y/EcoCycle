@@ -44,7 +44,9 @@ public class RecordServiceImpl implements RecordService {
             throw new RecordAlreadyExists("Record with the full name already exists");
         }
 
+        String generatedCode = this.generateCode();
         Record newRecord = Record.builder()
+                .code(generatedCode)
                 .firstName(request.getFirstName())
                 .middleName(request.getMiddleName())
                 .lastName(request.getLastName())
@@ -88,4 +90,8 @@ public class RecordServiceImpl implements RecordService {
         return recordRepository.existsByFirstNameAndMiddleNameAndLastName(firstName, middleName, lastName);
     }
 
+    private String generateCode() {
+        long next = recordRepository.nextCodeSequence();
+        return "BT-" + String.format("%04d", next);
+    }
 }

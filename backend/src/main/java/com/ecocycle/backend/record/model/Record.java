@@ -23,7 +23,7 @@ public class Record {
     @Column(nullable = false, unique = true)
     private UUID id;
 
-    @Column(length = 10, nullable = false, unique = true)
+    @Column(length = 10, nullable = false, unique = true, updatable = false)
     private String code;
 
     @Column(name = "first_name", nullable = false)

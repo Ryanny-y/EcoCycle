@@ -5,7 +5,7 @@ spring:
   application:
     name: backend
   datasource:
-    url: jdbc:h2:mem:test_db
+    url: jdbc:h2:mem:test_db;MODE=PostgreSQL
     username: test
     password: test_password
     driver-class-name: org.h2.Driver
@@ -13,3 +13,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+
+
+jwt:
+  secretKey: secretKey
+  accessTokenExp: 10000
+  refreshTokenExp: 100000
