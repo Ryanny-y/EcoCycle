@@ -1,6 +1,6 @@
 package com.ecocycle.backend.auth.dto.response;
 
-import com.ecocycle.backend.user.domain.Roles;
+import com.ecocycle.backend.user.model.Roles;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

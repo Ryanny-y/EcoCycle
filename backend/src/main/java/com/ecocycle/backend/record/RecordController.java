@@ -1,17 +1,20 @@
 package com.ecocycle.backend.record;
 
 import com.ecocycle.backend.common.web.ApiResponse;
-import com.ecocycle.backend.record.domain.Record;
+import com.ecocycle.backend.common.web.PageResponse;
+import com.ecocycle.backend.record.dto.RecordDto;
+import com.ecocycle.backend.record.model.Record;
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.dto.response.CreateRecordResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/records")
@@ -19,6 +22,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecordController {
 
     private final RecordService recordService;
+    private final RecordMapper recordMapper;
+
+    @GetMapping
+    public ResponseEntity<PageResponse<RecordDto>> getRecords(
+            @RequestParam(required = false) Boolean isResident,
+            @RequestParam(required = false) String firstName,
+            @RequestParam(required = false) String middleName,
+            @RequestParam(required = false) String lastName,
+            Pageable pageable
+    ) {
+        Page<Record> pageRecords = recordService.getRecords(isResident, firstName, middleName, lastName, pageable);
+        List<RecordDto> pageContent = pageRecords.getContent().stream().map(recordMapper::toDto).toList();
+
+        PageResponse<RecordDto> apiResponse = PageResponse.<RecordDto>builder()
+                .content(pageContent)
+                .page(pageRecords.getNumber())
+                .size(pageRecords.getSize())
+                .totalElements(pageRecords.getTotalElements())
+                .totalPages(pageRecords.getTotalPages())
+                .first(pageRecords.isFirst())
+                .last(pageRecords.isLast())
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<CreateRecordResponse>> createRecord(
@@ -26,13 +54,13 @@ public class RecordController {
     ) {
         Record createdRecord = recordService.createRecord(request);
         CreateRecordResponse createResponse = new CreateRecordResponse(
-                createdRecord.getId(),
-                createdRecord.getFirstName() + " " + createdRecord.getMiddleName().toUpperCase().charAt(0) + " " + createdRecord.getLastName()
+                createdRecord.getCode(),
+                createdRecord.getFirstName() + " " + createdRecord.getMiddleName().toUpperCase().charAt(0) + ". " + createdRecord.getLastName()
         );
 
         ApiResponse<CreateRecordResponse> apiResponse = ApiResponse.<CreateRecordResponse>builder()
                 .success(true)
-                .message(createdRecord.getId() + ": " + createdRecord.getLastName() + " Created")
+                .message(createdRecord.getCode() + ": " + createdRecord.getLastName() + " Created")
                 .data(createResponse)
                 .build();
 

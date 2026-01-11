@@ -1,4 +1,4 @@
-package com.ecocycle.backend.record.domain;
+package com.ecocycle.backend.record.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,7 +52,7 @@ public class Record {
 
     @Column(nullable = false, precision = 10, scale = 2)
     @Builder.Default
-    private BigDecimal points = BigDecimal.ONE;
+    private BigDecimal points = BigDecimal.ZERO;
 
     @Column(length = 11, name = "contact_number", nullable = false)
     private String contactNumber;

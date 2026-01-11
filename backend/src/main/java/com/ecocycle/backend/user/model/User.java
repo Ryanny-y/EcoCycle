@@ -1,8 +1,7 @@
-package com.ecocycle.backend.user.domain;
+package com.ecocycle.backend.user.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Check;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

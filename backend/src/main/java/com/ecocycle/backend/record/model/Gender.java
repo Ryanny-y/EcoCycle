@@ -1,4 +1,4 @@
-package com.ecocycle.backend.record.domain;
+package com.ecocycle.backend.record.model;
 
 import lombok.Getter;
 

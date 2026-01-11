@@ -1,6 +1,6 @@
 package com.ecocycle.backend.record.dto.request;
 
-import com.ecocycle.backend.record.domain.Gender;
+import com.ecocycle.backend.record.model.Gender;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

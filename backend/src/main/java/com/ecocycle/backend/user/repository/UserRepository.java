@@ -1,6 +1,6 @@
 package com.ecocycle.backend.user.repository;
 
-import com.ecocycle.backend.user.domain.User;
+import com.ecocycle.backend.user.model.User;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

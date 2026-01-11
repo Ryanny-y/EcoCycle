@@ -1,6 +1,6 @@
 package com.ecocycle.backend.security;
 
-import com.ecocycle.backend.user.domain.User;
+import com.ecocycle.backend.user.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
