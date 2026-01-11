@@ -86,6 +86,22 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteRecord(@PathVariable("id") UUID id) {
+        Record deletedRecord = recordService.deleteRecord(id);
 
+        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                .success(true)
+                .message("Record: " + deletedRecord.getCode() + " deleted successfully.")
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
+//    TODO: GET: /lookup?lastName=required&code=optional
+
+//    TODO: POST: /code/points
+
+//    TODO: POST: /codo/redemptions
 
 }

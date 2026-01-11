@@ -13,4 +13,6 @@ public interface RecordService {
     Record createRecord(CreateRecordRequest request);
     Record updateRecord(UUID id, UpdateRecordRequest request);
     Record getRecordById(UUID id);
+    Record deleteRecord(UUID id);
+
 }

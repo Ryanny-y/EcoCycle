@@ -86,6 +86,14 @@ public class RecordServiceImpl implements RecordService {
                 .orElseThrow(() -> new RecordNotFound("Record not found with ID: " + id));
     }
 
+    @Override
+    @Transactional
+    public Record deleteRecord(UUID id) {
+        Record record = getRecordById(id);
+        recordRepository.delete(record);
+        return record;
+    }
+
     private boolean isRecordExistsByName(String firstName, String middleName, String lastName) {
         return recordRepository.existsByFirstNameAndMiddleNameAndLastName(firstName, middleName, lastName);
     }
