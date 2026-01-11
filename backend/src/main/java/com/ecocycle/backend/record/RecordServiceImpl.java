@@ -1,5 +1,7 @@
 package com.ecocycle.backend.record;
 
+import com.ecocycle.backend.record.dto.request.UpdateRecordRequest;
+import com.ecocycle.backend.record.exceptions.RecordNotFound;
 import com.ecocycle.backend.record.model.Record;
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.exceptions.RecordAlreadyExists;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +61,31 @@ public class RecordServiceImpl implements RecordService {
         return saved;
     }
 
+    @Override
+    public Record updateRecord(UUID id, UpdateRecordRequest request) {
+        Record record = getRecordById(id);
+
+        record.setFirstName(request.getFirstName());
+        record.setMiddleName(request.getMiddleName());
+        record.setLastName(request.getLastName());
+        record.setSuffix(request.getSuffix());
+        record.setBirthDate(request.getBirthDate());
+        record.setGender(request.getGender());
+        record.setIsResident(request.getIsResident());
+        record.setAddress(request.getAddress());
+        record.setContactNumber(request.getContactNumber());
+
+        return recordRepository.save(record);
+    }
+
+    @Override
+    public Record getRecordById(UUID id) {
+        return recordRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFound("Record not found with ID: " + id));
+    }
+
     private boolean isRecordExistsByName(String firstName, String middleName, String lastName) {
         return recordRepository.existsByFirstNameAndMiddleNameAndLastName(firstName, middleName, lastName);
     }
+
 }

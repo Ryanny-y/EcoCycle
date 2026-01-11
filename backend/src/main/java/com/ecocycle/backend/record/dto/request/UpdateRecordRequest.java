@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateRecordRequest {
+public class UpdateRecordRequest {
 
     @NotBlank(message = "First name is required")
     @Size(max = 100, message = "First name is too long")
@@ -35,9 +35,11 @@ public class CreateRecordRequest {
     @NotNull(message = "Gender is required")
     private Gender gender;
 
-    private Boolean isResident = true;
+    @NotNull(message = "Resident status is required")
+    private Boolean isResident;
 
     @Size(max = 255, message = "Address is too long")
+    @NotBlank(message = "Address is required")
     private String address;
 
     @NotBlank(message = "Contact number is required")

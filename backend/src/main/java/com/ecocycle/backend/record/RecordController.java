@@ -3,6 +3,7 @@ package com.ecocycle.backend.record;
 import com.ecocycle.backend.common.web.ApiResponse;
 import com.ecocycle.backend.common.web.PageResponse;
 import com.ecocycle.backend.record.dto.RecordDto;
+import com.ecocycle.backend.record.dto.request.UpdateRecordRequest;
 import com.ecocycle.backend.record.model.Record;
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.dto.response.CreateRecordResponse;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/records")
@@ -66,6 +68,24 @@ public class RecordController {
 
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<RecordDto>> updateRecord(
+            @PathVariable("id") UUID id,
+            @Valid @RequestBody UpdateRecordRequest updateRecordRequest
+    ) {
+        Record updatedRecord = recordService.updateRecord(id, updateRecordRequest);
+        RecordDto updatedRecordDto = recordMapper.toDto(updatedRecord);
+
+        ApiResponse<RecordDto> apiResponse = ApiResponse.<RecordDto>builder()
+                .success(true)
+                .message("Record updated successfully.")
+                .data(updatedRecordDto)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
 
 
 }
