@@ -1,6 +1,7 @@
 package com.ecocycle.backend.record;
 
 import com.ecocycle.backend.record.dto.request.UpdateRecordRequest;
+import com.ecocycle.backend.record.exceptions.MultipleRecordsFoundException;
 import com.ecocycle.backend.record.exceptions.RecordNotFoundException;
 import com.ecocycle.backend.record.model.Record;
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -87,6 +89,25 @@ public class RecordServiceImpl implements RecordService {
         Record record = getRecordById(id);
         recordRepository.delete(record);
         return record;
+    }
+
+    @Override
+    public Record lookupRecord(String lastName, String code) {
+        if(code != null) {
+            return recordRepository.findByLastNameAndCode(lastName, code)
+                    .orElseThrow(() -> new RecordNotFoundException("Record not found with last name: " + lastName + " and ID: " + code));
+        }
+
+        List<Record> foundRecords = recordRepository.findByLastName(lastName);
+        if(foundRecords.isEmpty()) {
+            throw new RecordNotFoundException("Record not found with last name: " + lastName);
+        }
+
+        if(foundRecords.size() > 1) {
+            throw new MultipleRecordsFoundException("Many Records found with last name: " + lastName + ". Please provide your Record ID.");
+        }
+
+        return foundRecords.getFirst();
     }
 
     private boolean isRecordExistsByName(String firstName, String middleName, String lastName) {

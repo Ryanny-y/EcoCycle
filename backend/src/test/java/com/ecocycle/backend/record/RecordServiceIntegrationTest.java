@@ -2,6 +2,7 @@ package com.ecocycle.backend.record;
 
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.dto.request.UpdateRecordRequest;
+import com.ecocycle.backend.record.exceptions.MultipleRecordsFoundException;
 import com.ecocycle.backend.record.exceptions.RecordAlreadyExistsException;
 import com.ecocycle.backend.record.exceptions.RecordNotFoundException;
 import com.ecocycle.backend.record.model.Gender;
@@ -138,6 +139,31 @@ public class RecordServiceIntegrationTest {
                 .isInstanceOf(RecordNotFoundException.class);
     }
 
+    @Test
+    void lookupRecord_withLastNameAndCode_shouldReturnMatchingRecord() {
+        Record created = recordService.createRecord(createRecordRequest());
+
+        Record result = recordService.lookupRecord("Dela Cruz", "BT-0001");
+
+        assertThat(result.getId()).isEqualTo(created.getId());
+        assertThat(result.getFirstName()).isEqualTo(created.getFirstName());
+    }
+
+    @Test
+    void lookupRecord_withLastNameOnly_andNoRecord_shouldThrowNotFound() {
+        assertThatThrownBy(() -> recordService.lookupRecord("Ramos", null))
+                .isInstanceOf(RecordNotFoundException.class);
+    }
+
+    @Test
+    void lookupRecord_withLastNameOnly_andMultipleRecords_shouldThrowMultipleFound() {
+        recordService.createRecord(createRecordRequest());
+        recordService.createRecord(createRecordRequestB());
+
+        assertThatThrownBy(() -> recordService.lookupRecord("Dela Cruz", null))
+                .isInstanceOf(MultipleRecordsFoundException.class);
+    }
+
     private static CreateRecordRequest createRecordRequest() {
         return new CreateRecordRequest(
                 "Juan",
@@ -152,4 +178,17 @@ public class RecordServiceIntegrationTest {
         );
     }
 
+    private static CreateRecordRequest createRecordRequestB() {
+        return new CreateRecordRequest(
+                "Michael",
+                "Santos S",
+                "Dela Cruz",
+                "Sr.",
+                LocalDate.of(1995, 6, 15),
+                Gender.MALE,
+                true,
+                "Quezon City",
+                "09123456789"
+        );
+    }
 }

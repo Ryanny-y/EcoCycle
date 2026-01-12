@@ -9,6 +9,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -33,4 +35,8 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
 
     @Query(value = "SELECT nextval('resident_code_seq')", nativeQuery = true)
     long nextCodeSequence();
+
+    Optional<Record> findByLastNameAndCode(String lastName, String code);
+
+    List<Record> findByLastName(String lastName);
 }

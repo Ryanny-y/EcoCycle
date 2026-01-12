@@ -98,7 +98,22 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    TODO: GET: /lookup?lastName=required&code=optional
+    @GetMapping("/lookup")
+    public ResponseEntity<ApiResponse<RecordDto>> lookupRecord(
+            @RequestParam("lastName") String lastName,
+            @RequestParam(value = "code", required = false) String code
+    ) {
+        Record record = recordService.lookupRecord(lastName, code);
+        RecordDto recordDto = recordMapper.toDto(record);
+
+        ApiResponse<RecordDto> apiResponse = ApiResponse.<RecordDto>builder()
+                .success(true)
+                .message("Record found.")
+                .data(recordDto)
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
 
 //    TODO: POST: /code/points
 
