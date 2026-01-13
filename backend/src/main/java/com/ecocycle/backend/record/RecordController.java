@@ -98,6 +98,7 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
+//    TODO: only return points and code
     @GetMapping("/lookup")
     public ResponseEntity<ApiResponse<RecordDto>> lookupRecord(
             @RequestParam("lastName") String lastName,
@@ -114,9 +115,5 @@ public class RecordController {
 
         return ResponseEntity.ok(apiResponse);
     }
-
-//    TODO: POST: /code/points
-
-//    TODO: POST: /codo/redemptions
 
 }

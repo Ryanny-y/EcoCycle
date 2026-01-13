@@ -19,10 +19,10 @@ public class S3StorageService implements FileStorageService {
     private final S3Client s3Client;
 
     @Value("${aws.bucket-name}")
-    private String bucketName;
+    private final String bucketName;
 
     @Value("${aws.region}")
-    private String region;
+    private final String region;
 
     @Override
     public String uploadFile(MultipartFile file) {

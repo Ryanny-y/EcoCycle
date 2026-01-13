@@ -19,3 +19,9 @@ jwt:
   secretKey: secretKey
   accessTokenExp: 10000
   refreshTokenExp: 100000
+
+aws:
+  access-key: Access
+  secret-key: key
+  region: ap-southeast-1
+  bucket-name: ecocycle-storage-tests
