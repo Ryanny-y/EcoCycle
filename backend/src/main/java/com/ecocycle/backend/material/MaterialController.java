@@ -36,6 +36,21 @@ public class MaterialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<MaterialDto>> getMaterial(
+            @PathVariable("id") UUID id
+    ) {
+        Material material = materialService.getMaterialById(id);
+
+        ApiResponse<MaterialDto> apiResponse = ApiResponse.<MaterialDto>builder()
+                .success(true)
+                .message("Material retrieved.")
+                .data(materialMapper.toDto(material))
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<MaterialDto>> createMaterial(
             @Valid @ModelAttribute CreateMaterialRequest request
@@ -65,5 +80,6 @@ public class MaterialController {
 
         return ResponseEntity.ok(apiResponse);
     }
+
 
 }
