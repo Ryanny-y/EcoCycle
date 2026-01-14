@@ -4,6 +4,7 @@ import com.ecocycle.backend.common.web.ApiResponse;
 import com.ecocycle.backend.common.web.PageResponse;
 import com.ecocycle.backend.record.dto.RecordDto;
 import com.ecocycle.backend.record.dto.request.UpdateRecordRequest;
+import com.ecocycle.backend.record.dto.response.LookupResponse;
 import com.ecocycle.backend.record.model.Record;
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.dto.response.CreateRecordResponse;
@@ -98,19 +99,17 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    TODO: only return points and code
     @GetMapping("/lookup")
-    public ResponseEntity<ApiResponse<RecordDto>> lookupRecord(
+    public ResponseEntity<ApiResponse<LookupResponse>> lookupRecord(
             @RequestParam("lastName") String lastName,
             @RequestParam(value = "code", required = false) String code
     ) {
         Record record = recordService.lookupRecord(lastName, code);
-        RecordDto recordDto = recordMapper.toDto(record);
 
-        ApiResponse<RecordDto> apiResponse = ApiResponse.<RecordDto>builder()
+        ApiResponse<LookupResponse> apiResponse = ApiResponse.<LookupResponse>builder()
                 .success(true)
                 .message("Record found.")
-                .data(recordDto)
+                .data(new LookupResponse(record.getPoints(), record.getCode()))
                 .build();
 
         return ResponseEntity.ok(apiResponse);
