@@ -9,4 +9,5 @@ import java.util.UUID;
 @Repository
 public interface MaterialRepository extends JpaRepository<Material, UUID> {
     boolean existsByName(String name);
+    boolean existsByNameAndIdNot(String name, UUID id);
 }

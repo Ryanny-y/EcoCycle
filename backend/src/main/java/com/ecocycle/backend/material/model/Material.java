@@ -27,6 +27,7 @@ public class Material {
     private String description;
 
     @Column(nullable = false)
+    @Builder.Default
     private Integer pointsPerKg = 1;
 
     @Column(name = "image_url", nullable = false)

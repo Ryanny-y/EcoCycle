@@ -19,10 +19,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
+
 # JWT
 jwt:
   secretKey: ${JWT_SECRET_KEY}

@@ -4,15 +4,18 @@ server:
 spring:
   application:
     name: backend
+
   datasource:
     url: jdbc:h2:mem:test_db;MODE=PostgreSQL
     username: test
     password: test_password
     driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+
   servlet:
     multipart:
       max-file-size: 5MB

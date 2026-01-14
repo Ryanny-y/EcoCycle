@@ -19,6 +19,7 @@ public class CreateMaterialRequest {
 
     private String description;
 
+    @Builder.Default
     private Integer pointsPerKg = 1;
 
     @NotEmptyFile

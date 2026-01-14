@@ -73,7 +73,7 @@ public class RecordServiceImpl implements RecordService {
         record.setAddress(request.getAddress());
         record.setContactNumber(request.getContactNumber());
 
-        return record;
+        return recordRepository.save(record);
     }
 
     @Override
