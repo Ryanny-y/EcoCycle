@@ -57,10 +57,16 @@ public class S3StorageService implements FileStorageService {
     }
 
     @Override
-    public void deleteFile(String key) {
+    public void deleteFile(String imageUrl) {
+        if (imageUrl == null || imageUrl.isBlank()) return;
+
+        String key = imageUrl.replace(
+                "https://" + bucketName + ".s3.amazonaws.com/", ""
+        );
+
         DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
                 .bucket(bucketName)
-                .bucket(key)
+                .key(key)
                 .build();
 
         s3Client.deleteObject(deleteObjectRequest);

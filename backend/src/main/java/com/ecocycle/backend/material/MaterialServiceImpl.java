@@ -2,6 +2,7 @@ package com.ecocycle.backend.material;
 
 import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import com.ecocycle.backend.material.dto.request.CreateMaterialRequest;
+import com.ecocycle.backend.material.dto.request.UpdateMaterialRequest;
 import com.ecocycle.backend.material.exceptions.MaterialNotFoundException;
 import com.ecocycle.backend.material.model.Material;
 import com.ecocycle.backend.material.repository.MaterialRepository;
@@ -49,6 +50,29 @@ public class MaterialServiceImpl implements MaterialService {
     public Material getMaterialById(UUID id) {
         return materialRepository.findById(id)
                 .orElseThrow(() -> new MaterialNotFoundException("Material not found with ID: " + id));
+    }
+
+    @Override
+    @Transactional
+    public Material updateMaterial(UUID id, UpdateMaterialRequest request) {
+        Material material = getMaterialById(id);
+
+        if(request.getName() != null) material.setName(request.getName());
+
+        if(request.getDescription() != null) material.setDescription(request.getDescription());
+
+        if(request.getPointsPerKg() != null) material.setPointsPerKg(request.getPointsPerKg());
+
+        if(request.getImage() != null) {
+            if(material.getImageUrl() != null) {
+                fileStorageService.deleteFile(material.getImageUrl());
+            }
+
+            String key = fileStorageService.uploadFile(request.getImage());
+            material.setImageUrl(key);
+        }
+
+        return material;
     }
 
 }

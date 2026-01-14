@@ -1,10 +1,9 @@
-package com.ecocycle.backend.material.controller;
+package com.ecocycle.backend.material;
 
 import com.ecocycle.backend.common.web.ApiResponse;
-import com.ecocycle.backend.material.MaterialMapper;
-import com.ecocycle.backend.material.MaterialService;
 import com.ecocycle.backend.material.dto.MaterialDto;
 import com.ecocycle.backend.material.dto.request.CreateMaterialRequest;
+import com.ecocycle.backend.material.dto.request.UpdateMaterialRequest;
 import com.ecocycle.backend.material.model.Material;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/materials")
@@ -48,6 +48,22 @@ public class MaterialController {
                 .build();
 
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<MaterialDto>> updatedMaterial(
+            @PathVariable("id") UUID id,
+            @Valid @ModelAttribute UpdateMaterialRequest request
+    ) {
+        Material updatedMaterial = materialService.updateMaterial(id, request);
+
+        ApiResponse<MaterialDto> apiResponse = ApiResponse.<MaterialDto>builder()
+                .success(true)
+                .message(updatedMaterial.getName() + " updated!")
+                .data(materialMapper.toDto(updatedMaterial))
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
     }
 
 }
