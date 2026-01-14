@@ -1,11 +1,13 @@
 package com.ecocycle.backend.infrastructure.storage.s3.service;
 
+import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
@@ -19,10 +21,10 @@ public class S3StorageService implements FileStorageService {
     private final S3Client s3Client;
 
     @Value("${aws.bucket-name}")
-    private final String bucketName;
+    private String bucketName;
 
     @Value("${aws.region}")
-    private final String region;
+    private String region;
 
     @Override
     public String uploadFile(MultipartFile file) {
@@ -52,5 +54,15 @@ public class S3StorageService implements FileStorageService {
     public String getFileUrl(String key) {
         return String.format("https://%s.s3.%s.amazonaws.com/%s",
                 bucketName, region, key);
+    }
+
+    @Override
+    public void deleteFile(String key) {
+        DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .bucket(key)
+                .build();
+
+        s3Client.deleteObject(deleteObjectRequest);
     }
 }

@@ -22,6 +22,11 @@ public class TestFileStorageConfig {
                 return "fake/key.png";
             }
 
+            @Override
+            public void deleteFile(String key) {
+
+            }
+
         };
     }
 
