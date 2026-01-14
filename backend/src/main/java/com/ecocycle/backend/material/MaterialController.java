@@ -81,5 +81,17 @@ public class MaterialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteMaterial(
+            @PathVariable("id") UUID id
+    ) {
+        Material deletedMaterial = materialService.deleteMaterial(id);
 
+        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                .success(true)
+                .message(deletedMaterial.getName() + " deleted.")
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
 }

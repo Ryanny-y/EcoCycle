@@ -12,4 +12,5 @@ public interface MaterialService {
     Material getMaterialById(UUID id);
     Material createMaterial(CreateMaterialRequest request);
     Material updateMaterial(UUID id, UpdateMaterialRequest request);
+    Material deleteMaterial(UUID id);
 }

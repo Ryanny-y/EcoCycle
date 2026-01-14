@@ -3,6 +3,7 @@ package com.ecocycle.backend.material;
 import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import com.ecocycle.backend.material.dto.request.CreateMaterialRequest;
 import com.ecocycle.backend.material.dto.request.UpdateMaterialRequest;
+import com.ecocycle.backend.material.exceptions.MaterialAlreadyExists;
 import com.ecocycle.backend.material.exceptions.MaterialNotFoundException;
 import com.ecocycle.backend.material.model.Material;
 import com.ecocycle.backend.material.repository.MaterialRepository;
@@ -26,6 +27,10 @@ public class MaterialServiceImpl implements MaterialService {
         String key = fileStorageService.uploadFile(request.getImage());
 
         try {
+            if(materialRepository.existsByName(request.getName())) {
+                throw new MaterialAlreadyExists("Material with name: " + request.getName() + " already exists");
+            }
+
             Material material = Material.builder()
                     .name(request.getName())
                     .description(request.getDescription())
@@ -72,6 +77,19 @@ public class MaterialServiceImpl implements MaterialService {
             material.setImageUrl(key);
         }
 
+        return material;
+    }
+
+    @Override
+    @Transactional
+    public Material deleteMaterial(UUID id) {
+        Material material = getMaterialById(id);
+
+        if(material.getImageUrl() != null) {
+            fileStorageService.deleteFile(material.getImageUrl());
+        }
+
+        materialRepository.delete(material);
         return material;
     }
 

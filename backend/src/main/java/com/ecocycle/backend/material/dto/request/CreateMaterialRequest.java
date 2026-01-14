@@ -1,5 +1,6 @@
 package com.ecocycle.backend.material.dto.request;
 
+import com.ecocycle.backend.common.validation.NotEmptyFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,6 @@ public class CreateMaterialRequest {
 
     private Integer pointsPerKg = 1;
 
-    @NotNull(message = "Image is required.")
+    @NotEmptyFile
     private MultipartFile image;
 }
