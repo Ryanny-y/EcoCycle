@@ -59,6 +59,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
+    @Transactional
     public Record updateRecord(UUID id, UpdateRecordRequest request) {
         Record record = getRecordById(id);
 
@@ -72,7 +73,7 @@ public class RecordServiceImpl implements RecordService {
         record.setAddress(request.getAddress());
         record.setContactNumber(request.getContactNumber());
 
-        return recordRepository.save(record);
+        return record;
     }
 
     @Override

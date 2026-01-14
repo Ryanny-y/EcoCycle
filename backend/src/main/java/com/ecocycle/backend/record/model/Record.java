@@ -1,11 +1,13 @@
 package com.ecocycle.backend.record.model;
 
+import com.ecocycle.backend.transaction.model.PointTransaction;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -57,11 +59,16 @@ public class Record {
     @Column(length = 11, name = "contact_number", nullable = false)
     private String contactNumber;
 
+//    RELATIONSHIPS
+    @OneToMany(mappedBy = "record", fetch = FetchType.LAZY)
+    private List<PointTransaction> transactions;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
 
     @PrePersist
     public void onCreate() {

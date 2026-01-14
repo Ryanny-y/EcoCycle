@@ -2,6 +2,7 @@ package com.ecocycle.backend.material;
 
 import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import com.ecocycle.backend.material.dto.request.CreateMaterialRequest;
+import com.ecocycle.backend.material.exceptions.MaterialNotFoundException;
 import com.ecocycle.backend.material.model.Material;
 import com.ecocycle.backend.material.repository.MaterialRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +43,12 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public List<Material> getMaterials() {
         return materialRepository.findAll();
+    }
+
+    @Override
+    public Material getMaterialById(UUID id) {
+        return materialRepository.findById(id)
+                .orElseThrow(() -> new MaterialNotFoundException("Material not found with ID: " + id));
     }
 
 }
