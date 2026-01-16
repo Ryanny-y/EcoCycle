@@ -33,9 +33,10 @@ public class Material {
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @PrePersist
