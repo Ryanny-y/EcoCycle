@@ -17,6 +17,10 @@ public class MaterialRepositoryIntegrationTest {
     @Autowired
     private MaterialRepository underTest;
 
+    /* =========================================================
+       ---------------- existsByName -----------------------------
+       ========================================================= */
+
     @Test
     public void existsByName_shouldReturnFalse() {
         boolean exists = underTest.existsByName("glass");
@@ -32,13 +36,17 @@ public class MaterialRepositoryIntegrationTest {
                 .build();
 
         underTest.save(material);
+
         boolean exists = underTest.existsByName("glass");
         assertThat(exists).isTrue();
     }
 
+    /* =========================================================
+       ---------------- existsByNameAndIdNot ---------------------
+       ========================================================= */
+
     @Test
     public void existsByNameAndIdNot_shouldReturnTrue() {
-        underTest.deleteAll();
         Material material1 = Material.builder()
                 .name("glass")
                 .description("Some glass")
@@ -51,15 +59,18 @@ public class MaterialRepositoryIntegrationTest {
                 .imageUrl("fake-img.png")
                 .build();
 
-
         underTest.saveAll(List.of(material1, material2));
-        boolean exists = underTest.existsByNameAndIdNot("Paper", material1.getId());
+
+        boolean exists = underTest.existsByNameAndIdNot(
+                "Paper",
+                material1.getId()
+        );
+
         assertThat(exists).isTrue();
     }
 
     @Test
     public void existsByNameAndIdNot_shouldReturnFalse() {
-        underTest.deleteAll();
         Material material1 = Material.builder()
                 .name("glass")
                 .description("Some glass")
@@ -72,9 +83,13 @@ public class MaterialRepositoryIntegrationTest {
                 .imageUrl("fake-img.png")
                 .build();
 
-
         underTest.saveAll(List.of(material1, material2));
-        boolean exists = underTest.existsByNameAndIdNot("Bottle", material1.getId());
+
+        boolean exists = underTest.existsByNameAndIdNot(
+                "Bottle",
+                material1.getId()
+        );
+
         assertThat(exists).isFalse();
     }
 }

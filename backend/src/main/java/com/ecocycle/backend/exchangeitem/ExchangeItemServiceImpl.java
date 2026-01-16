@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+
+// TODO: MAKE TEST FOR THIS SERVICE
 @Service
 @RequiredArgsConstructor
 public class ExchangeItemServiceImpl implements ExchangeItemService {
