@@ -21,20 +21,16 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class RecordServiceIntegrationTest {
-
-    private final RecordService recordService;
+public class RecordServiceIntegrationTests {
 
     @Autowired
-    RecordServiceIntegrationTest(RecordService recordService) {
-        this.recordService = recordService;
-    }
+    private RecordService underTest;
 
     @Test
     void createRecord_shouldPersistRecord() {
         CreateRecordRequest request = createRecordRequest();
 
-        Record created = recordService.createRecord(request);
+        Record created = underTest.createRecord(request);
 
         assertThat(created.getId()).isNotNull();
         assertThat(created.getFirstName()).isEqualTo("Juan");
@@ -44,9 +40,9 @@ public class RecordServiceIntegrationTest {
     void createRecord_shouldThrowWhenDuplicateExists() {
         CreateRecordRequest request = createRecordRequest();
 
-        recordService.createRecord(request);
+        underTest.createRecord(request);
 
-        assertThatThrownBy(() -> recordService.createRecord(request))
+        assertThatThrownBy(() -> underTest.createRecord(request))
             .isInstanceOf(RecordAlreadyExistsException.class)
             .hasMessage("Record with the full name already exists");
     }
@@ -55,9 +51,9 @@ public class RecordServiceIntegrationTest {
     void getRecordById_shouldReturnRecord() {
         CreateRecordRequest request = createRecordRequest();
 
-        Record created = recordService.createRecord(request);
+        Record created = underTest.createRecord(request);
 
-        Record fetched = recordService.getRecordById(created.getId());
+        Record fetched = underTest.getRecordById(created.getId());
 
         assertThat(fetched.getCode()).isEqualTo("BT-0001");
         assertThat(fetched.getFirstName()).isEqualTo("Juan");
@@ -67,7 +63,7 @@ public class RecordServiceIntegrationTest {
     void getRecordById_shouldThrowWhenNotFound() {
         UUID randomId = UUID.randomUUID();
 
-        assertThatThrownBy(() -> recordService.getRecordById(randomId))
+        assertThatThrownBy(() -> underTest.getRecordById(randomId))
             .isInstanceOf(RecordNotFoundException.class)
             .hasMessage("Record not found with ID: " + randomId);
     }
@@ -76,7 +72,7 @@ public class RecordServiceIntegrationTest {
     void updateRecord_shouldUpdateFields() {
         CreateRecordRequest request = createRecordRequest();
 
-        Record created = recordService.createRecord(request);
+        Record created = underTest.createRecord(request);
 
         UpdateRecordRequest updateRequest = new UpdateRecordRequest(
                 "Juan Updated",
@@ -90,7 +86,7 @@ public class RecordServiceIntegrationTest {
                 "09000000000"
         );
 
-        Record updated = recordService.updateRecord(created.getId(), updateRequest);
+        Record updated = underTest.updateRecord(created.getId(), updateRequest);
 
         assertThat(updated.getFirstName()).isEqualTo("Juan Updated");
         assertThat(updated.getAddress()).isEqualTo("Updated Address");
@@ -100,20 +96,20 @@ public class RecordServiceIntegrationTest {
 
     @Test
     void getRecords_shouldApplyFiltersAndPagination() {
-        recordService.createRecord(new CreateRecordRequest(
+        underTest.createRecord(new CreateRecordRequest(
                 "Juan", "Santos", "Dela Cruz",
                 null, LocalDate.now(), Gender.MALE, true, "QC", "1"
         ));
-        recordService.createRecord(new CreateRecordRequest(
+        underTest.createRecord(new CreateRecordRequest(
                 "Maria", "Lopez", "Reyes",
                 null, LocalDate.now(), Gender.FEMALE, false, "Cebu", "2"
         ));
-        recordService.createRecord(new CreateRecordRequest(
+        underTest.createRecord(new CreateRecordRequest(
                 "Maria", "Santos", "Mendoza",
                 null, LocalDate.now(), Gender.FEMALE, true, "Davao", "3"
         ));
 
-        Page<Record> result = recordService.getRecords(
+        Page<Record> result = underTest.getRecords(
                 true,
                 "Maria",
                 null,
@@ -129,20 +125,20 @@ public class RecordServiceIntegrationTest {
 
     @Test
     void deleteRecord_shouldDeleteRecord() {
-        Record created = recordService.createRecord(createRecordRequest());
+        Record created = underTest.createRecord(createRecordRequest());
 
-        Record deleted = recordService.deleteRecord(created.getId());
+        Record deleted = underTest.deleteRecord(created.getId());
 
         assertThat(deleted.getId()).isEqualTo(created.getId());
 
-        assertThatThrownBy(() -> recordService.getRecordById(created.getId()))
+        assertThatThrownBy(() -> underTest.getRecordById(created.getId()))
                 .isInstanceOf(RecordNotFoundException.class);
     }
 
     @Test
     void lookupRecord_withLastNameAndCode_shouldReturnMatchingRecord() {
-        Record created = recordService.createRecord(createRecordRequest());
-        Record result = recordService.lookupRecord("Dela Cruz", created.getCode());
+        Record created = underTest.createRecord(createRecordRequest());
+        Record result = underTest.lookupRecord("Dela Cruz", created.getCode());
 
         assertThat(result.getId()).isEqualTo(created.getId());
         assertThat(result.getFirstName()).isEqualTo(created.getFirstName());
@@ -150,16 +146,16 @@ public class RecordServiceIntegrationTest {
 
     @Test
     void lookupRecord_withLastNameOnly_andNoRecord_shouldThrowNotFound() {
-        assertThatThrownBy(() -> recordService.lookupRecord("Ramos", null))
+        assertThatThrownBy(() -> underTest.lookupRecord("Ramos", null))
                 .isInstanceOf(RecordNotFoundException.class);
     }
 
     @Test
     void lookupRecord_withLastNameOnly_andMultipleRecords_shouldThrowMultipleFound() {
-        recordService.createRecord(createRecordRequest());
-        recordService.createRecord(createRecordRequestB());
+        underTest.createRecord(createRecordRequest());
+        underTest.createRecord(createRecordRequestB());
 
-        assertThatThrownBy(() -> recordService.lookupRecord("Dela Cruz", null))
+        assertThatThrownBy(() -> underTest.lookupRecord("Dela Cruz", null))
                 .isInstanceOf(MultipleRecordsFoundException.class);
     }
 

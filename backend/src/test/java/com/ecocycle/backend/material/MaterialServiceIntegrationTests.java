@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
-class MaterialServiceIntegrationTest {
+class MaterialServiceIntegrationTests {
 
     @Autowired
     private MaterialService underTest;

@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class AchievementRepositoryIntegrationTest {
+class AchievementRepositoryIntegrationTests {
 
     @Autowired
     private AchievementRepository underTest;

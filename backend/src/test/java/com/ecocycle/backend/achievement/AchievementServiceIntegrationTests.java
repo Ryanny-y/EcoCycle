@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional
-class AchievementServiceIntegrationTest {
+class AchievementServiceIntegrationTests {
 
     @Autowired
     private AchievementService underTest;
