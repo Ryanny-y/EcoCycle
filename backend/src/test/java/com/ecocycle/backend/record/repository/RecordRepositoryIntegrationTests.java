@@ -18,12 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public class RecordRepositoryIntegrationTests {
 
-    private final RecordRepository underTest;
-
     @Autowired
-    public RecordRepositoryIntegrationTests(RecordRepository recordRepository) {
-        this.underTest = recordRepository;
-    }
+    private RecordRepository underTest;
 
     @Test
     public void testThatCanCreateAndFindAllWithFilter() {

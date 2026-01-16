@@ -31,11 +31,13 @@ public class ExchangeItem {
     private ItemType itemType;
 
     @Column(name = "main_category", nullable = false)
+    @Enumerated(EnumType.STRING)
     private MainCategory mainCategory;
 
     @Column(name = "sub_category", nullable = false)
     private String subCategory;
 
+    @Builder.Default
     private Integer stocks = 0;
 
     @Column(name = "required_points")

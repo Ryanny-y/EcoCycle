@@ -1,3 +1,3 @@
-CREATE SEQUENCE resident_code_seq
+CREATE SEQUENCE IF NOT EXISTS resident_code_seq
 START WITH 1
 INCREMENT BY 1;
