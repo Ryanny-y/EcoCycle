@@ -90,7 +90,7 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
         if (request.getName() != null && !request.getName().equals(exchangeItem.getName())) {
             if (exchangeItemRepository.existsByNameAndIdNot(request.getName(), id)) {
                 throw new ExchangeItemAlreadyExists(
-                        "Update failed: Exchange item with name: " + request.getName() + " already exists"
+                        "Update failed: Exchange item with name: " + request.getName() + " already exists."
                 );
             }
             exchangeItem.setName(request.getName());

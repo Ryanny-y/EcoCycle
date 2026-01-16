@@ -61,7 +61,7 @@ public class AchievementServiceImpl implements AchievementService {
     public List<Achievement> getAchievements() {
         return achievementsRepository.findAll();
     }
-
+    
     @Override
     @Transactional(readOnly = true)
     public Achievement getAchievementById(UUID id) {
