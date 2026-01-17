@@ -7,12 +7,11 @@ import com.ecocycle.backend.achievement.exceptions.AchievementNotFoundException;
 import com.ecocycle.backend.achievement.repository.AchievementRepository;
 import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import com.ecocycle.backend.achievement.model.Achievement;
+import com.ecocycle.backend.infrastructure.storage.TransactionalFileDeletionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AchievementServiceImpl implements AchievementService {
 
+    private final TransactionalFileDeletionService transactionalFileDeletionService;
     private final AchievementRepository achievementsRepository;
     private final FileStorageService fileStorageService;
 
@@ -45,11 +45,6 @@ public class AchievementServiceImpl implements AchievementService {
 
             return achievementsRepository.save(achievement);
 
-        } catch (DataIntegrityViolationException ex) {
-            fileStorageService.deleteFile(imageKey);
-            throw new AchievementAlreadyExists(
-                    "Achievement with title: " + request.getTitle() + " already exists"
-            );
         } catch (RuntimeException ex) {
             fileStorageService.deleteFile(imageKey);
             throw ex;
@@ -92,7 +87,7 @@ public class AchievementServiceImpl implements AchievementService {
 
             try {
                 achievement.setImageUrl(newImageKey);
-                registerFileDeletionAfterCommit(oldImage);
+                transactionalFileDeletionService.deleteAfterCommit(oldImage);
             } catch (RuntimeException ex) {
                 fileStorageService.deleteFile(newImageKey);
                 throw ex;
@@ -110,21 +105,8 @@ public class AchievementServiceImpl implements AchievementService {
 
         achievementsRepository.delete(achievement);
 
-        registerFileDeletionAfterCommit(imageKey);
+        transactionalFileDeletionService.deleteAfterCommit(imageKey);
 
         return achievement;
-    }
-
-    private void registerFileDeletionAfterCommit(String fileKey) {
-        if (fileKey == null) return;
-
-        TransactionSynchronizationManager.registerSynchronization(
-                new TransactionSynchronization() {
-                    @Override
-                    public void afterCommit() {
-                        fileStorageService.deleteFile(fileKey);
-                    }
-                }
-        );
     }
 }

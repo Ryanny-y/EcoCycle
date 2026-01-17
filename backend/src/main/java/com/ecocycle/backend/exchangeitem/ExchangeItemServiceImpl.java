@@ -7,23 +7,20 @@ import com.ecocycle.backend.exchangeitem.exceptions.ExchangeItemAlreadyExists;
 import com.ecocycle.backend.exchangeitem.exceptions.ExchangeItemNotFoundException;
 import com.ecocycle.backend.exchangeitem.model.ExchangeItem;
 import com.ecocycle.backend.exchangeitem.repository.ExchangeItemRepository;
+import com.ecocycle.backend.infrastructure.storage.TransactionalFileDeletionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronization;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-
-// TODO: MAKE TEST FOR THIS SERVICE
 @Service
 @RequiredArgsConstructor
 public class ExchangeItemServiceImpl implements ExchangeItemService {
 
+    private final TransactionalFileDeletionService transactionalFileDeletionService;
     private final ExchangeItemRepository exchangeItemRepository;
     private final FileStorageService fileStorageService;
 
@@ -54,11 +51,6 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
 
             return exchangeItemRepository.save(exchangeItem);
 
-        } catch (DataIntegrityViolationException ex) {
-            fileStorageService.deleteFile(imageKey);
-            throw new ExchangeItemAlreadyExists(
-                    "Exchange item with name: " + request.getName() + " already exists"
-            );
         } catch (RuntimeException ex) {
             fileStorageService.deleteFile(imageKey);
             throw ex;
@@ -124,7 +116,7 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
 
             try {
                 exchangeItem.setImageUrl(newImageKey);
-                registerFileDeletionAfterCommit(oldImage);
+                transactionalFileDeletionService.deleteAfterCommit(oldImage);
             } catch (RuntimeException ex) {
                 fileStorageService.deleteFile(newImageKey);
                 throw ex;
@@ -142,21 +134,8 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
 
         exchangeItemRepository.delete(exchangeItem);
 
-        registerFileDeletionAfterCommit(imageKey);
+        transactionalFileDeletionService.deleteAfterCommit(imageKey);
 
         return exchangeItem;
-    }
-
-    private void registerFileDeletionAfterCommit(String fileKey) {
-        if (fileKey == null) return;
-
-        TransactionSynchronizationManager.registerSynchronization(
-                new TransactionSynchronization() {
-                    @Override
-                    public void afterCommit() {
-                        fileStorageService.deleteFile(fileKey);
-                    }
-                }
-        );
     }
 }

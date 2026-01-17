@@ -20,14 +20,14 @@ public class ExchangeItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "item_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Column(name = "item_type")
     private ItemType itemType;
 
     @Column(name = "main_category", nullable = false)
@@ -40,8 +40,9 @@ public class ExchangeItem {
     @Builder.Default
     private Integer stocks = 0;
 
-    @Column(name = "required_points")
-    private Integer requiredPoints;
+    @Column(name = "required_points", nullable = false)
+    @Builder.Default
+    private Integer requiredPoints = 1;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

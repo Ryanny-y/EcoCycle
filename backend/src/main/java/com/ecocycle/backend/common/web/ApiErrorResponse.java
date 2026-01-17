@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +13,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ApiErrorResponse {
-    @Builder.Default
-    private boolean success = false;
+    private boolean success;
     private String message;
     private int status;
     private String code;
     private LocalDateTime timestamp;
 
+    public static ApiErrorResponse of(
+            HttpStatus status,
+            String message,
+            String code
+    ) {
+        return ApiErrorResponse.builder()
+                .success(false)
+                .message(message)
+                .status(status.value())
+                .code(code)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 }

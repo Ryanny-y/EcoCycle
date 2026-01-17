@@ -1,6 +1,7 @@
 package com.ecocycle.backend.material;
 
 import com.ecocycle.backend.infrastructure.storage.FileStorageService;
+import com.ecocycle.backend.infrastructure.storage.TransactionalFileDeletionService;
 import com.ecocycle.backend.material.dto.request.CreateMaterialRequest;
 import com.ecocycle.backend.material.dto.request.UpdateMaterialRequest;
 import com.ecocycle.backend.material.exceptions.MaterialAlreadyExists;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MaterialServiceImpl implements MaterialService {
 
+    private final TransactionalFileDeletionService transactionalFileDeletionService;
     private final MaterialRepository materialRepository;
     private final FileStorageService fileStorageService;
 
@@ -46,11 +48,6 @@ public class MaterialServiceImpl implements MaterialService {
 
             return materialRepository.save(material);
 
-        } catch (DataIntegrityViolationException ex) {
-            fileStorageService.deleteFile(imageKey);
-            throw new MaterialAlreadyExists(
-                    "Material with name: " + request.getName() + " already exists"
-            );
         } catch (RuntimeException ex) {
             fileStorageService.deleteFile(imageKey);
             throw ex;
@@ -93,7 +90,7 @@ public class MaterialServiceImpl implements MaterialService {
 
             try {
                 material.setImageUrl(newImageKey);
-                registerFileDeletionAfterCommit(oldImage);
+                transactionalFileDeletionService.deleteAfterCommit((oldImage));
             } catch (RuntimeException ex) {
                 fileStorageService.deleteFile(newImageKey);
                 throw ex;
@@ -112,22 +109,9 @@ public class MaterialServiceImpl implements MaterialService {
 
         materialRepository.delete(material);
 
-        registerFileDeletionAfterCommit(imageKey);
+        transactionalFileDeletionService.deleteAfterCommit(imageKey);
 
         return material;
-    }
-
-    private void registerFileDeletionAfterCommit(String fileKey) {
-        if (fileKey == null) return;
-
-        TransactionSynchronizationManager.registerSynchronization(
-                new TransactionSynchronization() {
-                    @Override
-                    public void afterCommit() {
-                        fileStorageService.deleteFile(fileKey);
-                    }
-                }
-        );
     }
 
 }
