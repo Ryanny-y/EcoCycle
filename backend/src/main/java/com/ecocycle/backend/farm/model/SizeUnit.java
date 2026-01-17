@@ -1,6 +1,8 @@
 package com.ecocycle.backend.farm.model;
 
 public enum SizeUnit {
-    HECTARE,
-    ACRE
+    HECTARES,
+    ACRES,
+    SQUARE_METERS,
+    SQUARE_FEET
 }
