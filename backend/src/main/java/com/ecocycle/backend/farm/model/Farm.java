@@ -24,7 +24,7 @@ public class Farm {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(length = 2000)
@@ -44,7 +44,7 @@ public class Farm {
     @CollectionTable(name = "farm_types", joinColumns = @JoinColumn(name = "farm_id"))
     @Column(name = "farm_type")
     @Builder.Default
-    private Set<FarmType> farmType = new HashSet<>();
+    private Set<FarmType> farmTypes = new HashSet<>();
 
     @Column(nullable = false)
     private String address;
