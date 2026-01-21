@@ -7,9 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "farms")
@@ -36,7 +34,7 @@ public class Farm {
     @Embedded
     private FarmSize size;
 
-    @Column(name = "established_at", nullable = false)
+    @Column(name = "established_at")
     private LocalDate establishedAt;
 
     @ElementCollection(fetch = FetchType.LAZY)
@@ -44,7 +42,7 @@ public class Farm {
     @CollectionTable(name = "farm_types", joinColumns = @JoinColumn(name = "farm_id"))
     @Column(name = "farm_type")
     @Builder.Default
-    private Set<FarmType> farmTypes = new HashSet<>();
+    private List<FarmType> farmTypes = new ArrayList<>();
 
     @Column(nullable = false)
     private String address;
@@ -53,9 +51,10 @@ public class Farm {
     private String imageUrl;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

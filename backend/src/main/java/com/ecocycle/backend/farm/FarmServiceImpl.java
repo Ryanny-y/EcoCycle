@@ -11,12 +11,14 @@ import com.ecocycle.backend.farm.model.Farm;
 import com.ecocycle.backend.farm.repository.FarmRepository;
 import com.ecocycle.backend.infrastructure.storage.TransactionalFileDeletionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FarmServiceImpl implements FarmService {
@@ -38,6 +40,8 @@ public class FarmServiceImpl implements FarmService {
 
         try {
             Location location = new Location(request.getLocation().getLatitude(), request.getLocation().getLongitude());
+            log.info(request.getSize().getValue().toString());
+            log.info(request.getSize().getUnit().name());
             FarmSize size = new FarmSize(request.getSize().getValue(), request.getSize().getUnit());
 
             Farm farm = Farm.builder()
@@ -86,7 +90,7 @@ public class FarmServiceImpl implements FarmService {
             farm.setName(request.getName());
         }
 
-        if (request.getDescription() != null) farm.setDescription(request.getDescription());
+        farm.setDescription(request.getDescription());
 
         if (request.getLocation() != null) {
             Location location = new Location(request.getLocation().getLatitude(), request.getLocation().getLongitude());

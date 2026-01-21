@@ -9,7 +9,6 @@ import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import com.ecocycle.backend.achievement.model.Achievement;
 import com.ecocycle.backend.infrastructure.storage.TransactionalFileDeletionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

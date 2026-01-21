@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,7 +22,7 @@ public class UpdateFarmRequest {
     private LocationDto location;
     private FarmSizeDto size;
     private LocalDate establishedAt;
-    private Set<FarmType> farmTypes;
+    private List<FarmType> farmTypes;
     private String address;
     private MultipartFile image;
 }

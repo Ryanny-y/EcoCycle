@@ -16,9 +16,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FarmSize {
 
-    @Column(nullable = false)
+    @Column(name = "size_value", nullable = false)
     private Double value;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "size_unit", nullable = false)
     private SizeUnit unit;
 }

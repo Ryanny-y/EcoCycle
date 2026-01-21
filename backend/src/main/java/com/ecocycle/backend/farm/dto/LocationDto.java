@@ -22,5 +22,5 @@ public class LocationDto {
     @NotNull(message = "Longitude is required")
     @DecimalMin(value = "-180.0", message = "Longitude must be >= -180")
     @DecimalMax(value = "180.0", message = "Longitude must be <= 180")
-    private Double longitude;
+    private  Double longitude;
 }

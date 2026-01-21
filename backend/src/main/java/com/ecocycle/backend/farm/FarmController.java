@@ -7,7 +7,9 @@ import com.ecocycle.backend.farm.dto.request.UpdateFarmRequest;
 import com.ecocycle.backend.farm.model.Farm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/farms")
 @RequiredArgsConstructor
+@Slf4j
 public class FarmController {
 
     private final FarmService farmService;
@@ -51,10 +54,13 @@ public class FarmController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<FarmDto>> createFarm(
             @Valid @ModelAttribute CreateFarmRequest request
     ) {
+        log.info("Value: " + (request.getSize() != null ? request.getSize().getValue() : "null"));
+        log.info("Unit: " + (request.getSize() != null ? request.getSize().getUnit() : "null"));
+
         Farm createdFarm = farmService.createFarm(request);
         ApiResponse<FarmDto> apiResponse = ApiResponse.<FarmDto>builder()
                 .success(true)

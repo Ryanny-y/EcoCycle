@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -35,12 +36,12 @@ public class CreateFarmRequest {
     @Valid
     private FarmSizeDto size;
 
-    @NotNull(message = "Established date is required")
     @PastOrPresent(message = "Established date cannot be in the future")
     private LocalDate establishedAt;
 
     @NotEmpty(message = "At least one farm type must be selected")
-    private Set<FarmType> farmTypes;
+    @Builder.Default
+    private List<FarmType> farmTypes = new ArrayList<>();
 
     @NotBlank(message = "Address is required")
     @Size(max = 500, message = "Address must not exceed 500 characters")

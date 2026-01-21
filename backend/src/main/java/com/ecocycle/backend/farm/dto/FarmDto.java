@@ -1,8 +1,6 @@
 package com.ecocycle.backend.farm.dto;
 
 import com.ecocycle.backend.farm.model.FarmType;
-import com.ecocycle.backend.farm.model.Location;
-import com.ecocycle.backend.farm.model.FarmSize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
