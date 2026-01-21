@@ -2,7 +2,9 @@ package com.ecocycle.backend.transaction;
 
 import com.ecocycle.backend.common.web.ApiResponse;
 import com.ecocycle.backend.transaction.dto.request.EarnPointsRequest;
+import com.ecocycle.backend.transaction.dto.request.RedeemItemRequest;
 import com.ecocycle.backend.transaction.dto.response.EarnPointsResponse;
+import com.ecocycle.backend.transaction.dto.response.RedeemItemResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +34,13 @@ public class TransactionController {
 
         return ResponseEntity.ok(apiResponse);
     }
-
-//    TODO: POST: /codo/redemptions ? spendPoints
-
+//
+//    @PostMapping("/redeem/{recordId}")
+//    public ResponseEntity<ApiResponse<RedeemItemResponse>> redeemItem(
+//            @PathVariable("recordId") UUID id,
+//            @Valid @RequestBody RedeemItemRequest redeemItemRequest
+//    ) {
+//
+//    }
 
 }

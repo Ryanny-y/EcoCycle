@@ -1,0 +1,110 @@
+package com.ecocycle.backend.reward;
+
+import com.ecocycle.backend.exchangeitem.ExchangeItemService;
+import com.ecocycle.backend.exchangeitem.model.ExchangeItem;
+import com.ecocycle.backend.material.MaterialService;
+import com.ecocycle.backend.material.model.Material;
+import com.ecocycle.backend.record.RecordService;
+import com.ecocycle.backend.record.model.Record;
+import com.ecocycle.backend.reward.dto.request.EarnPointsRequest;
+import com.ecocycle.backend.reward.dto.request.MaterialInput;
+import com.ecocycle.backend.reward.dto.request.RedeemItemRequest;
+import com.ecocycle.backend.reward.dto.response.EarnPointsResponse;
+import com.ecocycle.backend.reward.dto.response.RedeemItemResponse;
+import com.ecocycle.backend.reward.exceptions.InsufficientPointsException;
+import com.ecocycle.backend.reward.exceptions.InsufficientStockException;
+import com.ecocycle.backend.reward.model.RewardActivity;
+import com.ecocycle.backend.reward.model.RewardActivityMaterial;
+import com.ecocycle.backend.reward.model.RewardType;
+import com.ecocycle.backend.reward.repository.RewardActivityRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class RewardServiceImpl implements RewardService {
+
+    private final RecordService recordService;
+    private final RewardActivityRepository rewardActivityRepository;
+    private final MaterialService materialService;
+    private final ExchangeItemService exchangeItemService;
+
+    @Override
+    @Transactional
+    public EarnPointsResponse earnPoints(UUID recordId, EarnPointsRequest earnPointsRequest) {
+        Record record = recordService.getRecordById(recordId);
+        BigDecimal totalPoints = BigDecimal.ZERO;
+
+        RewardActivity activity = RewardActivity.builder()
+                .record(record)
+                .type(RewardType.EARN)
+                .build();
+
+        for (MaterialInput input : earnPointsRequest.getMaterials()) {
+            Material material = materialService.getMaterialById(input.getId());
+            BigDecimal materialPoints = input.getWeight()
+                    .multiply(BigDecimal.valueOf(material.getPointsPerKg()))
+                    .setScale(2, RoundingMode.HALF_UP);
+
+            totalPoints = totalPoints.add(materialPoints);
+
+            activity.getMaterials().add(
+                    RewardActivityMaterial.builder()
+                            .activity(activity)
+                            .materialId(input.getId())
+                            .weight(input.getWeight())
+                            .points(materialPoints)
+                            .build()
+            );
+        }
+
+        activity.setPoints(totalPoints);
+        record.setPoints(record.getPoints().add(totalPoints));
+        rewardActivityRepository.save(activity);
+
+        return EarnPointsResponse.builder()
+                .pointsEarned(totalPoints)
+                .totalPoints(record.getPoints())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public RedeemItemResponse redeemItem(UUID recordId, RedeemItemRequest redeemItemRequest) {
+        Record record = recordService.getRecordById(recordId);
+        ExchangeItem exchangeItem = exchangeItemService.getExchangeItemById(redeemItemRequest.getExchangeItemId());
+
+        BigDecimal totalCost = BigDecimal.valueOf(exchangeItem.getRequiredPoints())
+                .multiply(BigDecimal.valueOf(redeemItemRequest.getQuantity()));
+
+        if (exchangeItem.getStocks() < redeemItemRequest.getQuantity()) {
+            throw new InsufficientStockException("Not enough stock.");
+        }
+
+        if (record.getPoints().compareTo(totalCost) < 0) {
+            throw new InsufficientPointsException("Insufficient points to redeem this item.");
+        }
+
+        record.setPoints(record.getPoints().subtract(totalCost));
+        exchangeItem.setStocks(exchangeItem.getStocks() - redeemItemRequest.getQuantity());
+
+        RewardActivity redemption = RewardActivity.builder()
+                .record(record)
+                .type(RewardType.REDEEM)
+                .points(totalCost.negate())
+                .build();
+
+        rewardActivityRepository.save(redemption);
+
+        return RedeemItemResponse.builder()
+                .pointsDeducted(totalCost)
+                .totalPoints(record.getPoints())
+                .build();
+    }
+}

@@ -59,6 +59,9 @@ public class Record {
     @Column(length = 11, name = "contact_number", nullable = false)
     private String contactNumber;
 
+    @Version
+    private Long version;
+
 //    RELATIONSHIPS
     @OneToMany(mappedBy = "record", fetch = FetchType.LAZY)
     private List<PointTransaction> transactions;

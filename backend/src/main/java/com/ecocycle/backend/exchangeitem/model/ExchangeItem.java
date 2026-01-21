@@ -57,6 +57,9 @@ public class ExchangeItem {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Version
+    private Long version;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
