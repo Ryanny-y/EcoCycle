@@ -1,8 +1,10 @@
 package com.ecocycle.backend.record.model;
 
-import com.ecocycle.backend.transaction.model.PointTransaction;
+import com.ecocycle.backend.reward.model.RewardActivity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -64,25 +66,15 @@ public class Record {
 
 //    RELATIONSHIPS
     @OneToMany(mappedBy = "record", fetch = FetchType.LAZY)
-    private List<PointTransaction> transactions;
+    private List<RewardActivity> rewardActivities;
 
-    @Column(name = "created_at")
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-
-    @PrePersist
-    public void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 
     @Override
     public boolean equals(Object o) {
