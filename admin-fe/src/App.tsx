@@ -1,7 +1,15 @@
+import { Toaster } from "sonner"
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Toaster 
+        position="bottom-right"
+        richColors
+        closeButton
+      />
+      <div>dsad</div>
+    </div>
   )
 }
 
