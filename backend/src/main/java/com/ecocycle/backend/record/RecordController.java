@@ -57,13 +57,14 @@ public class RecordController {
     ) {
         Record createdRecord = recordService.createRecord(request);
         CreateRecordResponse createResponse = new CreateRecordResponse(
-                createdRecord.getCode(),
-                createdRecord.getFirstName() + " " + createdRecord.getMiddleName().toUpperCase().charAt(0) + ". " + createdRecord.getLastName()
+                createdRecord.getFirstName(),
+                createdRecord.getMiddleName(),
+                createdRecord.getLastName()
         );
 
         ApiResponse<CreateRecordResponse> apiResponse = ApiResponse.<CreateRecordResponse>builder()
                 .success(true)
-                .message(createdRecord.getCode() + ": " + createdRecord.getLastName() + " Created")
+                .message(createdRecord.getLastName() + " Created")
                 .data(createResponse)
                 .build();
 
@@ -93,7 +94,7 @@ public class RecordController {
 
         ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
                 .success(true)
-                .message("Record: " + deletedRecord.getCode() + " deleted successfully.")
+                .message("Record: " + deletedRecord.getLastName() + " deleted successfully.")
                 .build();
 
         return ResponseEntity.ok(apiResponse);
@@ -102,14 +103,14 @@ public class RecordController {
     @GetMapping("/lookup")
     public ResponseEntity<ApiResponse<LookupResponse>> lookupRecord(
             @RequestParam("lastName") String lastName,
-            @RequestParam(value = "code", required = false) String code
+            @RequestParam(value = "firstName", required = false) String firstName
     ) {
-        Record record = recordService.lookupRecord(lastName, code);
+        Record record = recordService.lookupRecord(lastName, firstName);
 
         ApiResponse<LookupResponse> apiResponse = ApiResponse.<LookupResponse>builder()
                 .success(true)
                 .message("Record found.")
-                .data(new LookupResponse(record.getPoints(), record.getCode()))
+                .data(new LookupResponse(record.getPoints(), record.getLastName()))
                 .build();
 
         return ResponseEntity.ok(apiResponse);

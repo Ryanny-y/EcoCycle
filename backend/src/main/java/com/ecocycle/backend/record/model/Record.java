@@ -27,9 +27,6 @@ public class Record {
     @Column(nullable = false, unique = true)
     private UUID id;
 
-    @Column(length = 10, nullable = false, unique = true, updatable = false)
-    private String code;
-
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -80,11 +77,11 @@ public class Record {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Record that = (Record) o;
-        return Objects.equals(id, that.id) && Objects.equals(code, that.code) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(middleName, that.middleName) && Objects.equals(suffix, that.suffix) && Objects.equals(birthDate, that.birthDate) && gender == that.gender && Objects.equals(isResident, that.isResident) && Objects.equals(address, that.address) && Objects.equals(points, that.points) && Objects.equals(contactNumber, that.contactNumber) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
+        return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(middleName, that.middleName) && Objects.equals(suffix, that.suffix) && Objects.equals(birthDate, that.birthDate) && gender == that.gender && Objects.equals(isResident, that.isResident) && Objects.equals(address, that.address) && Objects.equals(points, that.points) && Objects.equals(contactNumber, that.contactNumber) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, firstName, lastName, middleName, suffix, birthDate, gender, isResident, address, points, contactNumber, createdAt, updatedAt);
+        return Objects.hash(id, firstName, lastName, middleName, suffix, birthDate, gender, isResident, address, points, contactNumber, createdAt, updatedAt);
     }
 }

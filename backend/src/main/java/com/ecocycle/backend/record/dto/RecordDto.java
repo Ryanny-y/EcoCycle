@@ -18,7 +18,6 @@ import java.util.UUID;
 public class RecordDto {
 
     private UUID id;
-    private String code;
     private String firstName;
     private String middleName;
     private String lastName;

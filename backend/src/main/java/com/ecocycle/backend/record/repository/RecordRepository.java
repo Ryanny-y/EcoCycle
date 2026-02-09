@@ -33,10 +33,7 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
             Pageable pageable
     );
 
-    @Query(value = "SELECT nextval('resident_code_seq')", nativeQuery = true)
-    long nextCodeSequence();
-
-    Optional<Record> findByLastNameAndCode(String lastName, String code);
+    Optional<Record> findByLastNameAndFirstName(String lastName, String firstName);
 
     List<Record> findByLastName(String lastName);
 }

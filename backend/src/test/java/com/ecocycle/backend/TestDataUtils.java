@@ -9,7 +9,6 @@ public class TestDataUtils {
 
     public static Record createRecordA() {
         return Record.builder()
-                .code("BT-0001")
                 .firstName("Juan")
                 .middleName("Santos")
                 .lastName("Dela Cruz")
@@ -24,7 +23,6 @@ public class TestDataUtils {
 
     public static Record createRecordB() {
         return Record.builder()
-                .code("BT-0002")
                 .firstName("Maria")
                 .middleName("Lopez")
                 .lastName("Reyes")
@@ -39,7 +37,6 @@ public class TestDataUtils {
 
     public static Record createRecordC() {
         return Record.builder()
-                .code("BT-0003")
                 .firstName("Carlos")
                 .middleName("Ramos")
                 .lastName("Mendoza")
@@ -54,7 +51,6 @@ public class TestDataUtils {
 
     public static Record createRecordD() {
         return Record.builder()
-                .code("BT-0004")
                 .firstName("Maria")
                 .middleName("Santos")
                 .lastName("Mendoza")

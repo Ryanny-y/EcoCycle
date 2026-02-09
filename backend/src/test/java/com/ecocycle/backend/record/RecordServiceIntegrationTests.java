@@ -55,7 +55,6 @@ public class RecordServiceIntegrationTests {
 
         Record fetched = underTest.getRecordById(created.getId());
 
-        assertThat(fetched.getCode()).isEqualTo("BT-0001");
         assertThat(fetched.getFirstName()).isEqualTo("Juan");
     }
 
@@ -136,9 +135,9 @@ public class RecordServiceIntegrationTests {
     }
 
     @Test
-    void lookupRecord_withLastNameAndCode_shouldReturnMatchingRecord() {
+    void lookupRecord_withLastNameAndFirstName_shouldReturnMatchingRecord() {
         Record created = underTest.createRecord(createRecordRequest());
-        Record result = underTest.lookupRecord("Dela Cruz", created.getCode());
+        Record result = underTest.lookupRecord("Dela Cruz", created.getFirstName());
 
         assertThat(result.getId()).isEqualTo(created.getId());
         assertThat(result.getFirstName()).isEqualTo(created.getFirstName());

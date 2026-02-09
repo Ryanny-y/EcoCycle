@@ -13,5 +13,5 @@ import java.math.BigDecimal;
 @Builder
 public class LookupResponse {
     private BigDecimal points;
-    private String id;
+    private String lastName;
 }

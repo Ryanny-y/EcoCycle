@@ -41,9 +41,7 @@ public class RecordServiceImpl implements RecordService {
             throw new RecordAlreadyExistsException("Record with the full name already exists");
         }
 
-        String generatedCode = this.generateCode();
         Record newRecord = Record.builder()
-                .code(generatedCode)
                 .firstName(request.getFirstName())
                 .middleName(request.getMiddleName())
                 .lastName(request.getLastName())
@@ -91,10 +89,10 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public Record lookupRecord(String lastName, String code) {
-        if(code != null) {
-            return recordRepository.findByLastNameAndCode(lastName, code)
-                    .orElseThrow(() -> new RecordNotFoundException("Record not found with last name: " + lastName + " and ID: " + code));
+    public Record lookupRecord(String lastName, String firstName) {
+        if(firstName != null) {
+            return recordRepository.findByLastNameAndFirstName(lastName, firstName)
+                    .orElseThrow(() -> new RecordNotFoundException("Record not found with name: " + lastName + " " + firstName));
         }
 
         List<Record> foundRecords = recordRepository.findByLastName(lastName);
@@ -111,10 +109,5 @@ public class RecordServiceImpl implements RecordService {
 
     private boolean isRecordExistsByName(String firstName, String middleName, String lastName) {
         return recordRepository.existsByFirstNameAndMiddleNameAndLastName(firstName, middleName, lastName);
-    }
-
-    private String generateCode() {
-        long next = recordRepository.nextCodeSequence();
-        return "BT-" + String.format("%04d", next);
     }
 }
