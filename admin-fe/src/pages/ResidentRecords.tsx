@@ -25,7 +25,7 @@ const ResidentRecords = () => {
   return (
     <div id="records" className="space-y-8">
       <header>
-        <h1 className="text-2xl font-semibold">Residents</h1>
+        <h1 className="text-2xl font-bold">Residents</h1>
         <p className="text-muted-foreground">
           Manage and view residents entries.
         </p>

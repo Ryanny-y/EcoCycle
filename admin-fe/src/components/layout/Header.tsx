@@ -1,8 +1,59 @@
+import { Clock, LogOut } from "lucide-react";
+import { SidebarTrigger } from "../ui/sidebar";
+import { useEffect, useState } from "react";
 
 const Header = () => {
-  return (
-    <div>Header</div>
-  )
-}
+  const [time, setTime] = useState(new Date())
 
-export default Header
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  const formattedTime = time.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  })
+
+  const formattedDate = time.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  }).toUpperCase()
+
+  return (
+    <header className="bg-white p-3 top-0 right-0 left-0 flex items-center justify-between border-b">
+      <div className="flex items-center gap-5">
+        <SidebarTrigger />
+        <div className="px-5 py-2 rounded-xl text-white bg-primary flex items-center gap-3">
+          <Clock size={20}/>
+          <div>
+            <p className="font-semibold leading-tight text-sm">{formattedTime}</p>
+            <p className="text-[11px]">{formattedDate}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-5 pr-5">
+        <div className="text-right">
+          <p className="font-bold text-sm">Username</p>
+          <p className="text-xs uppercase font-semibold text-muted-foreground">
+            Admin Staff
+          </p>
+        </div>
+
+        <button>
+          <LogOut className="text-muted-foreground hover:text-destructive duration-200" />
+        </button>
+      </div>
+    </header>
+  );
+};
+
+export default Header;

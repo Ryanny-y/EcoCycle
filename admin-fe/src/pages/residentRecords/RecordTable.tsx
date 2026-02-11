@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import type { RecordInterface } from "@/types/Records";
 import dayjs from "dayjs";
-import { ArrowDownUp, Edit, Eye, MoreVertical, Trash2 } from "lucide-react";
+import { ArrowDownUp, Edit, MoreVertical, Trash2 } from "lucide-react";
 
 interface RecordTableProps {
   records: RecordInterface[] | undefined;
@@ -33,19 +33,19 @@ const RecordTable = ({ records }: RecordTableProps) => {
 
   return (
     <>
-      <div className="custom-scroll overflow-x-auto">
-        <Table id="users_table">
-          <TableHeader>
-            <TableRow>
-              <TableHead className="flex items-center gap-2">
-                Name <ArrowDownUp size={16} />
+      <div className="custom-scroll overflow-x-auto rounded-xl">
+        <Table id="users_table" className="rounded-4xl">
+          <TableHeader className="bg-primary rounded-xl">
+            <TableRow className="hover:bg-primary">
+              <TableHead className="flex items-center text-white gap-2 py-6">
+                Name <ArrowDownUp color="#fff" size={16} />
               </TableHead>
-              <TableHead>Gender</TableHead>
-              <TableHead>Age</TableHead>
-              <TableHead>Points</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>Created At</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-white">Gender</TableHead>
+              <TableHead className="text-white">Age</TableHead>
+              <TableHead className="text-white">Points</TableHead>
+              <TableHead className="text-white">Address</TableHead>
+              <TableHead className="text-white">Created At</TableHead>
+              <TableHead className="text-white text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -56,8 +56,8 @@ const RecordTable = ({ records }: RecordTableProps) => {
               const age = dayjs().diff(dayjs(record.birthDate), "year");
 
               return (
-                <TableRow key={record.id} className="cursor-pointer">
-                  <TableCell>{fullName}</TableCell>
+                <TableRow key={record.id} className="cursor-pointer hover:bg-emerald-50/50">
+                  <TableCell className="font-semibold">{fullName}</TableCell>
                   <TableCell>{record.gender}</TableCell>
                   <TableCell>{age}</TableCell>
                   <TableCell>{record.points}</TableCell>
@@ -75,15 +75,14 @@ const RecordTable = ({ records }: RecordTableProps) => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
+                        {/* <DropdownMenuItem
                           className="rounded-full"
-                          // onClick={() => setDateSpotDetails(dateSpot)}
                         >
                           <Eye className="mr-0.5 h-4 w-4" />
                           View Details
-                        </DropdownMenuItem>
+                        </DropdownMenuItem> */}
                         <DropdownMenuItem
-                          className="rounded-full"
+                          className="rounded-full "
                           // onClick={() => setDateSpotToEdit(dateSpot)}
                         >
                           <Edit className="mr-0.5 h-4 w-4" />
@@ -91,11 +90,11 @@ const RecordTable = ({ records }: RecordTableProps) => {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                          className="text-destructive rounded-full"
+                          className="text-destructive rounded-full group hover:text-destructive!"
                           // onClick={() => handleDeleteDateSpot(dateSpot.id)}
                         >
-                          <Trash2 className="mr-0.5 h-4 w-4" />
-                          Delete Spot
+                          <Trash2 className="mr-0.5 h-4 w-4 group-hover:text-destructive" />
+                          Delete Record
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

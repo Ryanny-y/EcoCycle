@@ -88,27 +88,13 @@ export function AppSidebar() {
                     to={item.url}
                     end={item.url === "/"}
                     className={({ isActive }) =>
-                      `${isActive ? "bg-emerald-50" : "hover:bg-emerald-50/30"} group flex items-center gap-2 px-2 rounded-xl `
+                      `${isActive ? "bg-emerald-50 text-emerald-700" : "hover:bg-emerald-50/30 hover:text-emerald-700"} group flex items-center gap-2 px-2 rounded-xl group duration-200`
                     }
                   >
-                    {({ isActive }) => (
-                      <>
-                        <item.icon
-                          strokeWidth={2.1}
-                          size={22}
-                          color={isActive ? "#007a55" : "#4a5565"}
-                        />
-                        <span
-                          className={`font-semibold text-[14px] w-full py-2.5 ${
-                            isActive
-                              ? "text-emerald-700"
-                              : "text-gray-600 hover:text-emerald-700"
-                          }`}
-                        >
-                          {item.title}
-                        </span>
-                      </>
-                    )}
+                    <item.icon strokeWidth={2.1} size={22} />
+                    <span className="font-semibold text-[14px] w-full py-2.5">
+                      {item.title}
+                    </span>
                   </NavLink>
                 </SidebarMenuItem>
               ))}
