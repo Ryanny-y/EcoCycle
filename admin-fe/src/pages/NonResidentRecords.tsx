@@ -20,7 +20,7 @@ export const fakeRecords: RecordInterface[] = [
     suffix: "Jr.",
     birthDate: "1990-05-14",
     gender: "MALE",
-    isResident: true,
+    isResident: false,
     address: "123 Main Street, Springfield",
     points: 120,
     contactNumber: "+1-555-123-4567",
@@ -33,7 +33,7 @@ export const fakeRecords: RecordInterface[] = [
     lastName: "Santos",
     birthDate: "1985-11-22",
     gender: "FEMALE",
-    isResident: true,
+    isResident: false,
     address: "456 Elm Street, Riverside",
     points: 250,
     contactNumber: "+1-555-987-6543",
@@ -46,7 +46,7 @@ export const fakeRecords: RecordInterface[] = [
     lastName: "Taylor",
     birthDate: "1995-03-08",
     gender: "LGBTQIA_PLUS",
-    isResident: true,
+    isResident: false,
     points: 75,
     contactNumber: "+1-555-222-3344",
     createdAt: "2025-01-15T14:45:00Z",
@@ -58,7 +58,7 @@ export const fakeRecords: RecordInterface[] = [
     lastName: "Patel",
     birthDate: "1992-07-19",
     gender: "FEMALE",
-    isResident: true,
+    isResident: false,
     address: "789 Oak Avenue, Greenfield",
     points: 310,
     contactNumber: "+1-555-444-7788",
@@ -71,7 +71,7 @@ export const fakeRecords: RecordInterface[] = [
     lastName: "Chen",
     birthDate: "1988-12-02",
     gender: "PREFER_NOT_TO_SAY",
-    isResident: true,
+    isResident: false,
     points: 180,
     contactNumber: "+1-555-666-9900",
     createdAt: "2025-01-20T16:05:00Z",
@@ -79,7 +79,7 @@ export const fakeRecords: RecordInterface[] = [
 ];
 
 
-const ResidentRecords = () => {
+const NonResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchParams] = useSearchParams();
@@ -87,7 +87,7 @@ const ResidentRecords = () => {
 
   const { data, loading, error, refetchData } = useFetchData<
     PaginatedResponse<RecordInterface>
-  >(`records?page=${page}&lastName=${searchQuery}&isResident=${true}`);
+  >(`records?page=${page}&lastName=${searchQuery}&isResident=${false}`);
 
   // Modals
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
@@ -111,7 +111,7 @@ const ResidentRecords = () => {
   return (
     <div id="records" className="space-y-8">
       <header>
-        <h1 className="text-2xl font-bold">Resident Records</h1>
+        <h1 className="text-2xl font-bold">Non-Resident Records</h1>
         <p className="text-muted-foreground">
           Manage and view residents entries.
         </p>
@@ -144,7 +144,7 @@ const ResidentRecords = () => {
       {/* Modals */}
       {isAddRecordOpen && (
         <AddRecordModal
-          isResident={true}
+          isResident={false}
           isAddRecordOpen={isAddRecordOpen}
           setIsAddRecordOpen={setIsAddRecordOpen}
           refetchData={refetchData}
@@ -174,4 +174,4 @@ const ResidentRecords = () => {
   );
 };
 
-export default ResidentRecords;
+export default NonResidentRecords;

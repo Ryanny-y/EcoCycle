@@ -32,7 +32,7 @@ const RecordHeader = ({ records, setSearchQuery, setIsAddRecordOpen }: RecordHea
     <>
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2 flex-1">
-          <CardTitle className="text-lg">Residents</CardTitle>
+          <CardTitle className="text-lg">Non-Residents</CardTitle>
           <Badge variant="secondary">
             {records?.length ? records.length : 0} Total
           </Badge>

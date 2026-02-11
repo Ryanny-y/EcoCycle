@@ -18,12 +18,13 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
-import { toast } from 'sonner'
+import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
 import type { Gender } from "@/types/Records";
 
 type AddRecordModalProps = {
+  isResident: boolean;
   isAddRecordOpen: boolean;
   setIsAddRecordOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;
@@ -42,24 +43,23 @@ type FormData = {
   address: string;
 };
 
-const initialFormData: FormData = {
-  firstName: "",
-  lastName: "",
-  middleName: "",
-  suffix: "",
-  gender: "MALE",
-  birthDate: "",
-  contactNumber: "",
-  isResident: true,
-  address: "",
-};
-
 const AddRecordModal = ({
+  isResident,
   isAddRecordOpen,
   refetchData,
   setIsAddRecordOpen,
 }: AddRecordModalProps) => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<FormData>({
+    firstName: "",
+    lastName: "",
+    middleName: "",
+    suffix: "",
+    gender: "MALE",
+    birthDate: "",
+    contactNumber: "",
+    isResident,
+    address: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { execute } = useMutation();
 
@@ -76,7 +76,17 @@ const AddRecordModal = ({
 
   const onClose = () => {
     setIsAddRecordOpen(false);
-    setFormData(initialFormData);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      middleName: "",
+      suffix: "",
+      gender: "MALE",
+      birthDate: "",
+      contactNumber: "",
+      isResident,
+      address: "",
+    });
   };
 
   const validateForm = () => {
@@ -88,13 +98,13 @@ const AddRecordModal = ({
 
     return null;
   };
-  
+
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const error = validateForm();
     if (error) {
-      toast.error(error)
+      toast.error(error);
       return;
     }
 
@@ -103,10 +113,12 @@ const AddRecordModal = ({
     try {
       const response: ApiResponse<any> = await execute("records", {
         method: "POST",
-        body: JSON.stringify(formData)
-      })
+        body: JSON.stringify(formData),
+      });
 
-      toast.success(`${response.data.lastName}, ${response.data.firstName} Registered.`);
+      toast.success(
+        `${response.data.lastName}, ${response.data.firstName} Registered.`,
+      );
       await refetchData();
       onClose();
     } catch (error) {
@@ -120,7 +132,7 @@ const AddRecordModal = ({
     <Dialog open={isAddRecordOpen} onOpenChange={setIsAddRecordOpen}>
       <DialogContent>
         <DialogHeader className="flex items-start">
-          <DialogTitle>Add Resident</DialogTitle>
+          <DialogTitle>Add {!isResident && "Non-"}Resident</DialogTitle>
           <DialogDescription>
             Fill in the details to create a edit record
           </DialogDescription>

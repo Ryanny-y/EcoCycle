@@ -7,13 +7,27 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import useAuth from "@/contexts/AuthContext";
-import { LayoutDashboard, LogOut, Recycle, UserPlus, Users } from "lucide-react";
-import { NavLink } from "react-router";
+import {
+  LayoutDashboard,
+  LogOut,
+  Recycle,
+  UserPlus,
+  Users,
+} from "lucide-react";
+import { useEffect } from "react";
+import { NavLink, useLocation } from "react-router";
 
 export function AppSidebar() {
   const { logout } = useAuth();
+  const location = useLocation();
+  const { setOpenMobile } = useSidebar();
+
+  useEffect(() => {
+    setOpenMobile(false);
+  }, [location.pathname])
 
   const navGroups = [
     {
@@ -105,12 +119,19 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      
+
       <SidebarFooter className="p-3">
         <SidebarMenu>
           <SidebarMenuItem>
-            <button onClick={logout} className="flex items-center gap-2 p-3 sm:hidden text-sm font-medium">
-              <LogOut size={16} className="text-muted-foreground hover:text-destructive duration-200" /> Logout
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 p-3 sm:hidden text-sm font-medium"
+            >
+              <LogOut
+                size={16}
+                className="text-muted-foreground hover:text-destructive duration-200"
+              />{" "}
+              Logout
             </button>
           </SidebarMenuItem>
         </SidebarMenu>

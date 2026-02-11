@@ -9,6 +9,7 @@ import Dashboard from "./Dashboard.tsx";
 import DashboardHome from "./pages/DashboardHome.tsx";
 import ResidentRecords from "./pages/ResidentRecords.tsx";
 import { Toaster } from "sonner"
+import NonResidentRecords from "./pages/NonResidentRecords.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -31,6 +32,10 @@ createRoot(document.getElementById("root")!).render(
               <Route
                 path="/records/residents"
                 element={<ResidentRecords />}
+              ></Route>
+              <Route
+                path="/records/non-residents"
+                element={<NonResidentRecords />}
               ></Route>
             </Route>
 

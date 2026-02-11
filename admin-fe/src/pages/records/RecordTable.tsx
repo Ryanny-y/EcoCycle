@@ -38,7 +38,7 @@ const RecordTable = ({
   if (loading) return <TableSkeleton />;
 
   if (!records?.length) {
-    return <p>No Records</p>;
+    return <p>No Records To Display</p>;
   }
 
   return (
