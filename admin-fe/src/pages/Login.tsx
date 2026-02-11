@@ -6,26 +6,29 @@ import { Input } from "@/components/ui/input";
 import useAuth from "@/contexts/AuthContext";
 import { useState, type SubmitEvent } from "react";
 import { useLocation, useNavigate } from "react-router";
+import { Spinner } from "@/components/ui/spinner";
 
 const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
   const { login } = useAuth();
+  const [loggingIn, setLogginIn] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
   const navigate = useNavigate();
   const location = useLocation();
-  
 
   const handleLogin = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if(loggingIn) return;
 
     if (!formData.username || !formData.password) {
       alert("username and Password are required!");
       return;
     }
-
     try {
+      setLogginIn(true);
       const response: boolean = await login(
         formData.username,
         formData.password,
@@ -36,6 +39,8 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
       }
     } catch (error) {
       alert(error);
+    } finally {
+      setLogginIn(false);
     }
   };
 
@@ -96,8 +101,12 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
                     />
                   </Field>
                   <Field>
-                    <Button className="py-6" type="submit">
-                      Login
+                    <Button variant={"default"} className="py-6" type="submit">
+                      {loggingIn ? (
+                        <span className="text-background flex items-center gap-2"><Spinner color="#fff"/> Loading</span>
+                      ) : (
+                        <span className="text-background ">Login</span>
+                      )}
                     </Button>
                   </Field>
                 </FieldGroup>
