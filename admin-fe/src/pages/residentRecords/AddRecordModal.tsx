@@ -106,7 +106,7 @@ const AddRecordModal = ({
         body: JSON.stringify(formData)
       })
 
-      toast.success(response.message);
+      toast.success(`${response.data.lastName}, ${response.data.firstName} Registered.`);
       await refetchData();
       onClose();
     } catch (error) {
@@ -283,7 +283,7 @@ const AddRecordModal = ({
               disabled={isSubmitting}
             >
               <Save color="#fff" className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Editing..." : "Edit Record"}
+              {isSubmitting ? "Register..." : "Register Resident"}
             </Button>
           </div>
         </form>

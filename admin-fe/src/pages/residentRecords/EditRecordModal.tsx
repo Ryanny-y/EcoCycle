@@ -53,7 +53,7 @@ const EditRecordModal = ({
 }: EditRecordModalProps) => {
   if (!recordToEdit) return;
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { execute } = useMutation();
 
   const [formData, setFormData] = useState<FormData>({
@@ -103,7 +103,7 @@ const EditRecordModal = ({
       return;
     }
 
-    setIsSubmitting(true);
+    setIsUpdating(true);
 
     try {
       const response: ApiResponse<any> = await execute(`records/${recordToEdit.id}`, {
@@ -117,7 +117,7 @@ const EditRecordModal = ({
     } catch (error: any) {
       toast.error(error.message);
     } finally {
-      setIsSubmitting(false);
+      setIsUpdating(false);
     }
   };
 
@@ -285,10 +285,10 @@ const EditRecordModal = ({
               size={"lg"}
               type="submit"
               className="flex-1"
-              disabled={isSubmitting}
+              disabled={isUpdating}
             >
               <Save color="#fff" className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Editing..." : "Edit Resident"}
+              {isUpdating ? "Editing..." : "Edit Resident"}
             </Button>
           </div>
         </form>

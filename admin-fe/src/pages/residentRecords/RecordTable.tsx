@@ -18,19 +18,24 @@ import {
 import type { RecordInterface } from "@/types/Records";
 import dayjs from "dayjs";
 import { ArrowDownUp, Edit, MoreVertical, Trash2 } from "lucide-react";
-import type { Dispatch, SetStateAction } from "react";
 
 interface RecordTableProps {
   records: RecordInterface[] | undefined;
   loading: boolean;
   error: string | null;
   openEditRecord: (record: RecordInterface) => void;
+  openDeleteRecord: (record: RecordInterface) => void;
 }
 
-const RecordTable = ({ records, loading, error, openEditRecord }: RecordTableProps) => {
-
-  if(!records?.length) {
-    return <p>No Records</p>
+const RecordTable = ({
+  records,
+  loading,
+  error,
+  openEditRecord,
+  openDeleteRecord,
+}: RecordTableProps) => {
+  if (!records?.length) {
+    return <p>No Records</p>;
   }
 
   return (
@@ -58,7 +63,10 @@ const RecordTable = ({ records, loading, error, openEditRecord }: RecordTablePro
               const age = dayjs().diff(dayjs(record.birthDate), "year");
 
               return (
-                <TableRow key={record.id} className="cursor-pointer hover:bg-emerald-50/50">
+                <TableRow
+                  key={record.id}
+                  className="cursor-pointer hover:bg-emerald-50/50"
+                >
                   <TableCell className="font-semibold">{fullName}</TableCell>
                   <TableCell>{record.gender}</TableCell>
                   <TableCell>{age}</TableCell>
@@ -93,7 +101,7 @@ const RecordTable = ({ records, loading, error, openEditRecord }: RecordTablePro
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           className="text-destructive rounded-full group hover:text-destructive!"
-                          // onClick={() => handleDeleteDateSpot(dateSpot.id)}
+                          onClick={() => openDeleteRecord(record)}
                         >
                           <Trash2 className="mr-0.5 h-4 w-4 group-hover:text-destructive" />
                           Delete Record

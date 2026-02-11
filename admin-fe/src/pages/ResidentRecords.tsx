@@ -9,6 +9,7 @@ import RecordTable from "./residentRecords/RecordTable";
 import RecordHeader from "./residentRecords/RecordHeader";
 import AddRecordModal from "./residentRecords/AddRecordModal";
 import EditRecordModal from "./residentRecords/EditRecordModal";
+import DeleteRecordModal from "./residentRecords/DeleteRecordModal";
 
 const ResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
@@ -25,16 +26,19 @@ const ResidentRecords = () => {
   const [isEditRecordOpen, setIsEditRecordOpen] = useState(false);
   const [isDeleteRecordOpen, setIsDeleteRecordOpen] = useState(false);
 
-  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(
-    null,
-  );
-
+  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(null);
+  const [recordToDelete, setRecordToDelete] = useState<RecordInterface | null>(null);
 
   // onOpenEdit
   const openEditRecord = (record: RecordInterface) => {
     setIsEditRecordOpen(true);
     setRecordToEdit(record);
-  }
+  };
+
+  const openDeleteRecord = (record: RecordInterface) => {
+    setIsDeleteRecordOpen(true);
+    setRecordToDelete(record);
+  };
 
   return (
     <div id="records" className="space-y-8">
@@ -62,6 +66,7 @@ const ResidentRecords = () => {
             loading={loading}
             error={error}
             openEditRecord={openEditRecord}
+            openDeleteRecord={openDeleteRecord}
           />
         </CardContent>
 
@@ -77,12 +82,22 @@ const ResidentRecords = () => {
         />
       )}
 
-      {recordToEdit && (
+      {isEditRecordOpen && (
         <EditRecordModal
           recordToEdit={recordToEdit}
           setRecordToEdit={setRecordToEdit}
           isEditRecordOpen={isEditRecordOpen}
           setIsEditRecordOpen={setIsEditRecordOpen}
+          refetchData={refetchData}
+        />
+      )}
+
+      {isDeleteRecordOpen && (
+        <DeleteRecordModal
+          recordToDelete={recordToDelete}
+          setRecordToDelete={setRecordToDelete}
+          isDeleteRecordOpen={isDeleteRecordOpen}
+          setIsDeleteRecordOpen={setIsDeleteRecordOpen}
           refetchData={refetchData}
         />
       )}
