@@ -18,14 +18,16 @@ import {
 import type { RecordInterface } from "@/types/Records";
 import dayjs from "dayjs";
 import { ArrowDownUp, Edit, MoreVertical, Trash2 } from "lucide-react";
+import type { Dispatch, SetStateAction } from "react";
 
 interface RecordTableProps {
   records: RecordInterface[] | undefined;
   loading: boolean;
   error: string | null;
+  openEditRecord: (record: RecordInterface) => void;
 }
 
-const RecordTable = ({ records }: RecordTableProps) => {
+const RecordTable = ({ records, loading, error, openEditRecord }: RecordTableProps) => {
 
   if(!records?.length) {
     return <p>No Records</p>
@@ -83,7 +85,7 @@ const RecordTable = ({ records }: RecordTableProps) => {
                         </DropdownMenuItem> */}
                         <DropdownMenuItem
                           className="rounded-full "
-                          // onClick={() => setDateSpotToEdit(dateSpot)}
+                          onClick={() => openEditRecord(record)}
                         >
                           <Edit className="mr-0.5 h-4 w-4" />
                           Edit Record

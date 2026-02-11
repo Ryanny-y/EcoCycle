@@ -1,3 +1,5 @@
+export type Gender = 'MALE' | 'FEMALE' | 'LGBTQIA_PLUS' | 'PREFER_NOT_TO_SAY'; 
+
 export interface RecordInterface {
   id: string;
   firstName: string;
@@ -5,10 +7,11 @@ export interface RecordInterface {
   lastName: string;
   suffix?: string;
   birthDate: string;
-  gender: 'MALE' | 'FEMALE' | 'LGBTQIA_PLUS' | 'PREFER_NOT_TO_SAY'; 
+  gender: Gender;
   isResident: boolean;
   address?: string; 
   points: number;
   contactNumber: string;
   createdAt: string;
 }
+

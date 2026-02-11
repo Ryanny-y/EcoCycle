@@ -18,50 +18,60 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
-import { toast } from 'sonner'
+import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender } from "@/types/Records";
-
-type AddRecordModalProps = {
-  isAddRecordOpen: boolean;
-  setIsAddRecordOpen: (open: boolean) => void;
-  refetchData: () => Promise<void>;
-};
+import type { Gender, RecordInterface } from "@/types/Records";
 
 type FormData = {
   firstName: string;
   middleName: string;
   lastName: string;
-  suffix: string;
-  birthDate: string;
+  suffix?: string;
+  birthDate?: string;
   gender: Gender;
   contactNumber: string;
   isResident: boolean;
   // role: UserRole;
-  address: string;
+  address?: string;
 };
 
-const initialFormData: FormData = {
-  firstName: "",
-  lastName: "",
-  middleName: "",
-  suffix: "",
-  gender: "MALE",
-  birthDate: "",
-  contactNumber: "",
-  isResident: true,
-  address: "",
+type EditRecordModalProps = {
+  recordToEdit: RecordInterface | null;
+  setRecordToEdit: (record: RecordInterface | null) => void;
+  isEditRecordOpen: boolean;
+  setIsEditRecordOpen: (open: boolean) => void;
+  refetchData: () => Promise<void>;
 };
 
-const AddRecordModal = ({
-  isAddRecordOpen,
+const EditRecordModal = ({
+  recordToEdit,
+  setRecordToEdit,
+  isEditRecordOpen,
+  setIsEditRecordOpen,
   refetchData,
-  setIsAddRecordOpen,
-}: AddRecordModalProps) => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+}: EditRecordModalProps) => {
+  if (!recordToEdit) return;
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { execute } = useMutation();
+
+  const [formData, setFormData] = useState<FormData>({
+    firstName: recordToEdit.firstName,
+    lastName: recordToEdit.lastName,
+    middleName: recordToEdit.middleName,
+    suffix: recordToEdit.suffix,
+    gender: recordToEdit.gender,
+    birthDate: recordToEdit.birthDate,
+    contactNumber: recordToEdit.contactNumber,
+    isResident: recordToEdit.isResident,
+    address: recordToEdit.address,
+  });
+
+  const onClose = () => {
+    setIsEditRecordOpen(false);
+    setRecordToEdit(null);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -74,11 +84,6 @@ const AddRecordModal = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onClose = () => {
-    setIsAddRecordOpen(false);
-    setFormData(initialFormData);
-  };
-
   const validateForm = () => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";
@@ -88,41 +93,41 @@ const AddRecordModal = ({
 
     return null;
   };
-  
+
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const error = validateForm();
     if (error) {
-      toast.error(error)
+      toast.error(error);
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response: ApiResponse<any> = await execute("records", {
-        method: "POST",
-        body: JSON.stringify(formData)
-      })
+      const response: ApiResponse<any> = await execute(`records/${recordToEdit.id}`, {
+        method: "PUT",
+        body: JSON.stringify(formData),
+      });
 
       toast.success(response.message);
       await refetchData();
       onClose();
-    } catch (error) {
-      console.error("Error creating resident:", error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog open={isAddRecordOpen} onOpenChange={setIsAddRecordOpen}>
+    <Dialog open={isEditRecordOpen} onOpenChange={setIsEditRecordOpen}>
       <DialogContent className="sm:min-w-xl">
         <DialogHeader className="flex items-start mb-5">
           <DialogTitle>Edit Resident</DialogTitle>
           <DialogDescription>
-            Fill in the details to create a edit record
+            Fill in the details to create a new record
           </DialogDescription>
         </DialogHeader>
 
@@ -283,7 +288,7 @@ const AddRecordModal = ({
               disabled={isSubmitting}
             >
               <Save color="#fff" className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Editing..." : "Edit Record"}
+              {isSubmitting ? "Editing..." : "Edit Resident"}
             </Button>
           </div>
         </form>
@@ -292,4 +297,4 @@ const AddRecordModal = ({
   );
 };
 
-export default AddRecordModal;
+export default EditRecordModal;
