@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,9 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from 'sonner'
+import type { ApiResponse } from "@/types/api";
+import useMutation from "@/hooks/useMutation";
 
 type AddRecordModalProps = {
   isAddRecordOpen: boolean;
@@ -28,12 +30,13 @@ type AddRecordModalProps = {
 
 type FormData = {
   firstName: string;
-  lastName: string;
   middleName: string;
+  lastName: string;
   suffix: string;
-  gender: string;
-  birthdate: string;
-  contact: string;
+  birthDate: string;
+  gender: "MALE" | "FEMALE" | "OTHER";
+  contactNumber: string;
+  isResident: boolean;
   // role: UserRole;
   address: string;
 };
@@ -43,10 +46,10 @@ const initialFormData: FormData = {
   lastName: "",
   middleName: "",
   suffix: "",
-  gender: "Male",
-  birthdate: "",
-  contact: "",
-  // role: UserRole.NORMAL,
+  gender: "MALE",
+  birthDate: "",
+  contactNumber: "",
+  isResident: true,
   address: "",
 };
 
@@ -57,6 +60,7 @@ const AddRecordModal = ({
 }: AddRecordModalProps) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { execute } = useMutation();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -74,18 +78,34 @@ const AddRecordModal = ({
     setFormData(initialFormData);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const validateForm = () => {
+    if (!formData.firstName.trim()) return "First name is required";
+    if (!formData.lastName.trim()) return "Last name is required";
+    if (!formData.birthDate) return "Birthdate is required";
+    if (formData.contactNumber && formData.contactNumber.length !== 11)
+      return "Invalid contact number";
+
+    return null;
+  };
+  
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (formData.contact.length !== 11) {
-      toast.error("Invalid Contact Number");
+    const error = validateForm();
+    if (error) {
+      toast.error(error)
+      return;
     }
 
     setIsSubmitting(true);
 
     try {
-      console.log("Submitting:", formData);
+      const response: ApiResponse<any> = await execute("records", {
+        method: "POST",
+        body: JSON.stringify(formData)
+      })
 
+      toast.success(response.message);
       await refetchData();
       onClose();
     } catch (error) {
@@ -172,36 +192,36 @@ const AddRecordModal = ({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="MALE">Male</SelectItem>
+                  <SelectItem value="FEMALE">Female</SelectItem>
+                  <SelectItem value="OTHER">Other</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             {/* Birthdate */}
             <div className="space-y-2">
-              <Label htmlFor="birthdate">
+              <Label htmlFor="birthDate">
                 Birthdate <span className="text-red-500">*</span>
               </Label>
               <Input
-                id="birthdate"
-                name="birthdate"
+                id="birthDate"
+                name="birthDate"
                 type="date"
                 required
-                value={formData.birthdate}
+                value={formData.birthDate}
                 onChange={handleChange}
               />
             </div>
 
             {/* Contact */}
             <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="contact">Contact Number</Label>
+              <Label htmlFor="contactNumber">Contact Number</Label>
               <Input
-                id="contact"
-                name="contact"
+                id="contactNumber"
+                name="contactNumber"
                 type="tel"
-                value={formData.contact}
+                value={formData.contactNumber}
                 onChange={handleChange}
                 placeholder="09123456789"
               />

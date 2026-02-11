@@ -8,10 +8,17 @@ import Login from "./pages/Login.tsx";
 import Dashboard from "./Dashboard.tsx";
 import DashboardHome from "./pages/DashboardHome.tsx";
 import ResidentRecords from "./pages/ResidentRecords.tsx";
+import { Toaster } from "sonner"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
+      <Toaster
+        position="bottom-right"
+        richColors
+        // theme="system"
+      />
+
       <AuthProvider>
         <Routes>
           {/* Public route */}
@@ -19,9 +26,12 @@ createRoot(document.getElementById("root")!).render(
 
           {/* Protected routes */}
           <Route path="/" element={<Protected />}>
-            <Route element={<Dashboard />} >
+            <Route element={<Dashboard />}>
               <Route index element={<DashboardHome />}></Route>
-              <Route path="/records/residents" element={<ResidentRecords />}></Route>
+              <Route
+                path="/records/residents"
+                element={<ResidentRecords />}
+              ></Route>
             </Route>
 
             {/* Fallback: Navigate to login if path doesn't exist */}

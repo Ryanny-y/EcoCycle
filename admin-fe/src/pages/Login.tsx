@@ -7,6 +7,7 @@ import useAuth from "@/contexts/AuthContext";
 import { useState, type SubmitEvent } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
   const { login } = useAuth();
@@ -21,10 +22,10 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
   const handleLogin = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(loggingIn) return;
+    if (loggingIn) return;
 
     if (!formData.username || !formData.password) {
-      alert("username and Password are required!");
+      toast.error("username and Password are required!");
       return;
     }
     try {
@@ -34,11 +35,12 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
         formData.password,
       );
       if (response) {
+        toast.success("Login Successful.");
         const from = location.state?.from || "/";
         navigate(from);
       }
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setLogginIn(false);
     }
@@ -63,6 +65,7 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
                     <Input
                       id="username"
                       type="username"
+                      disabled={loggingIn}
                       value={formData.username}
                       onChange={(e) =>
                         setFormData((prev) => ({
@@ -88,6 +91,7 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
                     <Input
                       id="password"
                       type="password"
+                      disabled={loggingIn}
                       value={formData.password}
                       onChange={(e) =>
                         setFormData((prev) => ({
@@ -101,9 +105,16 @@ const Login = ({ className, ...props }: React.ComponentProps<"div">) => {
                     />
                   </Field>
                   <Field>
-                    <Button variant={"default"} className="py-6" type="submit">
+                    <Button
+                      disabled={loggingIn}
+                      variant={"default"}
+                      className="py-6"
+                      type="submit"
+                    >
                       {loggingIn ? (
-                        <span className="text-background flex items-center gap-2"><Spinner color="#fff"/> Loading</span>
+                        <span className="text-background flex items-center gap-2">
+                          <Spinner color="#fff" /> Loading
+                        </span>
                       ) : (
                         <span className="text-background ">Login</span>
                       )}

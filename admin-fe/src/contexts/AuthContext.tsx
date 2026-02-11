@@ -40,17 +40,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       if (!data.data.roles.includes("ADMIN")) {
-        alert("Username or password is incorrect.");
-        return false;
+        throw new Error("Username or Password is incorrect.")
       }
       setAuthResponse(data);
       return true;
     } catch (error: any) {
-      console.log(error?.message);
-
-      alert(error?.message);
       setAuthResponse(null);
-      return false;
+      throw error;
     }
   };
 
