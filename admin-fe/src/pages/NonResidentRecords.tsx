@@ -78,7 +78,6 @@ export const fakeRecords: RecordInterface[] = [
   },
 ];
 
-
 const NonResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -89,13 +88,21 @@ const NonResidentRecords = () => {
     PaginatedResponse<RecordInterface>
   >(`records?page=${page}&lastName=${searchQuery}&isResident=${false}`);
 
+  const records = data?.content
+    ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
+    : [];
+
   // Modals
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
   const [isEditRecordOpen, setIsEditRecordOpen] = useState(false);
   const [isDeleteRecordOpen, setIsDeleteRecordOpen] = useState(false);
 
-  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(null);
-  const [recordToDelete, setRecordToDelete] = useState<RecordInterface | null>(null);
+  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(
+    null,
+  );
+  const [recordToDelete, setRecordToDelete] = useState<RecordInterface | null>(
+    null,
+  );
 
   // onOpenEdit
   const openEditRecord = (record: RecordInterface) => {

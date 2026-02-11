@@ -13,6 +13,19 @@ import DeleteRecordModal from "./records/DeleteRecordModal";
 
 export const fakeRecords: RecordInterface[] = [
   {
+    id: "1a2b3c4d-0002",
+    firstName: "Maria",
+    middleName: "Isabel",
+    lastName: "Santos",
+    birthDate: "1985-11-22",
+    gender: "FEMALE",
+    isResident: true,
+    address: "456 Elm Street, Riverside",
+    points: 250,
+    contactNumber: "+1-555-987-6543",
+    createdAt: "2025-01-12T10:15:00Z",
+  },
+  {
     id: "1a2b3c4d-0001",
     firstName: "John",
     middleName: "Michael",
@@ -25,19 +38,6 @@ export const fakeRecords: RecordInterface[] = [
     points: 120,
     contactNumber: "+1-555-123-4567",
     createdAt: "2025-01-10T08:30:00Z",
-  },
-  {
-    id: "1a2b3c4d-0002",
-    firstName: "Maria",
-    middleName: "Isabel",
-    lastName: "Santos",
-    birthDate: "1985-11-22",
-    gender: "FEMALE",
-    isResident: true,
-    address: "456 Elm Street, Riverside",
-    points: 250,
-    contactNumber: "+1-555-987-6543",
-    createdAt: "2025-01-12T10:15:00Z",
   },
   {
     id: "1a2b3c4d-0003",
@@ -78,7 +78,6 @@ export const fakeRecords: RecordInterface[] = [
   },
 ];
 
-
 const ResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -89,13 +88,22 @@ const ResidentRecords = () => {
     PaginatedResponse<RecordInterface>
   >(`records?page=${page}&lastName=${searchQuery}&isResident=${true}`);
 
+  const fRecords = fakeRecords.sort((a, b) => a.lastName.localeCompare(b.lastName));
+  const records = data?.content
+    ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
+    : [];
+
   // Modals
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
   const [isEditRecordOpen, setIsEditRecordOpen] = useState(false);
   const [isDeleteRecordOpen, setIsDeleteRecordOpen] = useState(false);
 
-  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(null);
-  const [recordToDelete, setRecordToDelete] = useState<RecordInterface | null>(null);
+  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(
+    null,
+  );
+  const [recordToDelete, setRecordToDelete] = useState<RecordInterface | null>(
+    null,
+  );
 
   // onOpenEdit
   const openEditRecord = (record: RecordInterface) => {
@@ -121,7 +129,7 @@ const ResidentRecords = () => {
         {/* Filters */}
         <CardHeader className="flex flex-col items-start justify-between xl:flex-row xl:justify-between">
           <RecordHeader
-            records={fakeRecords}
+            records={fRecords}
             setSearchQuery={setSearchQuery}
             setIsAddRecordOpen={setIsAddRecordOpen}
           />
@@ -130,7 +138,7 @@ const ResidentRecords = () => {
         {/* Tables */}
         <CardContent>
           <RecordTable
-            records={fakeRecords}
+            records={fRecords}
             loading={loading}
             error={error}
             openEditRecord={openEditRecord}

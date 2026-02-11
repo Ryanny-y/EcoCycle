@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import type { RecordInterface } from "@/types/Records";
 import dayjs from "dayjs";
-import { ArrowDownUp, Edit, MoreVertical, Trash2 } from "lucide-react";
+import { Edit, MoreVertical, Trash2 } from "lucide-react";
 
 interface RecordTableProps {
   records: RecordInterface[] | undefined;
