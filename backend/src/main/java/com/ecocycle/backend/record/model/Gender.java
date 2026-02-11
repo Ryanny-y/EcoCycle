@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum Gender {
     MALE("Male"),
     FEMALE("Female"),
+    OTHER("Other"),
     LGBTQIA_PLUS("LGBTQIA+"),
     PREFER_NOT_TO_SAY("Prefer not to say");
 

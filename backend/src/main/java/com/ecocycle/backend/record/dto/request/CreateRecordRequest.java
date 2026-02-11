@@ -17,7 +17,6 @@ public class CreateRecordRequest {
     @Size(max = 100, message = "First name is too long")
     private String firstName;
 
-    @NotBlank(message = "Middle name is required")
     @Size(max = 100, message = "Middle name is too long")
     private String middleName;
 

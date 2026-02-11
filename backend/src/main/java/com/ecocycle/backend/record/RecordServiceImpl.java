@@ -42,10 +42,10 @@ public class RecordServiceImpl implements RecordService {
         }
 
         Record newRecord = Record.builder()
-                .firstName(request.getFirstName())
-                .middleName(request.getMiddleName())
-                .lastName(request.getLastName())
-                .suffix(request.getSuffix())
+                .firstName(request.getFirstName().toUpperCase())
+                .middleName(request.getMiddleName().toUpperCase())
+                .lastName(request.getLastName().toUpperCase())
+                .suffix(request.getSuffix().toUpperCase())
                 .birthDate(request.getBirthDate())
                 .gender(request.getGender())
                 .isResident(request.getIsResident())
@@ -60,6 +60,20 @@ public class RecordServiceImpl implements RecordService {
     @Transactional
     public Record updateRecord(UUID id, UpdateRecordRequest request) {
         Record record = getRecordById(id);
+
+        boolean isNameChanged =
+                !record.getFirstName().equals(request.getFirstName()) ||
+                !record.getMiddleName().equals(request.getMiddleName()) ||
+                !record.getLastName().equals(request.getLastName());
+
+        if (isNameChanged &&
+                recordRepository.existsByFirstNameAndMiddleNameAndLastName(
+                        request.getFirstName(),
+                        request.getMiddleName(),
+                        request.getLastName())) {
+
+            throw new RecordAlreadyExistsException("Record with the full name already exists.");
+        }
 
         record.setFirstName(request.getFirstName());
         record.setMiddleName(request.getMiddleName());
