@@ -263,7 +263,7 @@ function SidebarTrigger({
   return (
     <Button
       variant="ghost"
-      className={cn("[&_svg]:h-auto! [&_svg]:w-auto!", className)}
+      className={cn("[&_svg]:h-6px! [&_svg]:w-6px!", className)}
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();

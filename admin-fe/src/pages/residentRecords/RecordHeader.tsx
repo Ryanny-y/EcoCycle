@@ -30,15 +30,21 @@ const RecordHeader = ({ records, setSearchQuery, setIsAddRecordOpen }: RecordHea
 
   return (
     <>
-      <div className="flex items-center gap-2 flex-1">
-        <CardTitle className="text-lg">Resident Records</CardTitle>
-        <Badge variant="secondary">
-          {records?.length ? records.length : 0} Total
-        </Badge>
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center gap-2 flex-1">
+          <CardTitle className="text-lg">Residents</CardTitle>
+          <Badge variant="secondary">
+            {records?.length ? records.length : 0} Total
+          </Badge>
+        </div>
+
+        <Button size="sm" className="flex md:hidden" onClick={() => setIsAddRecordOpen(true)}>
+          <Plus size={14} color="white" /> Add
+        </Button>
       </div>
 
-      <div className="flex items-center gap-5">
-        <div className="relative">
+      <div className="flex flex-col sm:flex-row gap-2 w-full xl:w-auto items-end">
+        <div className="relative w-full xl:min-w-60">
           <Search
             className="absolute top-1/2 -translate-y-1/2 left-2"
             size={16}
@@ -46,15 +52,15 @@ const RecordHeader = ({ records, setSearchQuery, setIsAddRecordOpen }: RecordHea
           <Input
             value={searchInput}
             onChange={handleChange}
-            className="w-full pl-7 sm:min-w-60"
+            className="w-full pl-7"
             placeholder="Search by name..."
           />
         </div>
-        <Button>
+        <Button className="w-full sm:w-auto">
           <Download size={14} color="white" /> Export CSV
         </Button>
-        <Button onClick={() => setIsAddRecordOpen(true)}>
-          <Plus size={14} color="white" /> Add New Resident
+        <Button className="hidden md:flex" onClick={() => setIsAddRecordOpen(true)}>
+          <Plus size={14} color="white" /> Add Resident
         </Button>
       </div>
     </>

@@ -8,10 +8,13 @@ import {
   SidebarMenu,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { LayoutDashboard, Recycle, UserPlus, Users } from "lucide-react";
+import useAuth from "@/contexts/AuthContext";
+import { LayoutDashboard, LogOut, Recycle, UserPlus, Users } from "lucide-react";
 import { NavLink } from "react-router";
 
 export function AppSidebar() {
+  const { logout } = useAuth();
+
   const navGroups = [
     {
       title: "Main",
@@ -102,7 +105,16 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarFooter />
+      
+      <SidebarFooter className="p-3">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <button onClick={logout} className="flex items-center gap-2 p-3 sm:hidden text-sm font-medium">
+              <LogOut size={16} className="text-muted-foreground hover:text-destructive duration-200" /> Logout
+            </button>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

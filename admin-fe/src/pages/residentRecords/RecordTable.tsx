@@ -1,3 +1,4 @@
+import { TableSkeleton } from "@/components/SkeletonLoadings";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -34,19 +35,19 @@ const RecordTable = ({
   openEditRecord,
   openDeleteRecord,
 }: RecordTableProps) => {
+  if (loading) return <TableSkeleton />;
+
   if (!records?.length) {
     return <p>No Records</p>;
   }
 
   return (
     <>
-      <div className="custom-scroll overflow-x-auto rounded-xl">
-        <Table id="users_table" className="rounded-4xl">
+      <div className="custom-scroll rounded-xl">
+        <Table id="users_table" className="">
           <TableHeader className="bg-primary rounded-xl">
             <TableRow className="hover:bg-primary">
-              <TableHead className="flex items-center text-white gap-2 py-6">
-                Name <ArrowDownUp color="#fff" size={16} />
-              </TableHead>
+              <TableHead className="flex items-center text-white gap-2 py-6">Name</TableHead>
               <TableHead className="text-white">Gender</TableHead>
               <TableHead className="text-white">Age</TableHead>
               <TableHead className="text-white">Points</TableHead>
@@ -71,7 +72,9 @@ const RecordTable = ({
                   <TableCell>{record.gender}</TableCell>
                   <TableCell>{age}</TableCell>
                   <TableCell>{record.points}</TableCell>
-                  <TableCell>{record.address}</TableCell>
+                  <TableCell className="truncate max-w-32">
+                    {record.address ? record.address : "No Address Provided"}
+                  </TableCell>
                   <TableCell>
                     {dayjs(record.createdAt).format("YYYY-MM-DD")}
                   </TableCell>

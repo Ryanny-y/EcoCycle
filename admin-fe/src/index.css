@@ -126,7 +126,26 @@
   }
 }
 
-/* Toast */
-[data-sonner-toast] * {
-  color: inherit;
+.custom-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.custom-scroll::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: #eee;
+  border-radius: 2px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #6e4545;
+  border-radius: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ad5b5b;
 }

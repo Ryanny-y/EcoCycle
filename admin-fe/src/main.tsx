@@ -25,8 +25,8 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/login" element={<Login />} />
 
           {/* Protected routes */}
-          <Route path="/" element={<Protected />}>
-            <Route element={<Dashboard />}>
+          {/* <Route path="/" element={<Protected />}> */}
+            <Route path="/" element={<Dashboard />}>
               <Route index element={<DashboardHome />}></Route>
               <Route
                 path="/records/residents"
@@ -36,7 +36,7 @@ createRoot(document.getElementById("root")!).render(
 
             {/* Fallback: Navigate to login if path doesn't exist */}
             {/* <Route path="*" element={<Navigate to="/login" replace/>}/> */}
-          </Route>
+          {/* </Route> */}
 
           {/* Optional fallback: Not Found Page for public */}
           {/* <Route path="*" element={<NotFound />} /> */}

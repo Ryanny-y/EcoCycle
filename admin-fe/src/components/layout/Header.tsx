@@ -1,8 +1,11 @@
 import { Clock, LogOut } from "lucide-react";
 import { SidebarTrigger } from "../ui/sidebar";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import useAuth from "@/contexts/AuthContext";
 
 const Header = () => {
+  const { logout } = useAuth();
   const [time, setTime] = useState(new Date())
 
   useEffect(() => {
@@ -31,12 +34,16 @@ const Header = () => {
     <header className="bg-white p-3 top-0 right-0 left-0 flex items-center justify-between border-b">
       <div className="flex items-center gap-5">
         <SidebarTrigger />
-        <div className="px-5 py-2 rounded-xl text-white bg-primary flex items-center gap-3">
+        <div className="hidden sm:flex items-center gap-3 px-5 py-2 rounded-xl text-white bg-primary">
           <Clock size={20}/>
           <div>
             <p className="font-semibold leading-tight text-sm">{formattedTime}</p>
             <p className="text-[11px]">{formattedDate}</p>
           </div>
+        </div>
+
+        <div className="flex gap-2 text-xs rounded-lg font-medium sm:hidden bg-primary p-3 text-white">
+          <p>{dayjs().format("dddd")}, {formattedTime}</p>
         </div>
       </div>
 
@@ -48,7 +55,7 @@ const Header = () => {
           </p>
         </div>
 
-        <button>
+        <button onClick={logout} className="hidden md:auto">
           <LogOut className="text-muted-foreground hover:text-destructive duration-200" />
         </button>
       </div>

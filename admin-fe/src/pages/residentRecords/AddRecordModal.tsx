@@ -118,9 +118,9 @@ const AddRecordModal = ({
 
   return (
     <Dialog open={isAddRecordOpen} onOpenChange={setIsAddRecordOpen}>
-      <DialogContent className="sm:min-w-xl">
-        <DialogHeader className="flex items-start mb-5">
-          <DialogTitle>Edit Resident</DialogTitle>
+      <DialogContent>
+        <DialogHeader className="flex items-start">
+          <DialogTitle>Add Resident</DialogTitle>
           <DialogDescription>
             Fill in the details to create a edit record
           </DialogDescription>
