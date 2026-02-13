@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import useAuthFetch from "./useAuthFetch";
 
-const useFetchData = <T>(url: string, options?: RequestInit ) => {
+const useFetchData = <T>(url: string | null, options?: RequestInit ) => {
   const [ data, setData ] = useState<T | null>(null); 
   const [ loading, setLoading ] = useState<boolean>(false)
   const [ error, setError ] = useState<string | null>(null)
@@ -10,7 +10,7 @@ const useFetchData = <T>(url: string, options?: RequestInit ) => {
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
-      const result = await authFetch(url, options);
+      const result = await authFetch(url!, options);
       setData(result);
       setError(null)
     } catch (err) {
@@ -25,8 +25,10 @@ const useFetchData = <T>(url: string, options?: RequestInit ) => {
   }, [url, options, authFetch]);
 
   useEffect(() => {
+    if(!url) return;
+
     fetchData();
-  }, [fetchData]);
+  }, [url, fetchData]);
 
   return { data, loading, error, refetchData: fetchData };
 }

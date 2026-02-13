@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
 import type { Gender } from "@/types/dto";
+import useFormHandlers from "@/hooks/useFormHandlers";
 
 type AddRecordModalProps = {
   isResident: boolean;
@@ -63,31 +64,7 @@ const AddRecordModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { execute } = useMutation();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const onClose = () => {
-    setIsAddRecordOpen(false);
-    setFormData({
-      firstName: "",
-      lastName: "",
-      middleName: "",
-      suffix: "",
-      gender: "MALE",
-      birthDate: "",
-      contactNumber: "",
-      isResident,
-      address: "",
-    });
-  };
+  const { handleChange, handleSelectChange } = useFormHandlers<FormData>(setFormData);
 
   const validateForm = () => {
     if (!formData.firstName.trim()) return "First name is required";
@@ -120,7 +97,7 @@ const AddRecordModal = ({
         `${response.data.lastName}, ${response.data.firstName} Registered.`,
       );
       await refetchData();
-      onClose();
+      setIsAddRecordOpen(false);
     } catch (error) {
       console.error("Error creating resident:", error);
     } finally {
@@ -134,7 +111,7 @@ const AddRecordModal = ({
         <DialogHeader className="flex items-start">
           <DialogTitle>Add {!isResident && "Non-"}Resident</DialogTitle>
           <DialogDescription>
-            Fill in the details to create a edit record
+            Fill in the details to create a record
           </DialogDescription>
         </DialogHeader>
 
@@ -199,7 +176,7 @@ const AddRecordModal = ({
               <Label>Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value) => handleSelectChange("gender", value)}
+                onValueChange={(value: Gender) => handleSelectChange("gender", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -283,7 +260,7 @@ const AddRecordModal = ({
               type="button"
               variant="outline"
               className="flex-1"
-              onClick={onClose}
+              onClick={() => setIsAddRecordOpen(false)}
             >
               Cancel
             </Button>

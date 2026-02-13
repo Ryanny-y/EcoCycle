@@ -28,7 +28,6 @@ public class CreateExchangeItemRequest {
     @NotNull(message = "Main category is required.")
     private MainCategory mainCategory;
 
-    @NotBlank(message = "Sub category is required.")
     private String subCategory;
 
     @Builder.Default

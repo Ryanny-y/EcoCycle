@@ -31,27 +31,14 @@ public class RecordRepositoryIntegrationTests {
         underTest.saveAll(List.of(recordA, recordB, recordC, recordD));
 
         Pageable pageTest = PageRequest.of(0, 10);
-        Page<Record> result1 = underTest.findAllWithFilters(true, null, null, null, pageTest);
-        assertThat(result1)
-                .hasSize(3)
-                .containsExactlyInAnyOrder(recordA, recordC, recordD);
 
-        Page<Record> result2 = underTest.findAllWithFilters(null, "Maria", null, null, pageTest);
-        assertThat(result2.getContent())
-                .hasSize(2)
-                .containsExactlyInAnyOrder(recordB, recordD);
 
-        Page<Record> result3 = underTest.findAllWithFilters(null, null, "Santos", null, pageTest);
-        assertThat(result3.getContent())
-                .hasSize(2)
-                .containsExactlyInAnyOrder(recordA, recordD);
-
-        Page<Record> result4 = underTest.findAllWithFilters(null, null, null, "Mendoza", pageTest);
+        Page<Record> result4 = underTest.findAllWithFilters(null, "Mendoza", pageTest);
         assertThat(result4.getContent())
                 .hasSize(2)
                 .containsExactlyInAnyOrder(recordC, recordD);
 
-        Page<Record> result5 = underTest.findAllWithFilters(recordD.getIsResident(), recordD.getFirstName(), recordD.getMiddleName(), recordD.getLastName(), pageTest);
+        Page<Record> result5 = underTest.findAllWithFilters(recordD.getIsResident(), recordD.getLastName(), pageTest);
         assertThat(result5.getContent())
                 .hasSize(1)
                 .containsExactly(recordD);

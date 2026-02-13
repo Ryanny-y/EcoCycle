@@ -24,14 +24,14 @@ public class RecordServiceImpl implements RecordService {
     private final RecordRepository recordRepository;
 
     @Override
-    public Page<Record> getRecords(Boolean isResident, String firstNName, String middleName, String lastName, Pageable pageable) {
+    public Page<Record> getRecords(Boolean isResident, String search, Pageable pageable) {
         Pageable fixedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 10,
                 pageable.getSort()
         );
 
-        return recordRepository.findAllWithFilters(isResident, firstNName, middleName, lastName, fixedPageable);
+        return recordRepository.findAllWithFilters(isResident, search, fixedPageable);
     }
 
     @Override

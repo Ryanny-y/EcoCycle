@@ -36,7 +36,7 @@ public class ExchangeItem {
     @Enumerated(EnumType.STRING)
     private MainCategory mainCategory;
 
-    @Column(name = "sub_category", nullable = false)
+    @Column(name = "sub_category")
     private String subCategory;
 
     @Builder.Default

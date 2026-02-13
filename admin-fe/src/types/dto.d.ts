@@ -22,3 +22,22 @@ export interface Material {
   unit: string;
 }
 
+export type RewardItemMainCategory = "AGRICULTURAL" | "NON_AGRICULTURAL";
+export type RewardItemUnit = "KG" | "PIECES" | "BUNDLES" | "SACKS" | "POTS";
+export type RewardItemType = "PRODUCT" | "FARM";
+
+export interface RewardItem {
+  id: string;
+  name: string;
+  description?: string;
+  itemType: RewardItemType;
+  mainCategory: RewardItemMainCategory
+  subCategory: string;
+  stocks: number;
+  requiredPoints: number;
+  unit?: RewardItemUnit;
+  farmOrigin?: string;
+  lastRestocked?: Date;
+  imageUrl?: string;
+  createdAt: Date;
+}

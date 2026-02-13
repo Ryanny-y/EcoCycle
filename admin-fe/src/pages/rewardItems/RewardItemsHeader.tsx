@@ -1,13 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { RewardItemMainCategory } from "@/types/dto";
 import { Plus, Search } from "lucide-react";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
-const RewardItemsHeader = () => {
+type RewardItemsHeaderProps = {
+  setIsAddRewardModalOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const RewardItemsHeader = ({
+  setIsAddRewardModalOpen,
+}: RewardItemsHeaderProps) => {
   const [searchInput, setSearchInput] = useState("");
-  const [category, setCategory] = useState<"AGRICULTURAL" | "NON-NON_AGRICULTURAL" | " ">(" ");
+  const [category, setCategory] = useState<RewardItemMainCategory | " ">(" ");
 
   return (
     <Card className="py-4">
@@ -28,7 +42,12 @@ const RewardItemsHeader = () => {
 
           {/* Category */}
           <div>
-            <Select defaultValue={category} onValueChange={(val) => setCategory(val as "AGRICULTURAL" | "NON-NON_AGRICULTURAL" | " ")}>
+            <Select
+              defaultValue={category}
+              onValueChange={(val) =>
+                setCategory(val as RewardItemMainCategory | " ")
+              }
+            >
               <SelectTrigger className="w-full h-full! min-w-48">
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
@@ -36,7 +55,9 @@ const RewardItemsHeader = () => {
                 <SelectGroup>
                   <SelectItem value=" ">All Category</SelectItem>
                   <SelectItem value="AGRICULTURAL">Agricultural</SelectItem>
-                  <SelectItem value="NON_AGRICULTURAL">Non-Agricultural</SelectItem>
+                  <SelectItem value="NON_AGRICULTURAL">
+                    Non-Agricultural
+                  </SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -44,11 +65,13 @@ const RewardItemsHeader = () => {
         </div>
 
         <div>
-          <Button><Plus /> Add New Reward</Button>
+          <Button onClick={() => setIsAddRewardModalOpen(true)}>
+            <Plus /> Add New Reward
+          </Button>
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default RewardItemsHeader
+export default RewardItemsHeader;

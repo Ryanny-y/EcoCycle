@@ -30,12 +30,10 @@ public class RecordController {
     @GetMapping
     public ResponseEntity<PageResponse<RecordDto>> getRecords(
             @RequestParam(required = false) Boolean isResident,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String middleName,
-            @RequestParam(required = false) String lastName,
+            @RequestParam(required = false) String search,
             Pageable pageable
     ) {
-        Page<Record> pageRecords = recordService.getRecords(isResident, firstName, middleName, lastName, pageable);
+        Page<Record> pageRecords = recordService.getRecords(isResident, search, pageable);
         List<RecordDto> pageContent = pageRecords.getContent().stream().map(recordMapper::toDto).toList();
 
         PageResponse<RecordDto> apiResponse = PageResponse.<RecordDto>builder()

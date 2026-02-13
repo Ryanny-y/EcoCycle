@@ -21,15 +21,20 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
     @Query("""
         SELECT r FROM Record r
         WHERE (:isResident IS NULL OR r.isResident = :isResident)
-          AND (:firstName IS NULL OR r.firstName ILIKE %:firstName%)
-          AND (:middleName IS NULL OR r.middleName ILIKE %:middleName%)
-          AND (:lastName IS NULL OR r.lastName ILIKE %:lastName%)
+          AND (:search IS NULL OR
+             LOWER(
+                 CONCAT(
+                     CONCAT(
+                         CONCAT(r.lastName, ', '),
+                         r.firstName
+                     ),
+                     r.middleName
+             )
+         ) ILIKE %:search%)
     """)
     Page<Record> findAllWithFilters(
             @Param("isResident") Boolean isResident,
-            @Param("firstName") String firstName,
-            @Param("middleName") String middleName,
-            @Param("lastName") String lastName,
+            @Param("search") String search,
             Pageable pageable
     );
 

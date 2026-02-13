@@ -43,8 +43,8 @@ public class RecordServiceIntegrationTests {
         underTest.createRecord(request);
 
         assertThatThrownBy(() -> underTest.createRecord(request))
-            .isInstanceOf(RecordAlreadyExistsException.class)
-            .hasMessage("Record with the full name already exists");
+                .isInstanceOf(RecordAlreadyExistsException.class)
+                .hasMessage("Record with the full name already exists");
     }
 
     @Test
@@ -63,8 +63,8 @@ public class RecordServiceIntegrationTests {
         UUID randomId = UUID.randomUUID();
 
         assertThatThrownBy(() -> underTest.getRecordById(randomId))
-            .isInstanceOf(RecordNotFoundException.class)
-            .hasMessage("Record not found with ID: " + randomId);
+                .isInstanceOf(RecordNotFoundException.class)
+                .hasMessage("Record not found with ID: " + randomId);
     }
 
     @Test
@@ -111,8 +111,6 @@ public class RecordServiceIntegrationTests {
         Page<Record> result = underTest.getRecords(
                 true,
                 "Maria",
-                null,
-                null,
                 PageRequest.of(0, 10)
         );
 

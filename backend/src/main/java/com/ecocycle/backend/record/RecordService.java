@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RecordService {
-    Page<Record> getRecords(Boolean isResident, String firstNName, String middleName, String lastName, Pageable pageable);
+    Page<Record> getRecords(Boolean isResident, String search, Pageable pageable);
     Record createRecord(CreateRecordRequest request);
     Record updateRecord(UUID id, UpdateRecordRequest request);
     Record getRecordById(UUID id);
