@@ -11,6 +11,7 @@ import ResidentRecords from "./pages/ResidentRecords.tsx";
 import { Toaster } from "sonner";
 import NonResidentRecords from "./pages/NonResidentRecords.tsx";
 import EarnPoints from "./pages/EarnPoints.tsx";
+import ExchangeItems from "./pages/ExchangeItems.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -33,6 +34,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/records/residents" element={<ResidentRecords />} />
             <Route path="/records/non-residents" element={<NonResidentRecords />} />
             <Route path="/rewards/earn-points" element={<EarnPoints />} />
+            <Route path="/rewards/exchange-items" element={<ExchangeItems />} />
           </Route>
 
           {/* Fallback: Navigate to login if path doesn't exist */}

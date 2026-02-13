@@ -35,7 +35,7 @@ const EarnPoints = () => {
     <div id="earn_points" className="space-y-8">
       <PageHeader
         title="Earn Points"
-        description="Manage earn points and their recyclables."
+        description="Accumulate points for recycling records"
       />
 
       <div className="flex items-center justify-between mb-8 sm:mb-10 px-2 sm:px-4 max-w-3xl">

@@ -55,7 +55,7 @@ const Header = () => {
           </p>
         </div>
 
-        <button onClick={logout} className="hidden md:auto">
+        <button onClick={logout} className="hidden md:block">
           <LogOut className="text-muted-foreground hover:text-destructive duration-200" />
         </button>
       </div>

@@ -11,8 +11,12 @@ import {
 } from "@/components/ui/sidebar";
 import useAuth from "@/contexts/AuthContext";
 import {
+  ArrowLeftRight,
+  Box,
+  Boxes,
   LayoutDashboard,
   LogOut,
+  Package,
   Recycle,
   UserPlus,
   Users,
@@ -64,9 +68,24 @@ export function AppSidebar() {
           icon: Recycle,
         },
         {
-          title: "Swap Items",
+          title: "Exchange Items",
           url: "/rewards/exchange-items",
-          icon: UserPlus,
+          icon: ArrowLeftRight,
+        },
+      ],
+    },
+    {
+      title: "Inventory Management",
+      items: [
+        {
+          title: "Rewards",
+          url: "/inventory/rewards",
+          icon: Boxes,
+        },
+        {
+          title: "Materials",
+          url: "/inventory/materials",
+          icon: Package,
         },
       ],
     },
@@ -94,7 +113,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="px-1 py-3 gap-2">
+      <SidebarContent className="px-1 py-3 gap-1">
         {navGroups.map((group) => (
           <SidebarGroup key={group.title} className="py-0">
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
@@ -105,11 +124,11 @@ export function AppSidebar() {
                     to={item.url}
                     end={item.url === "/"}
                     className={({ isActive }) =>
-                      `${isActive ? "bg-emerald-50 text-emerald-700" : "hover:bg-emerald-50/30 hover:text-emerald-700"} group flex items-center gap-2 px-2 rounded-xl group duration-200`
+                      `${isActive ? "bg-emerald-50 text-emerald-700" : "hover:bg-emerald-50/30 hover:text-emerald-700"} group flex items-center gap-3 px-2 rounded-xl group duration-200`
                     }
                   >
-                    <item.icon strokeWidth={2.1} size={22} />
-                    <span className="font-semibold text-[14px] w-full py-2.5">
+                    <item.icon strokeWidth={2.1} size={24} />
+                    <span className="font-semibold text-[14px] w-full py-2">
                       {item.title}
                     </span>
                   </NavLink>
