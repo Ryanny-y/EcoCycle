@@ -1,6 +1,6 @@
 import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { FAKERECORDS } from "@/constants";
+import useDebounce from "@/hooks/useDebounce";
 import useFetchData from "@/hooks/useFetchData";
 import { formatName } from "@/lib/utils";
 import type { PaginatedResponse } from "@/types/api";
@@ -19,18 +19,11 @@ const Step1 = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  const debouncedQuery = useDebounce(searchQuery, 500);
+
   const { data, loading, error } = useFetchData<
     PaginatedResponse<RecordInterface>
-  >(`records?lastName=${searchQuery}`);
-
-  const fakeFoundRecords: RecordInterface[] = FAKERECORDS.content.filter(
-    (record) => {
-      const fullName = `${record.lastName}, ${record.firstName} ${record.middleName ? `${record.middleName}.` : ""}`;
-      return fullName
-        .toLocaleLowerCase()
-        .includes(searchQuery.toLocaleLowerCase());
-    },
-  );
+  >(`records?search=${debouncedQuery}`);
 
   const foundRecords = data?.content
     ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
@@ -59,9 +52,9 @@ const Step1 = ({
             className="pl-10 pr-4 py-3 sm:py-5 text-base sm:text-lg font-semibold focus:ring-emerald-700!"
           />
 
-          {searchQuery && fakeFoundRecords.length > 0 && (
+          {searchQuery && foundRecords.length > 0 && (
             <div className="absolute top-12 left-0 w-full mt max-h-100 -2 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-x-auto custom-scroll divide-y divide-gray-50">
-              {fakeFoundRecords.map((record) => (
+              {foundRecords.map((record) => (
                 <button
                   key={record.id}
                   onClick={() => {

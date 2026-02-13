@@ -12,6 +12,7 @@ import { Toaster } from "sonner";
 import NonResidentRecords from "./pages/NonResidentRecords.tsx";
 import EarnPoints from "./pages/EarnPoints.tsx";
 import ExchangeItems from "./pages/ExchangeItems.tsx";
+import RewardItems from "./pages/RewardItems.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -28,19 +29,32 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/login" element={<Login />} />
 
           {/* Protected routes */}
-          {/* <Route path="/" element={<Protected />}> */}
-          <Route path="/" element={<Dashboard />}>
-            <Route index element={<DashboardHome />} />
-            <Route path="/records/residents" element={<ResidentRecords />} />
-            <Route path="/records/non-residents" element={<NonResidentRecords />} />
-            <Route path="/rewards/earn-points" element={<EarnPoints />} />
-            <Route path="/rewards/exchange-items" element={<ExchangeItems />} />
-          </Route>
+          <Route path="/" element={<Protected />}>
+            <Route element={<Dashboard />}>
+              <Route index element={<DashboardHome />} />
+              
+              {/* Records */}
+              <Route path="records">
+                <Route path="residents" element={<ResidentRecords />} />
+                <Route path="non-residents" element={<NonResidentRecords />} />
+              </Route>
+
+              {/* Rewards & Redeem */}
+              <Route path="rewards">
+                <Route path="earn-points" element={<EarnPoints />} />
+                <Route path="redeem" element={<ExchangeItems />} />
+              </Route>
+
+              {/* Inventory */}
+              <Route path="inventory">
+                <Route path="reward-items" element={<RewardItems />}/>
+              </Route>
+
+            </Route>
 
           {/* Fallback: Navigate to login if path doesn't exist */}
           {/* <Route path="*" element={<Navigate to="/login" replace/>}/> */}
-
-          {/* </Route> */}
+          </Route>
 
           {/* Optional fallback: Not Found Page for public */}
           {/* <Route path="*" element={<NotFound />} /> */}

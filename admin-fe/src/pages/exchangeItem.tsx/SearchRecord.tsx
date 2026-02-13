@@ -24,7 +24,7 @@ const SearchRecord = ({
 
   // const { data, loading, error } = useFetchData<
   //   PaginatedResponse<RecordInterface>
-  // >(`records?lastName=${debouncedSearch}`);
+  // >(`records?search=${debouncedSearch}`);
 
   const fakeFoundRecords: RecordInterface[] = FAKERECORDS.content.filter(
     (record) => {

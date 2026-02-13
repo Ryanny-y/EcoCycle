@@ -11,7 +11,7 @@ import AddRecordModal from "./records/AddRecordModal";
 import EditRecordModal from "./records/EditRecordModal";
 import DeleteRecordModal from "./records/DeleteRecordModal";
 import PageHeader from "@/components/shared/PageHeader";
-import { FAKERECORDS } from "@/constants";
+import useDebounce from "@/hooks/useDebounce";
 
 const NonResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
@@ -19,11 +19,12 @@ const NonResidentRecords = () => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || "0";
 
+  const debouncedSearch = useDebounce(searchQuery, 500);
+
   const { data, loading, error, refetchData } = useFetchData<
     PaginatedResponse<RecordInterface>
-  >(`records?page=${page}&lastName=${searchQuery}&isResident=${false}`);
+  >(`records?page=${page}&search=${debouncedSearch}&isResident=${false}`);
 
-  const fakeRecords = FAKERECORDS.content.sort((a, b) => a.lastName.localeCompare(b.lastName));
   const records = data?.content
     ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
     : [];
@@ -63,7 +64,7 @@ const NonResidentRecords = () => {
         {/* Filters */}
         <CardHeader className="flex flex-col items-start justify-between xl:flex-row xl:justify-between">
           <RecordHeader
-            records={fakeRecords}
+            records={records}
             setSearchQuery={setSearchQuery}
             setIsAddRecordOpen={setIsAddRecordOpen}
           />
@@ -72,7 +73,7 @@ const NonResidentRecords = () => {
         {/* Tables */}
         <CardContent>
           <RecordTable
-            records={fakeRecords}
+            records={records}
             loading={loading}
             error={error}
             openEditRecord={openEditRecord}

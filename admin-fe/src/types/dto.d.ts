@@ -21,3 +21,4 @@ export interface Material {
   pointsPerKg: number;
   unit: string;
 }
+

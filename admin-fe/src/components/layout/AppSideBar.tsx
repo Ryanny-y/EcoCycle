@@ -68,8 +68,8 @@ export function AppSidebar() {
           icon: Recycle,
         },
         {
-          title: "Exchange Items",
-          url: "/rewards/exchange-items",
+          title: "Redeem Rewards",
+          url: "/rewards/redeem",
           icon: ArrowLeftRight,
         },
       ],
@@ -78,8 +78,8 @@ export function AppSidebar() {
       title: "Inventory Management",
       items: [
         {
-          title: "Rewards",
-          url: "/inventory/rewards",
+          title: "Reward Items",
+          url: "/inventory/reward-items",
           icon: Boxes,
         },
         {
