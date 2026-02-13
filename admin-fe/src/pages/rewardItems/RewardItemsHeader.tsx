@@ -25,9 +25,9 @@ const RewardItemsHeader = ({
 
   return (
     <Card className="py-4">
-      <CardContent className="px-4 flex justify-between">
-        <div className="flex items-stretch gap-2">
-          <div className="relative h-10 min-w-90">
+      <CardContent className="px-4 flex flex-col gap-5 lg:flex-row flex-wrap justify-between">
+        <div className="flex items-stretch gap-2 grow">
+          <div className="relative h-10 w-full lg:min-w-90">
             <Search
               size={20}
               className="text-muted-foreground absolute top-1/2 -translate-y-1/2 left-3"

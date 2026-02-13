@@ -6,23 +6,26 @@ const useAuthFetch = () => {
   const { authResponse, refreshToken, logout } = useAuth();
 
   const authFetch = useCallback(  
-    async (url: string, options: RequestInit &  { raw?: boolean } = {}) => {
+    async <T = any>(url: string, options: RequestInit &  { raw?: boolean } = {}): Promise<T>=> {
       let token = authResponse?.data.accessToken;
+      const isFormData = options.body instanceof FormData;
 
-      const headers = {
-        ...(options.headers || {}),
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      }
-
-      if (!options.raw && !(options.body instanceof FormData)) {
-        headers["Content-Type"] = "application/json";
-      }
+      const buildHeaders = (accessToken?: string) => {
+        const headers = new Headers(options.headers || {});
+        if (accessToken) {
+          headers.set("Authorization", `Bearer ${accessToken}`);
+        }
+        // If it's not a form data, then set to application/json
+        if (!isFormData && !options.raw) {
+          headers.set("Content-Type", "application/json");
+        }
+        return headers;
+      };
 
       try {
         let response = await fetch(`${apiURL}/${url}`, {
           ...options,
-          headers,
+          headers: buildHeaders(token),
           "credentials": 'include'
         });
 
@@ -31,15 +34,9 @@ const useAuthFetch = () => {
             const newTokens = await refreshToken();
             token = newTokens?.data.accessToken;
 
-            const retryHeaders = {
-              ...(options.headers || {}),
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-            }
-
             response = await fetch(`${apiURL}/${url}`, {
               ...options,
-              headers: retryHeaders,
+              headers: buildHeaders(token),
               "credentials": "include"
             })
           } catch (refreshErr: any) {
@@ -49,8 +46,10 @@ const useAuthFetch = () => {
           }
         }
 
-        if (options.raw) return response;
-        
+        if (options.raw) {
+          return response as T;
+        }
+
         const data = await response.json();
         
         if(!response.ok) {

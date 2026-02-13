@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { MATERIALS } from "@/constants";
-import { formatName } from "@/lib/utils";
 import type { RecordInterface } from "@/types/dto";
+import { formatName } from "@/utils/formatter";
 import type { Dispatch, SetStateAction } from "react";
 
 const Step3 = ({

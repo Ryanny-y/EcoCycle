@@ -23,3 +23,9 @@ export const formatName = (
 
   return `${formattedLast}, ${formattedFirst}`;
 };
+
+export const truncateSentence = (sentence: string | undefined) => {
+  if(!sentence) return "";
+
+  return sentence.length > 80 ? `${sentence.slice(0, 83)}...` : sentence;
+}

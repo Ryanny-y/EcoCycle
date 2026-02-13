@@ -66,7 +66,7 @@ const AddRecordModal = ({
 
   const { handleChange, handleSelectChange } = useFormHandlers<FormData>(setFormData);
 
-  const validateForm = () => {
+  const validateForm = (): string | null => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";
     if (!formData.birthDate) return "Birthdate is required";

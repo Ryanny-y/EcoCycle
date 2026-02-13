@@ -2,9 +2,9 @@ import { CardContent, CardDescription, CardHeader, CardTitle } from "@/component
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
 import useFetchData from "@/hooks/useFetchData";
-import { formatName } from "@/lib/utils";
 import type { PaginatedResponse } from "@/types/api";
 import type { RecordInterface } from "@/types/dto";
+import { formatName } from "@/utils/formatter";
 import { ChevronRight, Search } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 

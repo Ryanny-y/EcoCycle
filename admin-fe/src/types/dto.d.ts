@@ -23,7 +23,7 @@ export interface Material {
 }
 
 export type RewardItemMainCategory = "AGRICULTURAL" | "NON_AGRICULTURAL";
-export type RewardItemUnit = "KG" | "PIECES" | "BUNDLES" | "SACKS" | "POTS";
+export type RewardItemUnit = "KG" | "PIECE" | "BUNDLE" | "SACK" | "POT";
 export type RewardItemType = "PRODUCT" | "FARM";
 
 export interface RewardItem {

@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { formatName } from "@/lib/utils";
 import { ChevronRight, Gift, Search, X } from "lucide-react";
 import { FAKERECORDS } from "@/constants";
 import type { RecordInterface } from "@/types/dto";
@@ -8,6 +7,7 @@ import { useState, type Dispatch, type SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import useFetchData from "@/hooks/useFetchData";
 import type { PaginatedResponse } from "@/types/api";
+import { formatName } from "@/utils/formatter";
 
 type SearchRecordProps = {
   selectedRecord: RecordInterface | null;

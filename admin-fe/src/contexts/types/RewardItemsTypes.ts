@@ -5,5 +5,6 @@ export interface RewardItemsContextType {
   data: ApiResponse<RewardItem[]> | null;
   loading: boolean;
   error: string | null;
+  refetchData: () => Promise<void>;
   setCategory: (category: RewardItemMainCategory) => void;
 }

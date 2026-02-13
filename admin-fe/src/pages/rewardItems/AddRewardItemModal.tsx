@@ -14,15 +14,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import useRewardItems from "@/contexts/RewardItemsContext";
 import useFormHandlers from "@/hooks/useFormHandlers";
+import useMutation from "@/hooks/useMutation";
 import type {
   RewardItemMainCategory,
   RewardItemType,
   RewardItemUnit,
 } from "@/types/dto";
 import { Box, Save } from "lucide-react";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useState,
+  type Dispatch,
+  type SetStateAction,
+  type SubmitEvent,
+} from "react";
+import { toast } from "sonner";
 
 type FormData = {
   name: string;
@@ -52,12 +61,15 @@ const AddRewardItemModal = ({
     itemType: "",
     mainCategory: "",
     subCategory: "",
-    stocks: 0,
+    stocks: 1,
     requiredPoints: 1,
     unit: "KG",
     farmOrigin: "",
     image: null,
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { execute } = useMutation();
+  const { refetchData } = useRewardItems();
 
   const {
     handleChange,
@@ -67,8 +79,29 @@ const AddRewardItemModal = ({
     handleDragOver,
   } = useFormHandlers<FormData>(setFormData, "image");
 
-  const handleSubmit = async () => {
+  const validateForm = (): string | null => {
+    if (!formData.name) return "Name is Required";
+    if (!formData.itemType) return "Item Type is Required";
+    if (!formData.mainCategory) return "Main Category is Required";
+    if (!formData.stocks) return "Stocks is Required";
+    if (!formData.requiredPoints) return "Required Points is Required";
+    if (!formData.unit) return "Unit is Required";
+    if (!formData.image) return "Reward image is required";
+
+    return null;
+  };
+
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if(isSubmitting) return;
     const formDataToSend = new FormData();
+
+    const error = validateForm();
+    if (error) {
+      toast.error(error);
+      return;
+    }
 
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
@@ -78,16 +111,29 @@ const AddRewardItemModal = ({
     formDataToSend.append("stocks", String(formData.stocks));
     formDataToSend.append("requiredPoints", String(formData.requiredPoints));
     formDataToSend.append("unit", formData.unit);
-
     if (formData.farmOrigin) {
       formDataToSend.append("farmOrigin", formData.farmOrigin);
     }
-
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
 
-  }
+    setIsSubmitting(true);
+    try {
+      const response: any = await execute("exchange-items", {
+        method: "POST",
+        body: formDataToSend
+      });
+
+      refetchData();
+      toast.success(response.message);
+      setIsAddRewardModalOpen(false);
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <Dialog open={isAddRewardModalOpen} onOpenChange={setIsAddRewardModalOpen}>
@@ -105,7 +151,7 @@ const AddRewardItemModal = ({
           </div>
         </DialogHeader>
 
-        <form className="space-y-5">
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2 col-span-2">
               <Label htmlFor="name">
@@ -175,15 +221,13 @@ const AddRewardItemModal = ({
             </div>
 
             <div className="space-y-2 col-span-2">
-              <Label htmlFor="subCategory">
-                Sub Category <span className="text-red-500">*</span>
-              </Label>
+              <Label htmlFor="subCategory">Sub Category</Label>
               <Textarea
                 id="subCategory"
                 name="subCategory"
                 value={formData.subCategory}
-                required
                 onChange={handleChange}
+                className="resize-none"
                 placeholder="Provide a sub category for the item"
               />
             </div>
@@ -233,10 +277,10 @@ const AddRewardItemModal = ({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value={"KG"}>Kilogram</SelectItem>
-                  <SelectItem value={"PIECES"}>Pieces</SelectItem>
-                  <SelectItem value={"BUNDLES"}>Bundles</SelectItem>
-                  <SelectItem value={"SACKS"}>Sacks</SelectItem>
-                  <SelectItem value={"POTS"}>Pots</SelectItem>
+                  <SelectItem value={"PIECE"}>Piece</SelectItem>
+                  <SelectItem value={"BUNDLE"}>Bundle</SelectItem>
+                  <SelectItem value={"SACK"}>Sack</SelectItem>
+                  <SelectItem value={"POT"}>Pot</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -247,7 +291,6 @@ const AddRewardItemModal = ({
                 id="farmOrigin"
                 name="farmOrigin"
                 value={formData.farmOrigin}
-                required
                 onChange={handleChange}
                 placeholder="Farm Origin"
               />
@@ -300,8 +343,13 @@ const AddRewardItemModal = ({
             >
               Cancel
             </button>
-            <button className="flex-1 py-4 rounded-xl text-base bg-primary/90 items-center flex justify-center text-white gap-2 font-semibold duration-300 hover:bg-primary">
-              <Save /> Save Reward
+            <button
+              disabled={isSubmitting}
+              className="flex-1 py-4 rounded-xl text-base bg-primary/90 grid place-items-center text-white font-semibold duration-300 hover:bg-primary"
+              type="submit"
+            > 
+              
+              {isSubmitting ? <Spinner /> : <span className="flex items-center justify-center gap-2"><Save /> Save Reward</span>}
             </button>
           </div>
         </form>
