@@ -16,7 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { RecordInterface } from "@/types/Records";
+import type { RecordInterface } from "@/types/dto";
 import dayjs from "dayjs";
 import { Edit, MoreVertical, Trash2 } from "lucide-react";
 
@@ -43,7 +43,7 @@ const RecordTable = ({
 
   return (
     <>
-      <div className="custom-scroll rounded-xl">
+      <div className="custom-scroll rounded-xl max-h-150">
         <Table id="users_table" className="">
           <TableHeader className="bg-primary rounded-xl">
             <TableRow className="hover:bg-primary">

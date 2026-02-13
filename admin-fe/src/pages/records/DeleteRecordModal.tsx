@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import useMutation from "@/hooks/useMutation";
 import type { ApiResponse } from "@/types/api";
-import type { RecordInterface } from "@/types/Records";
+import type { RecordInterface } from "@/types/dto";
 import { TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";

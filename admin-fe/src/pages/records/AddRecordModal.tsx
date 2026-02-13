@@ -21,7 +21,7 @@ import { Save } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender } from "@/types/Records";
+import type { Gender } from "@/types/dto";
 
 type AddRecordModalProps = {
   isResident: boolean;

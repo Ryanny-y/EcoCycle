@@ -8,8 +8,9 @@ import Login from "./pages/Login.tsx";
 import Dashboard from "./Dashboard.tsx";
 import DashboardHome from "./pages/DashboardHome.tsx";
 import ResidentRecords from "./pages/ResidentRecords.tsx";
-import { Toaster } from "sonner"
+import { Toaster } from "sonner";
 import NonResidentRecords from "./pages/NonResidentRecords.tsx";
+import EarnPoints from "./pages/EarnPoints.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -27,20 +28,16 @@ createRoot(document.getElementById("root")!).render(
 
           {/* Protected routes */}
           {/* <Route path="/" element={<Protected />}> */}
-            <Route path="/" element={<Dashboard />}>
-              <Route index element={<DashboardHome />}></Route>
-              <Route
-                path="/records/residents"
-                element={<ResidentRecords />}
-              ></Route>
-              <Route
-                path="/records/non-residents"
-                element={<NonResidentRecords />}
-              ></Route>
-            </Route>
+          <Route path="/" element={<Dashboard />}>
+            <Route index element={<DashboardHome />} />
+            <Route path="/records/residents" element={<ResidentRecords />} />
+            <Route path="/records/non-residents" element={<NonResidentRecords />} />
+            <Route path="/rewards/earn-points" element={<EarnPoints />} />
+          </Route>
 
-            {/* Fallback: Navigate to login if path doesn't exist */}
-            {/* <Route path="*" element={<Navigate to="/login" replace/>}/> */}
+          {/* Fallback: Navigate to login if path doesn't exist */}
+          {/* <Route path="*" element={<Navigate to="/login" replace/>}/> */}
+
           {/* </Route> */}
 
           {/* Optional fallback: Not Found Page for public */}

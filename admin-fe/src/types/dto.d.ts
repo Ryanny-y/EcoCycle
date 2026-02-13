@@ -15,3 +15,9 @@ export interface RecordInterface {
   createdAt: string;
 }
 
+export interface Material {
+  id: string;
+  name: string;
+  pointsPerKg: number;
+  unit: string;
+}

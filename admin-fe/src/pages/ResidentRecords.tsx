@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 import { useState } from "react";
-import type { RecordInterface } from "@/types/Records";
+import type { RecordInterface } from "@/types/dto";
 import { useSearchParams } from "react-router";
 import useFetchData from "@/hooks/useFetchData";
 import type { PaginatedResponse } from "@/types/api";
@@ -10,73 +10,9 @@ import RecordHeader from "./records/RecordHeader";
 import AddRecordModal from "./records/AddRecordModal";
 import EditRecordModal from "./records/EditRecordModal";
 import DeleteRecordModal from "./records/DeleteRecordModal";
+import PageHeader from "@/components/shared/PageHeader";
+import { FAKERECORDS } from "@/constants";
 
-export const fakeRecords: RecordInterface[] = [
-  {
-    id: "1a2b3c4d-0002",
-    firstName: "Maria",
-    middleName: "Isabel",
-    lastName: "Santos",
-    birthDate: "1985-11-22",
-    gender: "FEMALE",
-    isResident: true,
-    address: "456 Elm Street, Riverside",
-    points: 250,
-    contactNumber: "+1-555-987-6543",
-    createdAt: "2025-01-12T10:15:00Z",
-  },
-  {
-    id: "1a2b3c4d-0001",
-    firstName: "John",
-    middleName: "Michael",
-    lastName: "Doe",
-    suffix: "Jr.",
-    birthDate: "1990-05-14",
-    gender: "MALE",
-    isResident: true,
-    address: "123 Main Street, Springfield",
-    points: 120,
-    contactNumber: "+1-555-123-4567",
-    createdAt: "2025-01-10T08:30:00Z",
-  },
-  {
-    id: "1a2b3c4d-0003",
-    firstName: "Alex",
-    middleName: "Jordan",
-    lastName: "Taylor",
-    birthDate: "1995-03-08",
-    gender: "LGBTQIA_PLUS",
-    isResident: true,
-    points: 75,
-    contactNumber: "+1-555-222-3344",
-    createdAt: "2025-01-15T14:45:00Z",
-  },
-  {
-    id: "1a2b3c4d-0004",
-    firstName: "Priya",
-    middleName: "K.",
-    lastName: "Patel",
-    birthDate: "1992-07-19",
-    gender: "FEMALE",
-    isResident: true,
-    address: "789 Oak Avenue, Greenfield",
-    points: 310,
-    contactNumber: "+1-555-444-7788",
-    createdAt: "2025-01-18T09:20:00Z",
-  },
-  {
-    id: "1a2b3c4d-0005",
-    firstName: "Sam",
-    middleName: "Lee",
-    lastName: "Chen",
-    birthDate: "1988-12-02",
-    gender: "PREFER_NOT_TO_SAY",
-    isResident: true,
-    points: 180,
-    contactNumber: "+1-555-666-9900",
-    createdAt: "2025-01-20T16:05:00Z",
-  },
-];
 
 const ResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
@@ -88,7 +24,7 @@ const ResidentRecords = () => {
     PaginatedResponse<RecordInterface>
   >(`records?page=${page}&lastName=${searchQuery}&isResident=${true}`);
 
-  const fRecords = fakeRecords.sort((a, b) => a.lastName.localeCompare(b.lastName));
+  const fakeRecords = FAKERECORDS.content.sort((a, b) => a.lastName.localeCompare(b.lastName));
   const records = data?.content
     ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
     : [];
@@ -117,19 +53,18 @@ const ResidentRecords = () => {
   };
 
   return (
-    <div id="records" className="space-y-8">
-      <header>
-        <h1 className="text-2xl font-bold">Resident Records</h1>
-        <p className="text-muted-foreground">
-          Manage and view residents entries.
-        </p>
-      </header>
-
+    <div id="resident_records" className="space-y-8">
+      <PageHeader
+        title="Resident Records"
+        description="Manage and view residents entries."
+      />
+      
+      {/* Table Wrapper */}
       <Card>
         {/* Filters */}
         <CardHeader className="flex flex-col items-start justify-between xl:flex-row xl:justify-between">
           <RecordHeader
-            records={fRecords}
+            records={fakeRecords}
             setSearchQuery={setSearchQuery}
             setIsAddRecordOpen={setIsAddRecordOpen}
           />
@@ -138,7 +73,7 @@ const ResidentRecords = () => {
         {/* Tables */}
         <CardContent>
           <RecordTable
-            records={fRecords}
+            records={fakeRecords}
             loading={loading}
             error={error}
             openEditRecord={openEditRecord}

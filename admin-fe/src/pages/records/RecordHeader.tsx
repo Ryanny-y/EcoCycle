@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import type { RecordInterface } from "@/types/Records";
+import type { RecordInterface } from "@/types/dto";
 import { Download, Plus, Search } from "lucide-react";
 import { debounce } from "lodash";
 import { useMemo, useState, type Dispatch, type SetStateAction } from "react";

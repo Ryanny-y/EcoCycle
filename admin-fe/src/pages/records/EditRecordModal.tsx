@@ -21,7 +21,7 @@ import { Save } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender, RecordInterface } from "@/types/Records";
+import type { Gender, RecordInterface } from "@/types/dto";
 
 type FormData = {
   firstName: string;
