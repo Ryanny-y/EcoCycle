@@ -43,7 +43,7 @@ public class TestDataUtils {
                 .suffix("Sr")
                 .birthDate(LocalDate.parse("1987-03-22"))
                 .gender(Gender.MALE)
-                .isResident(true)
+                .isResident(false)
                 .address("789 Sitio Maligaya, Davao City")
                 .contactNumber("09771234567")
                 .build();

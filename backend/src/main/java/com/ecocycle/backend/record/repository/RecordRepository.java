@@ -38,7 +38,7 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
             Pageable pageable
     );
 
-    Optional<Record> findByLastNameAndFirstName(String lastName, String firstName);
+    Optional<Record> findByLastNameIgnoreCaseAndFirstNameIgnoreCase(String lastName, String firstName);
 
-    List<Record> findByLastName(String lastName);
+    List<Record> findByLastNameIgnoreCase(String lastName);
 }

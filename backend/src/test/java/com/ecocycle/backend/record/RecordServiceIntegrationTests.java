@@ -33,7 +33,7 @@ public class RecordServiceIntegrationTests {
         Record created = underTest.createRecord(request);
 
         assertThat(created.getId()).isNotNull();
-        assertThat(created.getFirstName()).isEqualTo("Juan");
+        assertThat(created.getFirstName()).isEqualTo("JUAN");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class RecordServiceIntegrationTests {
 
         Record fetched = underTest.getRecordById(created.getId());
 
-        assertThat(fetched.getFirstName()).isEqualTo("Juan");
+        assertThat(fetched.getFirstName()).isEqualTo("JUAN");
     }
 
     @Test
@@ -116,7 +116,7 @@ public class RecordServiceIntegrationTests {
 
         assertThat(result.getContent())
                 .hasSize(1)
-                .allMatch(r -> r.getFirstName().equals("Maria"))
+                .allMatch(r -> r.getFirstName().equals("MARIA"))
                 .allMatch(Record::getIsResident);
     }
 

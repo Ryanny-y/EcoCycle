@@ -87,7 +87,7 @@ class ExchangeItemRepositoryIntegrationTests {
                 .subCategory("Plastic")
                 .stocks(10)
                 .requiredPoints(5)
-                .unit(Unit.PIECES)
+                .unit(Unit.PIECE)
                 .farmOrigin("Local Farm")
                 .imageUrl("fake-img.png")
                 .build();

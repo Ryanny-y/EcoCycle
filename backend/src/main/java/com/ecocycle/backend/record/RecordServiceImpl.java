@@ -37,15 +37,20 @@ public class RecordServiceImpl implements RecordService {
     @Override
     @Transactional
     public Record createRecord(CreateRecordRequest request) {
-        if(isRecordExistsByName(request.getFirstName(), request.getMiddleName(), request.getLastName())) {
+        String firstName = request.getFirstName().toUpperCase();
+        String middleName = request.getMiddleName().toUpperCase();
+        String lastName = request.getLastName().toUpperCase();
+        if(isRecordExistsByName(firstName, middleName, lastName)) {
             throw new RecordAlreadyExistsException("Record with the full name already exists");
         }
 
+        String suffix = request.getSuffix() != null ? request.getSuffix().toUpperCase() : null;
+
         Record newRecord = Record.builder()
-                .firstName(request.getFirstName().toUpperCase())
-                .middleName(request.getMiddleName().toUpperCase())
-                .lastName(request.getLastName().toUpperCase())
-                .suffix(request.getSuffix().toUpperCase())
+                .firstName(firstName)
+                .middleName(middleName)
+                .lastName(lastName)
+                .suffix(suffix)
                 .birthDate(request.getBirthDate())
                 .gender(request.getGender())
                 .isResident(request.getIsResident())
@@ -105,11 +110,11 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public Record lookupRecord(String lastName, String firstName) {
         if(firstName != null) {
-            return recordRepository.findByLastNameAndFirstName(lastName, firstName)
+            return recordRepository.findByLastNameIgnoreCaseAndFirstNameIgnoreCase(lastName, firstName)
                     .orElseThrow(() -> new RecordNotFoundException("Record not found with name: " + lastName + " " + firstName));
         }
 
-        List<Record> foundRecords = recordRepository.findByLastName(lastName);
+        List<Record> foundRecords = recordRepository.findByLastNameIgnoreCase(lastName);
         if(foundRecords.isEmpty()) {
             throw new RecordNotFoundException("Record not found with last name: " + lastName);
         }

@@ -15,5 +15,5 @@ public interface RecordService {
     Record updateRecord(UUID id, UpdateRecordRequest request);
     Record getRecordById(UUID id);
     Record deleteRecord(UUID id);
-    Record lookupRecord(String lastName, String code);
+    Record lookupRecord(String lastName, String firstName);
 }
