@@ -49,7 +49,7 @@ const RewardItems = () => {
         description="Manage reward items to exchange for points"
       />
 
-      {/* Search */}
+      {/* Search and Filters*/}
       <RewardItemsHeader
         setIsAddRewardModalOpen={setIsAddRewardModalOpen}
         rewardItemsLayout={rewardItemsLayout}

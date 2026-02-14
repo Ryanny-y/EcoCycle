@@ -18,8 +18,10 @@ export interface RecordInterface {
 export interface Material {
   id: string;
   name: string;
+  description: string;
   pointsPerKg: number;
-  unit: string;
+  imageUrl: string;
+  createdAt: Date;
 }
 
 export type RewardItemMainCategory = "AGRICULTURAL" | "NON_AGRICULTURAL";
