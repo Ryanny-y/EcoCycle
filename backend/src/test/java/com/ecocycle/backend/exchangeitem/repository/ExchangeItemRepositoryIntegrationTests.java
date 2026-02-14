@@ -74,6 +74,8 @@ class ExchangeItemRepositoryIntegrationTests {
         assertThat(exists).isFalse();
     }
 
+//   TODO: Make a test for findAllBySearchMainCategoryItemType
+
     /* =========================================================
        ---------------- helper method ---------------------------
        ========================================================= */
@@ -92,4 +94,5 @@ class ExchangeItemRepositoryIntegrationTests {
                 .imageUrl("fake-img.png")
                 .build();
     }
+
 }

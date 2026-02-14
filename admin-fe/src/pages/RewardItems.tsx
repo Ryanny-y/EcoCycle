@@ -46,7 +46,7 @@ const RewardItems = () => {
     <div id="reward_items" className="space-y-6">
       <PageHeader
         title="Reward Items"
-        description="Manage reward items to exhange for points"
+        description="Manage reward items to exchange for points"
       />
 
       {/* Search */}
