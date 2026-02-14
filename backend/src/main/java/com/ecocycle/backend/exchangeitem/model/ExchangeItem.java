@@ -56,7 +56,7 @@ public class ExchangeItem {
     @Column(name = "last_restocked")
     private LocalDateTime lastRestocked;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
     @Version

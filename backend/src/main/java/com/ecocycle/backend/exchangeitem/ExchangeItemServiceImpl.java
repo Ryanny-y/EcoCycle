@@ -1,5 +1,7 @@
 package com.ecocycle.backend.exchangeitem;
 
+import com.ecocycle.backend.exchangeitem.model.ItemType;
+import com.ecocycle.backend.exchangeitem.model.MainCategory;
 import com.ecocycle.backend.infrastructure.storage.FileStorageService;
 import com.ecocycle.backend.exchangeitem.dto.request.CreateExchangeItemRequest;
 import com.ecocycle.backend.exchangeitem.dto.request.UpdateExchangeItemRequest;
@@ -9,6 +11,7 @@ import com.ecocycle.backend.exchangeitem.model.ExchangeItem;
 import com.ecocycle.backend.exchangeitem.repository.ExchangeItemRepository;
 import com.ecocycle.backend.infrastructure.storage.TransactionalFileDeletionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,8 +62,8 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ExchangeItem> getExchangeItems() {
-        return exchangeItemRepository.findAll();
+    public List<ExchangeItem> getExchangeItems(String search, MainCategory mainCategory, ItemType itemType) {
+        return exchangeItemRepository.findAllBySearchMainCategoryItemType(search, mainCategory, itemType);
     }
 
     @Override
@@ -88,10 +91,14 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
             exchangeItem.setName(request.getName());
         }
 
-        if (request.getDescription() != null) exchangeItem.setDescription(request.getDescription());
+//        Without Check for nullable Values
+        exchangeItem.setDescription(request.getDescription());
+        exchangeItem.setSubCategory(request.getSubCategory());
+        exchangeItem.setFarmOrigin(request.getFarmOrigin());
+
+//        Check Not nullable Values
         if (request.getItemType() != null) exchangeItem.setItemType(request.getItemType());
         if (request.getMainCategory() != null) exchangeItem.setMainCategory(request.getMainCategory());
-        if (request.getSubCategory() != null) exchangeItem.setSubCategory(request.getSubCategory());
 
         if (request.getStocks() != null) {
             // Check if stocks increased
@@ -103,7 +110,6 @@ public class ExchangeItemServiceImpl implements ExchangeItemService {
 
         if (request.getRequiredPoints() != null) exchangeItem.setRequiredPoints(request.getRequiredPoints());
         if (request.getUnit() != null) exchangeItem.setUnit(request.getUnit());
-        if (request.getFarmOrigin() != null) exchangeItem.setFarmOrigin(request.getFarmOrigin());
 
         // Update lastRestocked if stocks increased
         if (stocksIncreased) {

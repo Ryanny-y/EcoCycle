@@ -126,7 +126,7 @@ public class ExchangeItemIntegrationTests {
         underTest.createExchangeItem(createExchangeItem("Liquid Fertilizer"));
         underTest.createExchangeItem(createExchangeItem("Fertilizer"));
 
-        List<ExchangeItem> exchangeItems = underTest.getExchangeItems();
+        List<ExchangeItem> exchangeItems = underTest.getExchangeItems(null, null, null);
         assertThat(exchangeItems).hasSize(2);
         assertThat(exchangeItems)
                 .extracting(ExchangeItem::getName)
@@ -137,7 +137,7 @@ public class ExchangeItemIntegrationTests {
 
     @Test
     void getExchangeItems_shouldReturnEmptyList_whenNoExchangeItem() {
-        List<ExchangeItem> exchangeItems = underTest.getExchangeItems();
+        List<ExchangeItem> exchangeItems = underTest.getExchangeItems(null, null, null);
         assertThat(exchangeItems).isEmpty();
     }
     
@@ -188,7 +188,7 @@ public class ExchangeItemIntegrationTests {
                 .subCategory("Updated sub category")
                 .stocks(20)
                 .requiredPoints(2)
-                .unit(Unit.PIECES)
+                .unit(Unit.PIECE)
                 .farmOrigin("Updated Farm origin")
                 .build();
 
@@ -201,7 +201,7 @@ public class ExchangeItemIntegrationTests {
         assertThat(updated.getSubCategory()).isEqualTo("Updated sub category");
         assertThat(updated.getStocks()).isEqualTo(20);
         assertThat(updated.getRequiredPoints()).isEqualTo(2);
-        assertThat(updated.getUnit()).isEqualTo(Unit.PIECES);
+        assertThat(updated.getUnit()).isEqualTo(Unit.PIECE);
         assertThat(updated.getFarmOrigin()).isEqualTo("Updated Farm origin");
     }
 

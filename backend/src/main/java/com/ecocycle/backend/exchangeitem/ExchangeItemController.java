@@ -5,6 +5,8 @@ import com.ecocycle.backend.exchangeitem.dto.ExchangeItemDto;
 import com.ecocycle.backend.exchangeitem.dto.request.CreateExchangeItemRequest;
 import com.ecocycle.backend.exchangeitem.dto.request.UpdateExchangeItemRequest;
 import com.ecocycle.backend.exchangeitem.model.ExchangeItem;
+import com.ecocycle.backend.exchangeitem.model.ItemType;
+import com.ecocycle.backend.exchangeitem.model.MainCategory;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +25,12 @@ public class ExchangeItemController {
     private final ExchangeItemMapper exchangeItemMapper;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ExchangeItemDto>>> getExchangeItems() {
-        List<ExchangeItem> exchangeItems = exchangeItemService.getExchangeItems();
+    public ResponseEntity<ApiResponse<List<ExchangeItemDto>>> getExchangeItems(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "mainCategory", required = false) MainCategory mainCategory,
+            @RequestParam(value = "itemType", required = false) ItemType itemType
+    ) {
+        List<ExchangeItem> exchangeItems = exchangeItemService.getExchangeItems(search, mainCategory, itemType);
         List<ExchangeItemDto> exchangeItemDtos = exchangeItems.stream().map(exchangeItemMapper::toDto).toList();
 
         ApiResponse<List<ExchangeItemDto>> apiResponse = ApiResponse.<List<ExchangeItemDto>>builder()
