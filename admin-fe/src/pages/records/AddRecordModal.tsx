@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
+import { Save, User } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
@@ -98,8 +98,8 @@ const AddRecordModal = ({
       );
       await refetchData();
       setIsAddRecordOpen(false);
-    } catch (error) {
-      console.error("Error creating resident:", error);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -108,11 +108,17 @@ const AddRecordModal = ({
   return (
     <Dialog open={isAddRecordOpen} onOpenChange={setIsAddRecordOpen}>
       <DialogContent>
-        <DialogHeader className="flex items-start">
-          <DialogTitle>Add {!isResident && "Non-"}Resident</DialogTitle>
-          <DialogDescription>
-            Fill in the details to create a record
-          </DialogDescription>
+        <DialogHeader className="flex flex-row items-center gap-3">
+          <div className="text-emerald-600 bg-emerald-100 p-2 rounded-lg">
+            <User />
+          </div>
+
+          <div>
+            <DialogTitle> Add {!isResident && "Non-"}Resident</DialogTitle>
+            <DialogDescription>
+              Fill in the details to create a record
+            </DialogDescription>
+          </div>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">

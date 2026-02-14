@@ -35,16 +35,14 @@ const RecordTable = ({
   openEditRecord,
   openDeleteRecord,
 }: RecordTableProps) => {
-  if (loading) return <TableSkeleton />;
 
-  if (!records?.length) {
-    return <p>No Records To Display</p>;
-  }
+  
+  if(!records) return;
 
   return (
     <>
       <div className="custom-scroll rounded-xl max-h-150">
-        <Table id="users_table" className="">
+        <Table id="users_table">
           <TableHeader className="bg-primary rounded-xl">
             <TableRow className="hover:bg-primary">
               <TableHead className="flex items-center text-white gap-2 py-6">Name</TableHead>

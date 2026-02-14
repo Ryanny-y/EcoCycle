@@ -7,19 +7,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import useRewardItems from "@/contexts/RewardItemsContext";
+import type { ApiResponse } from "@/types/api";
+import type { RewardItem } from "@/types/dto";
 import { truncateSentence } from "@/utils/formatter";
 import { MoreVertical, Pencil, Trash2, TriangleAlert } from "lucide-react";
 
-const RewardItemsGrid = () => {
-  const { data, loading } = useRewardItems();
+type RewardItemsGridProps = {
+  data: ApiResponse<RewardItem[]> | null;
+  loading: boolean;
+  error: string | null;
+};
+
+const RewardItemsGrid = ({ data, loading, error }: RewardItemsGridProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
-
-  if (loading) return <p>Loading</p>;
-
-  if (data?.data?.length === 0) {
-    return <p>No Items</p>;
-  }
 
   if (!data) return;
 
@@ -60,10 +60,8 @@ const RewardItemsGrid = () => {
               </DropdownMenu>
             </div>
 
-            <Badge className="absolute z-20 bottom-3 left-3 bg-gray-700">
-              {item.mainCategory === "AGRICULTURAL"
-                ? "Agricultural"
-                : "Non-Agricultural"}
+            <Badge className={`absolute z-20 bottom-3 left-3 ${item.mainCategory === "AGRICULTURAL" ? "bg-primary text-white" : "bg-gray-700"}`}>
+              {item.mainCategory}
             </Badge>
           </div>
 
@@ -74,18 +72,26 @@ const RewardItemsGrid = () => {
                 {item.requiredPoints} pts
               </p>
             </div>
-            <p className="text-muted-foreground text-sm text-ellipsis max-h-10 overflow-hidden">{truncateSentence(item.description)}</p>
+            <p className="text-muted-foreground text-sm text-ellipsis max-h-10 overflow-hidden">
+              {truncateSentence(item.description)}
+            </p>
           </CardContent>
 
-          <CardFooter className="px-4 mt-5 flex items-center justify-between">
-            <p className="text-xs font-semibold text-muted-foreground flex items-center gap-2">
+          <CardFooter className="px-4 mt-5 flex items-center justify-between flex-wrap gap-x-5">
+            <p className="text-xs font-semibold text-muted-foreground">
               Available Stocks:{" "}
-              <span className={`font-bold ${item.stocks <= 5 ? "text-destructive" : "text-black"} text-base`}>
+              <span
+                className={`font-bold ${item.stocks <= 5 ? "text-destructive" : "text-black"} text-base`}
+              >
                 {item.stocks} {item.unit}
               </span>
             </p>
 
-            {item.stocks <= 5 && <p className="flex gap-1 text-xs text-red-500"><TriangleAlert size={14}/> LOW</p>}
+            {item.stocks <= 5 && (
+              <p className="flex gap-1 text-xs text-red-500">
+                <TriangleAlert size={14} /> LOW
+              </p>
+            )}
           </CardFooter>
         </Card>
       ))}

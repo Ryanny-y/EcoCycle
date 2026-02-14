@@ -10,14 +10,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { RewardItemMainCategory } from "@/types/dto";
-import { Plus, Search } from "lucide-react";
+import { Grid2X2, List, Plus, Search } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 
 type RewardItemsHeaderProps = {
+  rewardItemsLayout: "GRID" | "TABLE";
+  handleSetLayout: (value: "GRID" | "TABLE") => void
   setIsAddRewardModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const RewardItemsHeader = ({
+  rewardItemsLayout,
+  handleSetLayout,
   setIsAddRewardModalOpen,
 }: RewardItemsHeaderProps) => {
   const [searchInput, setSearchInput] = useState("");
@@ -27,7 +31,7 @@ const RewardItemsHeader = ({
     <Card className="py-4">
       <CardContent className="px-4 flex flex-col gap-5 lg:flex-row flex-wrap justify-between">
         <div className="flex items-stretch gap-2 grow">
-          <div className="relative h-10 w-full lg:min-w-90">
+          <div className="relative h-10 w-full lg:min-w-90 xl:max-w-90">
             <Search
               size={20}
               className="text-muted-foreground absolute top-1/2 -translate-y-1/2 left-3"
@@ -64,7 +68,25 @@ const RewardItemsHeader = ({
           </div>
         </div>
 
-        <div>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-lg gap-1 p-1 bg-gray-200">
+            <Button
+              variant={"ghost"}
+              className={`${rewardItemsLayout === "GRID" && "bg-white!"}`}
+              size={"icon-sm"}
+              onClick={() => handleSetLayout("GRID")}
+            >
+              <Grid2X2 />
+            </Button>
+            <Button
+              variant={"ghost"}
+              className={`${rewardItemsLayout === "TABLE" && "bg-white!"}`}
+              size={"icon-sm"}
+              onClick={() => handleSetLayout("TABLE")}
+            >
+              <List />
+            </Button>
+          </div>
           <Button onClick={() => setIsAddRewardModalOpen(true)}>
             <Plus /> Add New Reward
           </Button>

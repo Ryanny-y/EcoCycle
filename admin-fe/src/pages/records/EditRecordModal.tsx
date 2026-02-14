@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Save } from "lucide-react";
+import { Pencil, Save } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
@@ -124,11 +124,17 @@ const EditRecordModal = ({
   return (
     <Dialog open={isEditRecordOpen} onOpenChange={setIsEditRecordOpen}>
       <DialogContent className="sm:min-w-xl">
-        <DialogHeader className="flex items-start mb-5">
-          <DialogTitle>Edit Resident</DialogTitle>
-          <DialogDescription>
-            Fill in the details to create a new record
-          </DialogDescription>
+        <DialogHeader className="flex flex-row items-center gap-3">
+          <div className="text-emerald-600 bg-emerald-100 p-2 rounded-lg">
+            <Pencil />
+          </div>
+
+          <div>
+            <DialogTitle> Edit {!recordToEdit.isResident && "Non-"}Resident</DialogTitle>
+            <DialogDescription>
+              Fill in the details to edit record
+            </DialogDescription>
+          </div>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6">
