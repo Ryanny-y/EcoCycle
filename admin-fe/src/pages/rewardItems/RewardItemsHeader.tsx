@@ -9,9 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useRewardItems from "@/contexts/RewardItemsContext";
+import useDebounce from "@/hooks/useDebounce";
 import type { RewardItemMainCategory } from "@/types/dto";
 import { Grid2X2, List, Plus, Search } from "lucide-react";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 type RewardItemsHeaderProps = {
   rewardItemsLayout: "GRID" | "TABLE";
@@ -24,8 +26,13 @@ const RewardItemsHeader = ({
   handleSetLayout,
   setIsAddRewardModalOpen,
 }: RewardItemsHeaderProps) => {
+  const { setSearch, mainCategory, setMainCategory } = useRewardItems();
   const [searchInput, setSearchInput] = useState("");
-  const [category, setCategory] = useState<RewardItemMainCategory | " ">(" ");
+
+  const debouncedValue = useDebounce(searchInput, 500);
+  useEffect(() => {
+    setSearch(debouncedValue);
+  }, [debouncedValue, setSearch])  
 
   return (
     <Card className="py-4">
@@ -40,22 +47,22 @@ const RewardItemsHeader = ({
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="py-2 pl-10 pr-5 w-full text-base h-full "
-              placeholder="Search record to swap points..."
+              placeholder="Search reward items"
             />
           </div>
 
           {/* Category */}
           <div>
             <Select
-              defaultValue={category}
+              defaultValue={mainCategory ?? " "}
               onValueChange={(val) =>
-                setCategory(val as RewardItemMainCategory | " ")
+                setMainCategory(val as RewardItemMainCategory)
               }
             >
               <SelectTrigger className="w-full h-full! min-w-48">
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent position="popper">
                 <SelectGroup>
                   <SelectItem value=" ">All Category</SelectItem>
                   <SelectItem value="AGRICULTURAL">Agricultural</SelectItem>
