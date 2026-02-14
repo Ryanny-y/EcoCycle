@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import type { RewardItemsContextType } from "./types/RewardItemsTypes";
 import type {
   RewardItem,
@@ -48,20 +55,23 @@ export const RewardItemsProvider = ({ children }: { children: ReactNode }) => {
     resetFilters();
   }, [location.pathname]);
 
+  const value = useMemo(
+    () => ({
+      data,
+      loading,
+      error,
+      mainCategory,
+      setMainCategory,
+      setSearch,
+      setItemType,
+      refetchData,
+      resetFilters,
+    }),
+    [data, loading, error, mainCategory, refetchData],
+  );
+
   return (
-    <RewardItemsContext.Provider
-      value={{
-        data,
-        loading,
-        error,
-        mainCategory,
-        setMainCategory,
-        setSearch,
-        setItemType,
-        refetchData,
-        resetFilters
-      }}
-    >
+    <RewardItemsContext.Provider value={value}>
       {children}
     </RewardItemsContext.Provider>
   );

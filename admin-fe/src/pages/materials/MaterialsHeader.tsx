@@ -9,8 +9,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useMaterials from "@/contexts/MaterialsContext";
+import type { SortField } from "@/contexts/types/MaterialsTypes";
 import useDebounce from "@/hooks/useDebounce";
-import { Grid2X2, List, Plus, Search } from "lucide-react";
+import { ArrowUpDown, Grid2X2, List, Plus, Search } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 type RewardItemsHeaderProps = {
@@ -24,12 +26,19 @@ const MaterialsHeader = ({
   handleSetLayout,
   setIsAddMaterialModalOpen,
 }: RewardItemsHeaderProps) => {
+  const { sortField, setSearch, setSortField, sortOrder, setSortOrder } =
+    useMaterials();
   const [searchInput, setSearchInput] = useState("");
 
   const debouncedValue = useDebounce(searchInput, 500);
-  // useEffect(() => {
-  //   setSearch(debouncedValue);
-  // }, [debouncedValue, setSearch]);
+  useEffect(() => {
+    setSearch(debouncedValue);
+  }, [debouncedValue, setSearch]);
+
+  const handleChangeSortOrder = () => {
+    if (sortOrder === "DESC") setSortOrder("ASC");
+    if (sortOrder === "ASC") setSortOrder("DESC");
+  };
 
   return (
     <Card className="py-4">
@@ -51,28 +60,30 @@ const MaterialsHeader = ({
           {/* Category */}
           <div>
             <Select
-            // defaultValue={mainCategory ?? " "}
-            // onValueChange={(val) =>
-            //   setMainCategory(val)
-            // }
+              defaultValue={sortField}
+              onValueChange={(val: SortField) => setSortField(val)}
             >
               <SelectTrigger className="w-full h-full! min-w-48">
                 <SelectValue placeholder="Select Sort Option" />
               </SelectTrigger>
               <SelectContent position="popper">
                 <SelectGroup>
-                  <SelectItem value="NEWEST">Newest</SelectItem>
-                  <SelectItem value="NAME">Name (A-Z)</SelectItem>
-                  <SelectItem value="POINTS_ASC">
-                    Points (Low to High)
-                  </SelectItem>
-                  <SelectItem value="POINTS_DESC">
-                    Points (High to Low)
-                  </SelectItem>
+                  <SelectItem value="createdAt">Created Date</SelectItem>
+                  <SelectItem value="name">Name (A-Z)</SelectItem>
+                  <SelectItem value="points">Points</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
           </div>
+
+          <Button
+            variant={"outline"}
+            className="group bg-white! h-full hover:bg-muted! active:bg-muted/80!"
+            onClick={handleChangeSortOrder}
+          >
+            <span>Sort</span>
+            <ArrowUpDown />
+          </Button>
         </div>
 
         <div className="flex items-center gap-2">

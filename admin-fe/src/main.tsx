@@ -15,6 +15,7 @@ import RedeemRewards from "./pages/RedeemRewards.tsx";
 import RewardItems from "./pages/RewardItems.tsx";
 import { RewardItemsProvider } from "./contexts/RewardItemsContext.tsx";
 import Materials from "./pages/Materials.tsx";
+import { MaterialsProvider } from "./contexts/MaterialsContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -27,43 +28,46 @@ createRoot(document.getElementById("root")!).render(
 
       <AuthProvider>
         <RewardItemsProvider>
-          <Routes>
-            {/* Public route */}
-            <Route path="/login" element={<Login />} />
+          <MaterialsProvider>
+            <Routes>
+              {/* Public route */}
+              <Route path="/login" element={<Login />} />
 
-            {/* Protected routes */}
-            <Route path="/" element={<Protected />}>
-              <Route element={<Dashboard />}>
-                <Route index element={<DashboardHome />} />
-                
-                {/* Records */}
-                <Route path="records">
-                  <Route path="residents" element={<ResidentRecords />} />
-                  <Route path="non-residents" element={<NonResidentRecords />} />
+              {/* Protected routes */}
+              <Route path="/" element={<Protected />}>
+                <Route element={<Dashboard />}>
+                  <Route index element={<DashboardHome />} />
+
+                  {/* Records */}
+                  <Route path="records">
+                    <Route path="residents" element={<ResidentRecords />} />
+                    <Route
+                      path="non-residents"
+                      element={<NonResidentRecords />}
+                    />
+                  </Route>
+
+                  {/* Rewards & Redeem */}
+                  <Route path="rewards">
+                    <Route path="earn-points" element={<EarnPoints />} />
+                    <Route path="redeem" element={<RedeemRewards />} />
+                  </Route>
+
+                  {/* Inventory */}
+                  <Route path="inventory">
+                    <Route path="reward-items" element={<RewardItems />} />
+                    <Route path="materials" element={<Materials />} />
+                  </Route>
                 </Route>
 
-                {/* Rewards & Redeem */}
-                <Route path="rewards">
-                  <Route path="earn-points" element={<EarnPoints />} />
-                  <Route path="redeem" element={<RedeemRewards />} />
-                </Route>
-
-                {/* Inventory */}
-                <Route path="inventory">
-                  <Route path="reward-items" element={<RewardItems />}/>
-                  <Route path="materials" element={<Materials />}/>
-                </Route>
-
+                {/* Fallback: Navigate to login if path doesn't exist */}
+                {/* <Route path="*" element={<Navigate to="/login" replace/>}/> */}
               </Route>
 
-            {/* Fallback: Navigate to login if path doesn't exist */}
-            {/* <Route path="*" element={<Navigate to="/login" replace/>}/> */}
-            </Route>
-
-            {/* Optional fallback: Not Found Page for public */}
-            {/* <Route path="*" element={<NotFound />} /> */}
-          </Routes>
-
+              {/* Optional fallback: Not Found Page for public */}
+              {/* <Route path="*" element={<NotFound />} /> */}
+            </Routes>
+          </MaterialsProvider>
         </RewardItemsProvider>
       </AuthProvider>
     </BrowserRouter>
