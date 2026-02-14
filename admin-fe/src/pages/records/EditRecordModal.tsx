@@ -84,6 +84,7 @@ const EditRecordModal = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Make it reusable
   const validateForm = () => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";

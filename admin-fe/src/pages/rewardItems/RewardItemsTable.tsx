@@ -24,9 +24,15 @@ type RewardItemsTableProps = {
   data: ApiResponse<RewardItem[]> | null;
   loading: boolean;
   error: string | null;
+  openEditReward: (rewardItem: RewardItem) => void;
 };
 
-const RewardItemsTable = ({ data, loading, error }: RewardItemsTableProps) => {
+const RewardItemsTable = ({
+  data,
+  loading,
+  error,
+  openEditReward,
+}: RewardItemsTableProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
   if (!data?.data) return;
 
@@ -67,7 +73,9 @@ const RewardItemsTable = ({ data, loading, error }: RewardItemsTableProps) => {
 
                     <div className="min-w-0">
                       <p className="font-bold text-xl">{reward.name}</p>
-                      <p className="truncate text-muted-foreground text-xs overflow-hidden">{reward.description}</p>
+                      <p className="truncate text-muted-foreground text-xs overflow-hidden">
+                        {reward.description}
+                      </p>
                     </div>
                   </div>
                 </TableCell>
@@ -78,13 +86,13 @@ const RewardItemsTable = ({ data, loading, error }: RewardItemsTableProps) => {
                     {reward.mainCategory}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-center font-semibold">
+                <TableCell className="text-center ">
                   <div
-                    className={`${reward.stocks <= 5 ? "text-destructive" : ""}`}
+                    className={`${reward.stocks <= 5 && "text-destructive"} font-bold`}
                   >
                     <p>{reward.stocks}</p>
                     {reward.stocks <= 5 && (
-                      <p className="text-[10px]">LOW STOCK</p>
+                      <p className="text-[10px] font-medium">LOW STOCK</p>
                     )}
                   </div>
                 </TableCell>
@@ -104,7 +112,7 @@ const RewardItemsTable = ({ data, loading, error }: RewardItemsTableProps) => {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className="rounded-full "
-                        // onClick={() => openEditRecord(record)}
+                        onClick={() => openEditReward(reward)}
                       >
                         <Edit className="mr-0.5 h-4 w-4" />
                         Edit Record

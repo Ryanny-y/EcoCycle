@@ -6,21 +6,33 @@ import AddRewardItemModal from "./rewardItems/AddRewardItemModal";
 import RewardItemsTable from "./rewardItems/RewardItemsTable";
 import useRewardItems from "@/contexts/RewardItemsContext";
 import { Card, CardContent } from "@/components/ui/card";
+import type { RewardItem } from "@/types/dto";
+import EditRewardItemModal from "./rewardItems/EditRewardItemModal";
 
 const RewardItems = () => {
-  const [rewardItemsLayout, setRewardItemsLayout] = useState<"GRID" | "TABLE">(() => {
-    const stored = localStorage.getItem("rewardItemsLayout");
-    return stored ? JSON.parse(stored) : "GRID";
-  });
-  const { data, loading, error } = useRewardItems();
-
-  const [isAddRewardModalOpen, setIsAddRewardModalOpen] =
-    useState<boolean>(false);
+  const [rewardItemsLayout, setRewardItemsLayout] = useState<"GRID" | "TABLE">(
+    () => {
+      const stored = localStorage.getItem("rewardItemsLayout");
+      return stored ? JSON.parse(stored) : "GRID";
+    },
+  );
+  const { data, loading, error, refetchData } = useRewardItems();
 
   const handleSetLayout = (value: "GRID" | "TABLE") => {
     setRewardItemsLayout(value);
     localStorage.setItem("rewardItemsLayout", JSON.stringify(value));
-  }
+  };
+
+  // modals
+  const [isAddRewardModalOpen, setIsAddRewardModalOpen] = useState(false);
+  const [isEditRewardOpen, setIsEditRewardOpen] = useState(false);
+
+  const [rewardToEdit, setRewardToEdit] = useState<RewardItem | null>(null);
+
+  const openEditReward = (rewardItem: RewardItem) => {
+    setIsEditRewardOpen(true);
+    setRewardToEdit(rewardItem);
+  };
 
   return (
     <div id="reward_items" className="space-y-6">
@@ -38,11 +50,21 @@ const RewardItems = () => {
 
       {/* Items */}
       {rewardItemsLayout === "GRID" ? (
-        <RewardItemsGrid data={data} loading={loading} error={error} />
+        <RewardItemsGrid
+          data={data}
+          loading={loading}
+          error={error}
+          openEditReward={openEditReward}
+        />
       ) : (
         <Card>
           <CardContent>
-            <RewardItemsTable data={data} loading={loading} error={error} />
+            <RewardItemsTable
+              data={data}
+              loading={loading}
+              error={error}
+              openEditReward={openEditReward}
+            />
           </CardContent>
         </Card>
       )}
@@ -51,6 +73,18 @@ const RewardItems = () => {
         <AddRewardItemModal
           isAddRewardModalOpen={isAddRewardModalOpen}
           setIsAddRewardModalOpen={setIsAddRewardModalOpen}
+          refetchData={refetchData}
+        />
+      )}
+
+      {/* MODALS */}
+      {isEditRewardOpen && rewardToEdit && (
+        <EditRewardItemModal
+          isEditRewardOpen={isEditRewardOpen}
+          setIsEditRewardOpen={setIsEditRewardOpen}
+          rewardToEdit={rewardToEdit}
+          setRewardToEdit={setRewardToEdit}
+          refetchData={refetchData}
         />
       )}
     </div>

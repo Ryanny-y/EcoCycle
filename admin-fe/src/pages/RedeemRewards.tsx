@@ -9,10 +9,10 @@ const ExchangeItems = () => {
   );
 
   return (
-    <div id="exchange_items" className="space-y-8">
+    <div id="redeem_points" className="space-y-8">
       <PageHeader
-        title="Exchange Items"
-        description="Exchange accumulated points for community products and rewards"
+        title="Redeem Reward"
+        description="Redeem accumulated points for community products and rewards"
       />
 
       {/* Search */}

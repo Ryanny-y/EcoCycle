@@ -11,7 +11,7 @@ import ResidentRecords from "./pages/ResidentRecords.tsx";
 import { Toaster } from "sonner";
 import NonResidentRecords from "./pages/NonResidentRecords.tsx";
 import EarnPoints from "./pages/EarnPoints.tsx";
-import ExchangeItems from "./pages/ExchangeItems.tsx";
+import RedeemRewards from "./pages/RedeemRewards.tsx";
 import RewardItems from "./pages/RewardItems.tsx";
 import { RewardItemsProvider } from "./contexts/RewardItemsContext.tsx";
 
@@ -44,7 +44,7 @@ createRoot(document.getElementById("root")!).render(
                 {/* Rewards & Redeem */}
                 <Route path="rewards">
                   <Route path="earn-points" element={<EarnPoints />} />
-                  <Route path="redeem" element={<ExchangeItems />} />
+                  <Route path="redeem" element={<RedeemRewards />} />
                 </Route>
 
                 {/* Inventory */}

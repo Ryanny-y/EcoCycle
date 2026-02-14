@@ -16,20 +16,21 @@ type RewardItemsGridProps = {
   data: ApiResponse<RewardItem[]> | null;
   loading: boolean;
   error: string | null;
+  openEditReward: (rewardItem: RewardItem) => void;
 };
 
-const RewardItemsGrid = ({ data, loading, error }: RewardItemsGridProps) => {
+const RewardItemsGrid = ({ data, loading, error, openEditReward }: RewardItemsGridProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
 
   if (!data) return;
 
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
-      {data.data?.map((item) => (
-        <Card key={item.id} className="pt-0 gap-2 group">
+      {data.data?.map((reward) => (
+        <Card key={reward.id} className="pt-0 gap-2 group">
           <div className="relative h-44 rounded-t-xl overflow-hidden">
             <img
-              src={`${STORAGE_URL}/${item.imageUrl}`}
+              src={`${STORAGE_URL}/${reward.imageUrl}`}
               alt="Reward Item Image"
               className="h-full w-full group-hover:scale-105 duration-300 object-contain object-center"
             />
@@ -44,14 +45,14 @@ const RewardItemsGrid = ({ data, loading, error }: RewardItemsGridProps) => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
                     className="rounded-full "
-                    // onClick={() => openEditRecord(record)}
+                    onClick={() => openEditReward(reward)}
                   >
                     <Pencil className="mr-0.5 h-4 w-4" />
                     Edit
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-destructive rounded-full group hover:text-destructive!"
-                    // onClick={() => openDeleteRecord(record)}
+                    // onClick={() => openEditReward(reward)}
                   >
                     <Trash2 className="mr-0.5 h-4 w-4 group-hover:text-destructive" />
                     Delete
@@ -60,20 +61,20 @@ const RewardItemsGrid = ({ data, loading, error }: RewardItemsGridProps) => {
               </DropdownMenu>
             </div>
 
-            <Badge className={`absolute z-20 bottom-3 left-3 ${item.mainCategory === "AGRICULTURAL" ? "bg-primary text-white" : "bg-gray-700"}`}>
-              {item.mainCategory}
+            <Badge className={`absolute z-20 bottom-3 left-3 ${reward.mainCategory === "AGRICULTURAL" ? "bg-primary text-white" : "bg-gray-700"}`}>
+              {reward.mainCategory}
             </Badge>
           </div>
 
           <CardContent className="px-4 space-y-2">
             <div className="flex items-center justify-between">
-              <h1 className="font-bold text-xl">{item.name}</h1>
+              <h1 className="font-bold text-xl">{reward.name}</h1>
               <p className="text-primary font-bold text-lg">
-                {item.requiredPoints} pts
+                {reward.requiredPoints} pts
               </p>
             </div>
             <p className="text-muted-foreground text-sm text-ellipsis max-h-10 overflow-hidden">
-              {truncateSentence(item.description)}
+              {truncateSentence(reward.description)}
             </p>
           </CardContent>
 
@@ -81,13 +82,13 @@ const RewardItemsGrid = ({ data, loading, error }: RewardItemsGridProps) => {
             <p className="text-xs font-semibold text-muted-foreground">
               Available Stocks:{" "}
               <span
-                className={`font-bold ${item.stocks <= 5 ? "text-destructive" : "text-black"} text-base`}
+                className={`font-bold ${reward.stocks <= 5 ? "text-destructive" : "text-black"} text-base`}
               >
-                {item.stocks} {item.unit}
+                {reward.stocks} {reward.unit}
               </span>
             </p>
 
-            {item.stocks <= 5 && (
+            {reward.stocks <= 5 && (
               <p className="flex gap-1 text-xs text-red-500">
                 <TriangleAlert size={14} /> LOW
               </p>

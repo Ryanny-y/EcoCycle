@@ -35,9 +35,9 @@ export interface RewardItem {
   subCategory: string;
   stocks: number;
   requiredPoints: number;
-  unit?: RewardItemUnit;
+  unit: RewardItemUnit;
   farmOrigin?: string;
   lastRestocked?: Date;
-  imageUrl?: string;
+  imageUrl: string;
   createdAt: Date;
 }

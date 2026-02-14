@@ -1,38 +1,24 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import useRewardItems from "@/contexts/RewardItemsContext";
 import useFormHandlers from "@/hooks/useFormHandlers";
 import useMutation from "@/hooks/useMutation";
 import type {
+  RewardItem,
   RewardItemMainCategory,
   RewardItemType,
   RewardItemUnit,
 } from "@/types/dto";
-import { Box, Save } from "lucide-react";
-import {
-  useState,
-  type Dispatch,
-  type SetStateAction,
-  type SubmitEvent,
-} from "react";
+import { Edit, Save } from "lucide-react";
+import { useState, type SubmitEvent } from "react";
 import { toast } from "sonner";
 
 type FormData = {
+  id: string;
   name: string;
   description: string | undefined;
   itemType: RewardItemType | "";
@@ -42,33 +28,43 @@ type FormData = {
   requiredPoints: number;
   unit: RewardItemUnit;
   farmOrigin?: string;
-  image: File | null;
+  imageFile: File | null;
+  imageUrl: string;
 };
 
-type AddRewardItemModal = {
-  isAddRewardModalOpen: boolean;
-  setIsAddRewardModalOpen: Dispatch<SetStateAction<boolean>>;
-  refetchData: () => Promise<void>
+type EditRewardItemModalProps = {
+  rewardToEdit: RewardItem | null;
+  setRewardToEdit: (record: RewardItem | null) => void;
+  isEditRewardOpen: boolean;
+  setIsEditRewardOpen: (open: boolean) => void;
+  refetchData: () => Promise<void>;
 };
 
-const AddRewardItemModal = ({
-  isAddRewardModalOpen,
-  setIsAddRewardModalOpen,
-  refetchData
-}: AddRewardItemModal) => {
+const EditRewardItemModal = ({
+  rewardToEdit,
+  setRewardToEdit,
+  isEditRewardOpen,
+  setIsEditRewardOpen,
+  refetchData,
+}: EditRewardItemModalProps) => {
+  if (!rewardToEdit) return;
+  const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
+
   const [formData, setFormData] = useState<FormData>({
-    name: "",
-    description: "",
-    itemType: "",
-    mainCategory: "",
-    subCategory: "",
-    stocks: 1,
-    requiredPoints: 1,
-    unit: "KG",
-    farmOrigin: "",
-    image: null,
+    id: rewardToEdit.id,
+    name: rewardToEdit.name,
+    description: rewardToEdit?.description,
+    itemType: rewardToEdit.itemType,
+    mainCategory: rewardToEdit.mainCategory,
+    subCategory: rewardToEdit?.subCategory,
+    stocks: rewardToEdit.stocks,
+    requiredPoints: rewardToEdit.requiredPoints,
+    unit: rewardToEdit.unit,
+    farmOrigin: rewardToEdit.farmOrigin,
+    imageFile: null,
+    imageUrl: rewardToEdit.imageUrl,
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const { execute } = useMutation();
 
   const {
@@ -77,8 +73,10 @@ const AddRewardItemModal = ({
     handleFileChange,
     handleDrop,
     handleDragOver,
-  } = useFormHandlers<FormData>(setFormData, "image");
+  } = useFormHandlers<FormData>(setFormData, "imageFile");
 
+
+  // TODO: Make it Reusable
   const validateForm = (): string | null => {
     if (!formData.name) return "Name is Required";
     if (!formData.itemType) return "Item Type is Required";
@@ -86,7 +84,6 @@ const AddRewardItemModal = ({
     if (!formData.stocks) return "Stocks is Required";
     if (!formData.requiredPoints) return "Required Points is Required";
     if (!formData.unit) return "Unit is Required";
-    if (!formData.image) return "Reward image is required";
 
     return null;
   };
@@ -94,7 +91,7 @@ const AddRewardItemModal = ({
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(isSubmitting) return;
+    if(isUpdating) return;
     const formDataToSend = new FormData();
 
     const error = validateForm();
@@ -117,37 +114,38 @@ const AddRewardItemModal = ({
     if (formData.farmOrigin) {
       formDataToSend.append("farmOrigin", formData.farmOrigin);
     }
-    if (formData.image) {
-      formDataToSend.append("image", formData.image);
+    if (formData.imageFile) {
+      formDataToSend.append("image", formData.imageFile);
     }
 
-    setIsSubmitting(true);
+
+    setIsUpdating(true);
     try {
-      const response: any = await execute("exchange-items", {
-        method: "POST",
+      const response: any = await execute(`exchange-items/${formData.id}`, {
+        method: "PATCH",
         body: formDataToSend
       });
 
       refetchData();
       toast.success(response.message);
-      setIsAddRewardModalOpen(false);
+      setIsEditRewardOpen(false);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
-      setIsSubmitting(false);
+      setIsUpdating(false);
     }
   };
-
+  
   return (
-    <Dialog open={isAddRewardModalOpen} onOpenChange={setIsAddRewardModalOpen}>
+    <Dialog open={isEditRewardOpen} onOpenChange={setIsEditRewardOpen}>
       <DialogContent>
         <DialogHeader className="flex flex-row items-center gap-3">
           <div className="text-emerald-600 bg-emerald-100 p-2 rounded-lg">
-            <Box />
+            <Edit />
           </div>
 
           <div>
-            <DialogTitle> Add New Reward</DialogTitle>
+            <DialogTitle>Edit Reward</DialogTitle>
             <DialogDescription>
               Fill in the details to create a add new reward
             </DialogDescription>
@@ -293,7 +291,7 @@ const AddRewardItemModal = ({
               <Input
                 id="farmOrigin"
                 name="farmOrigin"
-                value={formData.farmOrigin}
+                value={formData.farmOrigin ?? ""}
                 onChange={handleChange}
                 placeholder="Farm Origin"
               />
@@ -324,10 +322,31 @@ const AddRewardItemModal = ({
                   htmlFor="fileUpload"
                   className="cursor-pointer block p-5"
                 >
-                  {formData.image ? (
-                    <p className="text-primary font-medium">
-                      {formData.image.name}
-                    </p>
+                  {formData.imageFile ? (
+                    <div className="space-y-2">
+                      <img
+                        src={URL.createObjectURL(formData.imageFile)}
+                        alt="Preview"
+                        className="mx-auto max-h-48 rounded-lg object-contain"
+                      />
+                      <p className="text-primary font-medium">
+                        {formData.imageFile.name}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Click or drag to replace image
+                      </p>
+                    </div>
+                  ) : formData.imageUrl ? (
+                    <div className="space-y-2">
+                      <img
+                        src={`${STORAGE_URL}/${formData.imageUrl}`}
+                        alt="Current"
+                        className="mx-auto max-h-20 rounded-lg object-contain"
+                      />
+                      <p className="text-sm text-gray-500">
+                        Current image — click or drag to replace
+                      </p>
+                    </div>
                   ) : (
                     <p className="text-gray-500">
                       Drag & drop an image here, or click to select a file
@@ -342,17 +361,22 @@ const AddRewardItemModal = ({
             <button
               className="flex-1 py-6 text-base rounded-xl font-semibold text-muted-foreground hover:text-foreground duration-300"
               type="button"
-              onClick={() => setIsAddRewardModalOpen(false)}
+              onClick={() => setIsEditRewardOpen(false)}
             >
               Cancel
             </button>
             <button
-              disabled={isSubmitting}
+              disabled={isUpdating}
               className="flex-1 py-4 rounded-xl text-base bg-primary/90 grid place-items-center text-white font-semibold duration-300 hover:bg-primary"
               type="submit"
-            > 
-              
-              {isSubmitting ? <Spinner /> : <span className="flex items-center justify-center gap-2"><Save /> Save Reward</span>}
+            >
+              {isUpdating ? (
+                <Spinner />
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <Save /> Save Reward
+                </span>
+              )}
             </button>
           </div>
         </form>
@@ -361,4 +385,4 @@ const AddRewardItemModal = ({
   );
 };
 
-export default AddRewardItemModal;
+export default EditRewardItemModal;

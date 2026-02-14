@@ -12,8 +12,6 @@ export const RewardItemsProvider = ({ children } : { children: ReactNode }) => {
 
   const [ category, setCategory ] = useState<RewardItemMainCategory>("AGRICULTURAL");
   const { data, loading, error, refetchData } = useFetchData<ApiResponse<RewardItem[]>>(authResponse ? "exchange-items" : null);
-
-  console.log(data);
   
   return (
     <RewardItemsContext.Provider value={{ data, loading, error, setCategory, refetchData }}>
