@@ -25,6 +25,7 @@ type RewardItemsTableProps = {
   loading: boolean;
   error: string | null;
   openEditReward: (rewardItem: RewardItem) => void;
+  openDeleteReward: (rewardItem: RewardItem) => void;
 };
 
 const RewardItemsTable = ({
@@ -32,6 +33,7 @@ const RewardItemsTable = ({
   loading,
   error,
   openEditReward,
+  openDeleteReward
 }: RewardItemsTableProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
   if (!data?.data) return;
@@ -120,7 +122,7 @@ const RewardItemsTable = ({
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className="text-destructive rounded-full group hover:text-destructive!"
-                        // onClick={() => openDeleteRecord(record)}
+                        onClick={() => openDeleteReward(reward)}
                       >
                         <Trash2 className="mr-0.5 h-4 w-4 group-hover:text-destructive" />
                         Delete Record

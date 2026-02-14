@@ -64,6 +64,7 @@ const NonResidentRecords = () => {
         {/* Filters */}
         <CardHeader className="flex flex-col items-start justify-between xl:flex-row xl:justify-between">
           <RecordHeader
+            isResident={false}
             records={records}
             setSearchQuery={setSearchQuery}
             setIsAddRecordOpen={setIsAddRecordOpen}

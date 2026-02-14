@@ -17,9 +17,16 @@ type RewardItemsGridProps = {
   loading: boolean;
   error: string | null;
   openEditReward: (rewardItem: RewardItem) => void;
+  openDeleteReward: (rewardItem: RewardItem) => void;
 };
 
-const RewardItemsGrid = ({ data, loading, error, openEditReward }: RewardItemsGridProps) => {
+const RewardItemsGrid = ({
+  data,
+  loading,
+  error,
+  openEditReward,
+  openDeleteReward,
+}: RewardItemsGridProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
 
   if (!data) return;
@@ -52,7 +59,7 @@ const RewardItemsGrid = ({ data, loading, error, openEditReward }: RewardItemsGr
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-destructive rounded-full group hover:text-destructive!"
-                    // onClick={() => openEditReward(reward)}
+                    onClick={() => openDeleteReward(reward)}
                   >
                     <Trash2 className="mr-0.5 h-4 w-4 group-hover:text-destructive" />
                     Delete
@@ -61,7 +68,9 @@ const RewardItemsGrid = ({ data, loading, error, openEditReward }: RewardItemsGr
               </DropdownMenu>
             </div>
 
-            <Badge className={`absolute z-20 bottom-3 left-3 ${reward.mainCategory === "AGRICULTURAL" ? "bg-primary text-white" : "bg-gray-700"}`}>
+            <Badge
+              className={`absolute z-20 bottom-3 left-3 ${reward.mainCategory === "AGRICULTURAL" ? "bg-primary text-white" : "bg-gray-700"}`}
+            >
               {reward.mainCategory}
             </Badge>
           </div>

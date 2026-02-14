@@ -8,12 +8,13 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 
 interface RecordHeader {
+  isResident: boolean;
   records: RecordInterface[] | undefined;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   setIsAddRecordOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RecordHeader = ({ records, setSearchQuery, setIsAddRecordOpen }: RecordHeader) => {
+const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen }: RecordHeader) => {
   const [searchInput, setSearchInput] = useState<string>("");
 
   const debouncedSearch = useDebounce(searchInput, 500);
@@ -26,7 +27,7 @@ const RecordHeader = ({ records, setSearchQuery, setIsAddRecordOpen }: RecordHea
     <>
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center gap-2 flex-1">
-          <CardTitle className="text-lg">Non-Residents</CardTitle>
+          <CardTitle className="text-lg">{isResident ? "Residents" : "Non-Residents"}</CardTitle>
           <Badge variant="secondary">
             {records?.length ? records.length : 0} Total
           </Badge>

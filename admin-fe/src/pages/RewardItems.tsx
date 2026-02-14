@@ -8,6 +8,7 @@ import useRewardItems from "@/contexts/RewardItemsContext";
 import { Card, CardContent } from "@/components/ui/card";
 import type { RewardItem } from "@/types/dto";
 import EditRewardItemModal from "./rewardItems/EditRewardItemModal";
+import DeleteRewardItemModal from "./rewardItems/DeleteRewardItemModal";
 
 const RewardItems = () => {
   const [rewardItemsLayout, setRewardItemsLayout] = useState<"GRID" | "TABLE">(
@@ -26,12 +27,19 @@ const RewardItems = () => {
   // modals
   const [isAddRewardModalOpen, setIsAddRewardModalOpen] = useState(false);
   const [isEditRewardOpen, setIsEditRewardOpen] = useState(false);
+  const [isDeleteRewardOpen, setIsDeleteRewardOpen] = useState(false);
 
   const [rewardToEdit, setRewardToEdit] = useState<RewardItem | null>(null);
+  const [rewardToDelete, setRewardToDelete] = useState<RewardItem | null>(null);
 
   const openEditReward = (rewardItem: RewardItem) => {
     setIsEditRewardOpen(true);
     setRewardToEdit(rewardItem);
+  };
+
+  const openDeleteReward = (rewardItem: RewardItem) => {
+    setIsDeleteRewardOpen(true);
+    setRewardToDelete(rewardItem);
   };
 
   return (
@@ -55,6 +63,7 @@ const RewardItems = () => {
           loading={loading}
           error={error}
           openEditReward={openEditReward}
+          openDeleteReward={openDeleteReward}
         />
       ) : (
         <Card>
@@ -64,6 +73,7 @@ const RewardItems = () => {
               loading={loading}
               error={error}
               openEditReward={openEditReward}
+              openDeleteReward={openDeleteReward}
             />
           </CardContent>
         </Card>
@@ -78,12 +88,22 @@ const RewardItems = () => {
       )}
 
       {/* MODALS */}
-      {isEditRewardOpen && rewardToEdit && (
+      {(isEditRewardOpen && rewardToEdit) && (
         <EditRewardItemModal
           isEditRewardOpen={isEditRewardOpen}
           setIsEditRewardOpen={setIsEditRewardOpen}
           rewardToEdit={rewardToEdit}
           setRewardToEdit={setRewardToEdit}
+          refetchData={refetchData}
+        />
+      )}
+
+      {(isDeleteRewardOpen && rewardToDelete) && (
+        <DeleteRewardItemModal
+          isDeleteRewardOpen={isDeleteRewardOpen}
+          setIsDeleteRewardOpen={setIsDeleteRewardOpen}
+          rewardToDelete={rewardToDelete}
+          setRewardToDelete={setRewardToDelete}
           refetchData={refetchData}
         />
       )}
