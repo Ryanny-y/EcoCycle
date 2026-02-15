@@ -1,11 +1,11 @@
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import useDebounce from "@/hooks/useDebounce";
 import useFetchData from "@/hooks/useFetchData";
 import type { PaginatedResponse } from "@/types/api";
@@ -30,6 +30,8 @@ const Step1 = ({
   const { data, loading, error } = useFetchData<
     PaginatedResponse<RecordInterface>
   >(`records?search=${debouncedQuery}`);
+
+  const isDebouncing = searchQuery !== debouncedQuery;
 
   const foundRecords = data?.content
     ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
@@ -58,36 +60,67 @@ const Step1 = ({
             className="pl-10 pr-4 py-3 sm:py-5 text-base sm:text-lg font-semibold focus:ring-emerald-700!"
           />
 
-          {searchQuery && foundRecords.length > 0 && (
-            <div className="absolute top-12 left-0 w-full mt max-h-100 -2 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-x-auto custom-scroll divide-y divide-gray-50">
-              {foundRecords.map((record) => (
-                <button
-                  key={record.id}
-                  onClick={() => {
-                    setSelectedRecord(record);
-                    setSearchQuery("");
-                  }}
-                  className="w-full flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3 sm:py-4 hover:bg-emerald-50 transition-colors text-left"
-                >
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-xs sm:text-sm">
-                    {record.firstName[0]}
-                    {record.lastName[0]}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-bold text-gray-900 text-sm sm:text-base">
-                      {formatName(
-                        record.lastName,
-                        record.firstName,
-                        record.middleName,
-                      )}
-                    </p>
-                    <p className="text-[10px] sm:text-xs text-gray-500">
-                      {record.points} pts
-                    </p>
-                  </div>
-                  <ChevronRight size={16} className="text-gray-300" />
-                </button>
-              ))}
+          {searchQuery && (
+            <div className="absolute top-12 left-0 w-full max-h-100 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-x-auto custom-scroll divide-y divide-gray-50">
+              {loading || isDebouncing ? (
+                <div className="p-4 space-y-4">
+                  {Array.from({ length: 4 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <Skeleton className="h-10 w-10 rounded-full" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-4 w-2/3" />
+                        <Skeleton className="h-3 w-1/4" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="p-6 text-center">
+                  <p className="text-sm font-semibold text-red-500">
+                    Failed to load records
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Please check your connection and try again.
+                  </p>
+                </div>
+              ) : foundRecords.length === 0 ? (
+                <div className="p-6 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    No residents found
+                  </p>
+                </div>
+              ) : (
+                foundRecords.map((record) => (
+                  <button
+                    key={record.id}
+                    onClick={() => {
+                      setSelectedRecord(record);
+                      setSearchQuery("");
+                    }}
+                    className="w-full flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 transition-colors text-left"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-sm">
+                      {record.firstName[0]}
+                      {record.lastName[0]}
+                    </div>
+
+                    <div className="flex-1">
+                      <p className="font-bold text-gray-900">
+                        {formatName(
+                          record.lastName,
+                          record.firstName,
+                          record.middleName,
+                        )}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {record.points} pts
+                      </p>
+                    </div>
+
+                    <ChevronRight size={16} className="text-gray-300" />
+                  </button>
+                ))
+              )}
             </div>
           )}
         </div>

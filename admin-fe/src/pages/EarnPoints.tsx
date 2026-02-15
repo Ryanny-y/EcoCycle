@@ -13,7 +13,7 @@ const EarnPoints = () => {
   const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(
     null,
   );
-  const { data } = useMaterials();
+  const { data, loading: materialsLoading, error: materialsErr, refetchData } = useMaterials();
   const [materialWeights, setMaterialWeights] = useState<
     Record<string, number>
   >({});
@@ -85,7 +85,12 @@ const EarnPoints = () => {
         )}
         {step === 2 && (
           <Step2
-            materials={data?.data}
+            materialsData={{
+              materials: data?.data,
+              loading: materialsLoading,
+              error: materialsErr,
+              refetchMaterials: refetchData
+            }}
             setStep={setStep}
             totalWeight={totalWeight}
             materialWeights={materialWeights}

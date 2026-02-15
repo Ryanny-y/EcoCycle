@@ -1,3 +1,5 @@
+import { ErrorState } from "@/components/ErrorState";
+import { Step2MaterialsSkeleton } from "@/components/SkeletonLoadings";
 import { Button } from "@/components/ui/button";
 import {
   CardContent,
@@ -11,25 +13,56 @@ import type { Material } from "@/types/dto";
 import { Minus, Plus, Scale } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
-const Step2 = ({
-  materials,
-  setStep,
-  materialWeights,
-  totalWeight,
-  setMaterialWeights,
-}: {
-  materials: Material[] | undefined
+type Step2Props = {
+  materialsData: {
+    materials: Material[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchMaterials: () => Promise<void>;
+  };
   setStep: Dispatch<SetStateAction<number>>;
   materialWeights: Record<string, number>;
   totalWeight: number;
   setMaterialWeights: Dispatch<SetStateAction<Record<string, number>>>;
-}) => {
+};
+
+const Step2 = ({
+  materialsData,
+  setStep,
+  materialWeights,
+  totalWeight,
+  setMaterialWeights,
+}: Step2Props) => {
   const handleWeightChange = (materialId: string, weight: number) => {
     setMaterialWeights((prev) => ({
       ...prev,
       [materialId]: Math.max(0, weight),
     }));
   };
+
+  if (materialsData.loading) return <Step2MaterialsSkeleton />;
+
+  if (materialsData.error) {
+    return (
+      <>
+        <CardHeader>
+          <CardTitle className="text-lg md:text-xl font-bold">
+            Recyclables List
+          </CardTitle>
+          <CardDescription>Faiied to fetch materials.</CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <ErrorState
+            title="Failed to load materials"
+            onRetry={materialsData.refetchMaterials}
+          />
+        </CardContent>
+      </>
+    );
+  }
+
+  if (!materialsData.materials) return null;
 
   return (
     <>
@@ -44,7 +77,7 @@ const Step2 = ({
 
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {materials?.map((material) => (
+          {materialsData.materials.map((material) => (
             <div
               key={material.id}
               className={`p-4 sm:p-6 rounded-2xl border transition-all ${
