@@ -22,7 +22,11 @@ const RewardItemsContext = createContext<RewardItemsContextType | null>(null);
 export const RewardItemsProvider = ({ children }: { children: ReactNode }) => {
   const { authResponse } = useAuth();
   const location = useLocation();
+
+  // Search
   const [search, setSearch] = useState<string>("");
+
+  // Other Filters
   const [itemType, setItemType] = useState<RewardItemType | null>(null);
   const [mainCategory, setMainCategory] =
     useState<RewardItemMainCategory | null>(null);

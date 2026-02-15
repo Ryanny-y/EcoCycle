@@ -27,9 +27,10 @@ const RewardItemsHeader = ({
   setIsAddRewardModalOpen,
 }: RewardItemsHeaderProps) => {
   const { setSearch, mainCategory, setMainCategory } = useRewardItems();
-  const [searchInput, setSearchInput] = useState("");
 
+  const [searchInput, setSearchInput] = useState("");
   const debouncedValue = useDebounce(searchInput, 500);
+  
   useEffect(() => {
     setSearch(debouncedValue);
   }, [debouncedValue, setSearch])  

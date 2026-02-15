@@ -1,3 +1,5 @@
+import { ErrorState } from "@/components/ErrorState";
+import { GridCardSkeleton } from "@/components/SkeletonLoadings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -7,33 +9,58 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { ApiResponse } from "@/types/api";
 import type { RewardItem } from "@/types/dto";
 import { truncateSentence } from "@/utils/formatter";
-import { MoreVertical, Pencil, Trash2, TriangleAlert } from "lucide-react";
+import { Boxes, MoreVertical, Pencil, Trash2, TriangleAlert } from "lucide-react";
 
 type RewardItemsGridProps = {
-  data: ApiResponse<RewardItem[]> | null;
-  loading: boolean;
-  error: string | null;
+  rewardItemsData: {
+    rewardItems: RewardItem[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchData: () => void;
+  };
   openEditReward: (rewardItem: RewardItem) => void;
   openDeleteReward: (rewardItem: RewardItem) => void;
 };
 
 const RewardItemsGrid = ({
-  data,
-  loading,
-  error,
+  rewardItemsData,
   openEditReward,
   openDeleteReward,
 }: RewardItemsGridProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
 
-  if (!data) return;
+  if (rewardItemsData.loading) return <GridCardSkeleton />;
+
+  if (rewardItemsData.error) {
+    return (
+      <ErrorState
+        title="Failed to load reward items"
+        onRetry={rewardItemsData.refetchData}
+      />
+    );
+  }
+
+  if (
+    !rewardItemsData.rewardItems ||
+    rewardItemsData.rewardItems.length === 0
+  ) {
+    return (
+      <div className="flex flex-col items-center justify-center h-40 text-center text-muted-foreground space-y-2">
+        <Boxes className="w-12 h-12 text-gray-400" />
+        <p className="text-lg font-semibold">No reward items available</p>
+        <p className="text-sm text-gray-500">
+          It looks like there are no reward items at the moment. Check back
+          later or add new rewards!
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
-      {data.data?.map((reward) => (
+      {rewardItemsData.rewardItems.map((reward) => (
         <Card key={reward.id} className="pt-0 gap-2 group">
           <div className="relative h-44 rounded-t-xl overflow-hidden">
             <img

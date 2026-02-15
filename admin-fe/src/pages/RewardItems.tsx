@@ -59,9 +59,12 @@ const RewardItems = () => {
       {/* Items */}
       {rewardItemsLayout === "GRID" ? (
         <RewardItemsGrid
-          data={data}
-          loading={loading}
-          error={error}
+          rewardItemsData={{
+            rewardItems: data?.data,
+            loading: loading,
+            error: error,
+            refetchData: refetchData
+          }}
           openEditReward={openEditReward}
           openDeleteReward={openDeleteReward}
         />

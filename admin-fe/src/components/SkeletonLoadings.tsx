@@ -131,3 +131,40 @@ export const RewardCardSkeleton = () => {
     </Card>
   );
 };
+
+export const GridCardSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Card className="pt-0 gap-2 animate-pulse">
+          {/* Image placeholder */}
+          <div className="relative h-44 rounded-t-xl overflow-hidden bg-muted">
+            <Skeleton className="h-full w-full" />
+          </div>
+
+          {/* Badge */}
+          <div className="absolute bottom-3 left-3">
+            <Badge>
+              <Skeleton className="h-4 w-20" />
+            </Badge>
+          </div>
+
+          {/* Content */}
+          <CardContent className="px-4 space-y-2">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-5 w-32" /> {/* Name */}
+              <Skeleton className="h-5 w-12" /> {/* Points */}
+            </div>
+            <Skeleton className="h-4 w-full" /> {/* Description */}
+          </CardContent>
+
+          {/* Footer */}
+          <CardFooter className="px-4 mt-5 flex items-center justify-between flex-wrap gap-x-5">
+            <Skeleton className="h-4 w-24" /> {/* Stock */}
+            <Skeleton className="h-4 w-12" /> {/* Low stock alert */}
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  );
+};
