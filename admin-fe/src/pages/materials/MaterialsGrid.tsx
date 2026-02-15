@@ -1,3 +1,5 @@
+import { ErrorState } from "@/components/ErrorState";
+import { GridCardSkeleton } from "@/components/SkeletonLoadings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
@@ -6,34 +8,56 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { ApiResponse } from "@/types/api";
 import type { Material } from "@/types/dto";
 import { truncateSentence } from "@/utils/formatter";
 import dayjs from "dayjs";
-import { MoreVertical, Pencil, Scale, Trash2 } from "lucide-react";
+import { Box, MoreVertical, Pencil, Scale, Trash2 } from "lucide-react";
 
 type MaterialsGridProps = {
-  data: ApiResponse<Material[]> | null;
-  loading: boolean;
-  error: string | null;
+  materialsData: {
+    materials: Material[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchData: () => Promise<void>;
+  };
   openEditMaterial: (material: Material) => void;
   openDeleteMaterial: (material: Material) => void;
 };
 
 const MaterialsGrid = ({
-  data,
-  loading,
-  error,
+  materialsData,
   openEditMaterial,
   openDeleteMaterial,
 }: MaterialsGridProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
 
-  if (!data) return;
+  if (materialsData.loading) return <GridCardSkeleton />;
+
+  if (materialsData.error) {
+    return (
+      <ErrorState
+        title="Failed to load reward items"
+        onRetry={materialsData.refetchData}
+      />
+    );
+  }
+
+  if (!materialsData.materials || materialsData.materials.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-40 text-center text-muted-foreground space-y-2">
+        <Box className="w-12 h-12 text-gray-400" />
+        <p className="text-lg font-semibold">No Materials available</p>
+        <p className="text-sm text-gray-500">
+          It looks like there are no reward items at the moment. Check back
+          later or add new rewards!
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
-      {data.data?.map((material) => (
+      {materialsData.materials.map((material) => (
         <Card key={material.id} className="pt-0 gap-2 group">
           <div className="relative h-44 rounded-t-xl overflow-hidden">
             <img
@@ -79,12 +103,14 @@ const MaterialsGrid = ({
           <CardFooter className="px-4 flex items-center justify-between flex-wrap gap-x-5 mt-auto pt-3">
             <p className="text-sm text-primary font-bold">
               <span>
-                <Scale className="inline mr-1" size={18}/> 1kg = {material.pointsPerKg}{" "}
-                {material.pointsPerKg > 1 ? "pts" : "pt"}
+                <Scale className="inline mr-1" size={18} /> 1kg ={" "}
+                {material.pointsPerKg} {material.pointsPerKg > 1 ? "pts" : "pt"}
               </span>
             </p>
 
-            <p className="text-xs text-muted-foreground">{dayjs(material.createdAt).format("MM/DD/YYYY")}</p>
+            <p className="text-xs text-muted-foreground">
+              {dayjs(material.createdAt).format("MM/DD/YYYY")}
+            </p>
           </CardFooter>
         </Card>
       ))}

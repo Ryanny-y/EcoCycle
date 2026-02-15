@@ -11,7 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { RewardItem } from "@/types/dto";
 import { truncateSentence } from "@/utils/formatter";
-import { Boxes, MoreVertical, Pencil, Trash2, TriangleAlert } from "lucide-react";
+import {
+  Boxes,
+  MoreVertical,
+  Pencil,
+  Trash2,
+  TriangleAlert,
+} from "lucide-react";
 
 type RewardItemsGridProps = {
   rewardItemsData: {

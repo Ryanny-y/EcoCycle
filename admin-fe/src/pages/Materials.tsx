@@ -62,9 +62,12 @@ const Materials = () => {
       {/* DISPLAY MATERIALS */}
       {materialsLayout === "GRID" ? (
         <MaterialsGrid
-          data={data}
-          loading={loading}
-          error={error}
+          materialsData={{
+            materials: data?.data,
+            loading,
+            error,
+            refetchData,
+          }}
           openEditMaterial={openEditMaterial}
           openDeleteMaterial={openDeleteMaterial}
         />
