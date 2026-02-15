@@ -31,7 +31,6 @@ public class RewardController {
                 .message("Points earned successfully.")
                 .data(response)
                 .build();
-
         return ResponseEntity.ok(apiResponse);
     }
 
