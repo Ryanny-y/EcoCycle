@@ -36,7 +36,7 @@ const MaterialsGrid = ({
   if (materialsData.error) {
     return (
       <ErrorState
-        title="Failed to load reward items"
+        title="Failed to load Materials"
         onRetry={materialsData.refetchData}
       />
     );
@@ -48,8 +48,8 @@ const MaterialsGrid = ({
         <Box className="w-12 h-12 text-gray-400" />
         <p className="text-lg font-semibold">No Materials available</p>
         <p className="text-sm text-gray-500">
-          It looks like there are no reward items at the moment. Check back
-          later or add new rewards!
+          It looks like there are no materials at the moment. Check back
+          later or add new materials!
         </p>
       </div>
     );

@@ -75,9 +75,12 @@ const Materials = () => {
         <Card>
           <CardContent>
             <MaterialsTable
-              data={data}
-              loading={loading}
-              error={error}
+              materialsData={{
+                materials: data?.data,
+                loading,
+                error,
+                refetchData,
+              }}
               openEditMaterial={openEditMaterial}
               openDeleteMaterial={openDeleteMaterial}
             />

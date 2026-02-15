@@ -1,4 +1,5 @@
-import { Badge } from "@/components/ui/badge";
+import { ErrorState } from "@/components/ErrorState";
+import { TableSkeleton } from "@/components/SkeletonLoadings";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,31 +17,53 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ApiResponse } from "@/types/api";
 import type { Material } from "@/types/dto";
 import dayjs from "dayjs";
-import { Edit, MoreVertical, Trash2 } from "lucide-react";
+import { Box, Edit, MoreVertical, Trash2 } from "lucide-react";
 
 type MaterialsTableProps = {
-  data: ApiResponse<Material[]> | null;
-  loading: boolean;
-  error: string | null;
+  materialsData: {
+    materials: Material[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchData: () => Promise<void>;
+  };
   openEditMaterial: (material: Material) => void;
   openDeleteMaterial: (material: Material) => void;
 };
 
 const MaterialsTable = ({
-  data,
-  loading,
-  error,
+  materialsData,
   openEditMaterial,
   openDeleteMaterial,
 }: MaterialsTableProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
 
-  if (!data?.data) return;
+  if (materialsData.loading) return <TableSkeleton headLength={4} />;
 
-  const materials = data.data;
+  if (materialsData.error) {
+    return (
+      <ErrorState
+        title="Failed to load Materials"
+        onRetry={materialsData.refetchData}
+      />
+    );
+  }
+
+  if (!materialsData.materials || materialsData.materials.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-40 text-center text-muted-foreground space-y-2">
+        <Box className="w-12 h-12 text-gray-400" />
+        <p className="text-lg font-semibold">No Materials available</p>
+        <p className="text-sm text-gray-500">
+          It looks like there are no material at the moment. Check back
+          later or add new materials!
+        </p>
+      </div>
+    );
+  }
+
+  const { materials } = materialsData;
 
   return (
     <div className="custom-scroll rounded-xl max-h-150">
@@ -53,9 +76,7 @@ const MaterialsTable = ({
             <TableHead className="text-white text-center">
               Points per Kilogram
             </TableHead>
-            <TableHead className="text-white text-center">
-              Added At
-            </TableHead>
+            <TableHead className="text-white text-center">Added At</TableHead>
             <TableHead className="text-white text-right">ACTIONS</TableHead>
           </TableRow>
         </TableHeader>
@@ -88,7 +109,9 @@ const MaterialsTable = ({
                   {material.pointsPerKg}{" "}
                   {material.pointsPerKg > 1 ? "Points" : "Point"}
                 </TableCell>
-                <TableCell className="text-center text-base">{dayjs(material.createdAt).format("MMM DD, YYYY")}</TableCell>
+                <TableCell className="text-center text-base">
+                  {dayjs(material.createdAt).format("MMM DD, YYYY")}
+                </TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

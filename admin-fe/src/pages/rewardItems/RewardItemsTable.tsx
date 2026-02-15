@@ -1,3 +1,5 @@
+import { ErrorState } from "@/components/ErrorState";
+import { TableSkeleton } from "@/components/SkeletonLoadings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,29 +18,51 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { ApiResponse } from "@/types/api";
 import type { RewardItem } from "@/types/dto";
-import { Edit, MoreVertical, Trash2 } from "lucide-react";
+import { Boxes, Edit, MoreVertical, Trash2 } from "lucide-react";
 
 type RewardItemsTableProps = {
-  data: ApiResponse<RewardItem[]> | null;
-  loading: boolean;
-  error: string | null;
+  rewardItemsData: {
+    rewardItems: RewardItem[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchData: () => void;
+  };
   openEditReward: (rewardItem: RewardItem) => void;
   openDeleteReward: (rewardItem: RewardItem) => void;
 };
 
 const RewardItemsTable = ({
-  data,
-  loading,
-  error,
+  rewardItemsData,
   openEditReward,
-  openDeleteReward
+  openDeleteReward,
 }: RewardItemsTableProps) => {
   const STORAGE_URL = import.meta.env.VITE_STORAGE_BASE_URL;
-  if (!data?.data) return;
 
-  const rewardItems = data.data;
+  if (rewardItemsData.loading) return <TableSkeleton headLength={5} />;
+
+  if (rewardItemsData.error) {
+    return (
+      <ErrorState
+        title="Failed to load Reward Items"
+        onRetry={rewardItemsData.refetchData}
+      />
+    );
+  }
+
+  if (!rewardItemsData.rewardItems || rewardItemsData.rewardItems.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-40 text-center text-muted-foreground space-y-2">
+        <Boxes className="w-12 h-12 text-gray-400" />
+        <p className="text-lg font-semibold">No Reward Items available</p>
+        <p className="text-sm text-gray-500">
+          It looks like there are no reward items at the moment. Check back
+          later or add new reward items!
+        </p>
+      </div>
+    );
+  }
+  const { rewardItems } = rewardItemsData;
 
   return (
     <div className="custom-scroll rounded-xl max-h-150">

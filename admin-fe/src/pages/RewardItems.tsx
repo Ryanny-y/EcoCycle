@@ -63,7 +63,7 @@ const RewardItems = () => {
             rewardItems: data?.data,
             loading: loading,
             error: error,
-            refetchData: refetchData
+            refetchData: refetchData,
           }}
           openEditReward={openEditReward}
           openDeleteReward={openDeleteReward}
@@ -72,9 +72,12 @@ const RewardItems = () => {
         <Card>
           <CardContent>
             <RewardItemsTable
-              data={data}
-              loading={loading}
-              error={error}
+              rewardItemsData={{
+                rewardItems: data?.data,
+                loading: loading,
+                error: error,
+                refetchData: refetchData,
+              }}
               openEditReward={openEditReward}
               openDeleteReward={openDeleteReward}
             />
@@ -91,7 +94,7 @@ const RewardItems = () => {
         />
       )}
 
-      {(isEditRewardOpen && rewardToEdit) && (
+      {isEditRewardOpen && rewardToEdit && (
         <EditRewardItemModal
           isEditRewardOpen={isEditRewardOpen}
           setIsEditRewardOpen={setIsEditRewardOpen}
@@ -101,7 +104,7 @@ const RewardItems = () => {
         />
       )}
 
-      {(isDeleteRewardOpen && rewardToDelete) && (
+      {isDeleteRewardOpen && rewardToDelete && (
         <DeleteRewardItemModal
           isDeleteRewardOpen={isDeleteRewardOpen}
           setIsDeleteRewardOpen={setIsDeleteRewardOpen}
