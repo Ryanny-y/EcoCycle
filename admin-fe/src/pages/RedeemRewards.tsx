@@ -1,7 +1,8 @@
 import PageHeader from "@/components/shared/PageHeader";
 import type { RecordInterface } from "@/types/dto";
 import { useState } from "react";
-import SearchRecord from "./exchangeItem.tsx/SearchRecord";
+import SearchRecord from "./redeemRewards/SearchRecord";
+import AvailableRewards from "./redeemRewards/AvailableRewards";
 
 const ExchangeItems = () => {
   const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(
@@ -20,6 +21,9 @@ const ExchangeItems = () => {
         selectedRecord={selectedRecord}
         setSelectedRecord={setSelectedRecord}
       />
+
+      {/* Available Rewards */}
+      {selectedRecord && <AvailableRewards selectedRecord={selectedRecord} />}
     </div>
   );
 };
