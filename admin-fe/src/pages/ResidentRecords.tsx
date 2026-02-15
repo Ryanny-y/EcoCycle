@@ -78,6 +78,7 @@ const ResidentRecords = () => {
             error={error}
             openEditRecord={openEditRecord}
             openDeleteRecord={openDeleteRecord}
+            refetchData={refetchData}
           />
         </CardContent>
 
