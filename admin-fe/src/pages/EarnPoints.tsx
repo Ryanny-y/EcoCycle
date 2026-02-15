@@ -3,19 +3,22 @@ import { Card } from "@/components/ui/card";
 import type { RecordInterface } from "@/types/dto";
 import { CheckCircle2 } from "lucide-react";
 import React, { useMemo, useState } from "react";
-import { MATERIALS } from "@/constants";
 import Step1 from "./earnPoints/Step1";
 import Step2 from "./earnPoints/Step2";
 import Step3 from "./earnPoints/Step3";
+import useMaterials from "@/contexts/MaterialsContext";
 
 const EarnPoints = () => {
   const [step, setStep] = useState(1);
   const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(
     null,
   );
+  const { data } = useMaterials();
   const [materialWeights, setMaterialWeights] = useState<
     Record<string, number>
   >({});
+
+  // Handle the case where data is null
 
   const totalWeight: number = useMemo(() => {
     return Object.values(materialWeights).reduce(
@@ -26,7 +29,7 @@ const EarnPoints = () => {
 
   const totalPoints: number = useMemo(() => {
     return Object.entries(materialWeights).reduce((total, [id, weight]) => {
-      const material = MATERIALS.find((material) => material.id === id);
+      const material = data?.data?.find((material) => material.id === id);
       return total + Number(weight) * (material?.pointsPerKg || 0);
     }, 0);
   }, [materialWeights]);
@@ -82,6 +85,7 @@ const EarnPoints = () => {
         )}
         {step === 2 && (
           <Step2
+            materials={data?.data}
             setStep={setStep}
             totalWeight={totalWeight}
             materialWeights={materialWeights}
@@ -90,7 +94,9 @@ const EarnPoints = () => {
         )}
         {step === 3 && (
           <Step3
+            materials={data?.data}
             selectedRecord={selectedRecord}
+            setSelectedRecord={setSelectedRecord}
             totalWeight={totalWeight}
             totalPoints={totalPoints}
             materialWeights={materialWeights}

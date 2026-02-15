@@ -7,16 +7,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { MATERIALS } from "@/constants";
+import type { Material } from "@/types/dto";
 import { Minus, Plus, Scale } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
 const Step2 = ({
+  materials,
   setStep,
   materialWeights,
   totalWeight,
   setMaterialWeights,
 }: {
+  materials: Material[] | undefined
   setStep: Dispatch<SetStateAction<number>>;
   materialWeights: Record<string, number>;
   totalWeight: number;
@@ -42,7 +44,7 @@ const Step2 = ({
 
       <CardContent>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {MATERIALS.map((material) => (
+          {materials?.map((material) => (
             <div
               key={material.id}
               className={`p-4 sm:p-6 rounded-2xl border transition-all ${
@@ -57,7 +59,7 @@ const Step2 = ({
                     {material.name}
                   </h4>
                   <p className="text-[10px] sm:text-xs text-primary font-medium">
-                    {material.pointsPerKg} Point/{material.unit}
+                    {material.pointsPerKg} points/kg
                   </p>
                 </div>
                 {(materialWeights[material.id] || 0) > 0 && (

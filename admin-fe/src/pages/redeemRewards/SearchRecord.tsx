@@ -116,7 +116,7 @@ const SearchRecord = ({
       </Card>
 
       {!selectedRecord && (
-        <div className="border border-dashed bg-white h-72 flex items-center justify-center flex-col">
+        <div className="border border-dashed bg-white rounded-xl h-72 flex items-center justify-center flex-col">
           <ArrowLeftRight className="mb-3 text-muted-foreground" size={40} />
           <p className="text-muted-foreground/80 font-bold text-xl">
             Please select a resident first

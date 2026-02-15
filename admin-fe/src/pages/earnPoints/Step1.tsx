@@ -1,11 +1,17 @@
-import { CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
 import useFetchData from "@/hooks/useFetchData";
 import type { PaginatedResponse } from "@/types/api";
 import type { RecordInterface } from "@/types/dto";
 import { formatName } from "@/utils/formatter";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight, Search, UserCheck } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 
 const Step1 = ({
@@ -38,7 +44,7 @@ const Step1 = ({
         <CardDescription>Search and Select record to proceed.</CardDescription>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className={`${selectedRecord ? "max-h-none" : "max-h-10"}`}>
         <div className="relative mb-6">
           <Search
             className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400"
@@ -69,7 +75,11 @@ const Step1 = ({
                   </div>
                   <div className="flex-1">
                     <p className="font-bold text-gray-900 text-sm sm:text-base">
-                      {formatName(record.lastName, record.firstName, record.middleName)}
+                      {formatName(
+                        record.lastName,
+                        record.firstName,
+                        record.middleName,
+                      )}
                     </p>
                     <p className="text-[10px] sm:text-xs text-gray-500">
                       {record.points} pts
@@ -90,7 +100,11 @@ const Step1 = ({
 
             <div>
               <h1 className="font-bold text-lg">
-                {formatName(selectedRecord.lastName, selectedRecord.firstName, selectedRecord.middleName)}
+                {formatName(
+                  selectedRecord.lastName,
+                  selectedRecord.firstName,
+                  selectedRecord.middleName,
+                )}
               </h1>
               <p className="text-sm">Normal Resident</p>
             </div>
@@ -104,9 +118,19 @@ const Step1 = ({
           </div>
         )}
       </CardContent>
+
+      {!selectedRecord && (
+        <div className="h-52 border border-muted-foreground rounded-xl border-dashed mx-6 flex flex-col gap-1 items-center justify-center bg-gray-50">
+          <span className="bg-stone-100 p-5 rounded-full">
+            <UserCheck size={40} className="text-stone-400" />
+          </span>
+          <p className="font-semibold text-muted-foreground">
+            Search and select a resident to proceed
+          </p>
+        </div>
+      )}
     </>
   );
 };
-
 
 export default Step1;

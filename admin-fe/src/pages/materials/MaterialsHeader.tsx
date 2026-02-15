@@ -80,8 +80,8 @@ const MaterialsHeader = ({
             variant={"outline"}
             className="group bg-white! h-full hover:bg-muted! active:bg-muted/80!"
             onClick={handleChangeSortOrder}
+            title={`Sort ${sortOrder === "ASC" ? "Descending" : "Ascending"}`}
           >
-            <span>Sort</span>
             <ArrowUpDown />
           </Button>
         </div>
