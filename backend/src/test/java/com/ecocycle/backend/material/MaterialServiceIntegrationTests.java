@@ -94,7 +94,7 @@ class MaterialServiceIntegrationTests {
         underTest.createMaterial(createMaterial("Glass1"));
         underTest.createMaterial(createMaterial("Plastic"));
 
-        List<Material> materials = underTest.getMaterials();
+        List<Material> materials = underTest.getMaterials(null, null, null);
 
         assertThat(materials).hasSize(2);
         assertThat(materials)

@@ -23,8 +23,12 @@ public class MaterialController {
     private final MaterialMapper materialMapper;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MaterialDto>>> getMaterials() {
-        List<Material> materials = materialService.getMaterials();
+    public ResponseEntity<ApiResponse<List<MaterialDto>>> getMaterials(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "order", required = false) String order
+    ) {
+        List<Material> materials = materialService.getMaterials(search, sortBy, order);
         List<MaterialDto> materialDtos = materials.stream().map(materialMapper::toDto).toList();
 
         ApiResponse<List<MaterialDto>> apiResponse = ApiResponse.<List<MaterialDto>>builder()

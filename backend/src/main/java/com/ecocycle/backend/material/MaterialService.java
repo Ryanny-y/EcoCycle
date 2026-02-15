@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface MaterialService {
-    List<Material> getMaterials();
+    List<Material> getMaterials(String search, String sortBy, String order);
     Material getMaterialById(UUID id);
     Material createMaterial(CreateMaterialRequest request);
     Material updateMaterial(UUID id, UpdateMaterialRequest request);

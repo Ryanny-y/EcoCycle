@@ -10,6 +10,7 @@ import com.ecocycle.backend.material.model.Material;
 import com.ecocycle.backend.material.repository.MaterialRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
@@ -56,8 +57,11 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Material> getMaterials() {
-        return materialRepository.findAll();
+    public List<Material> getMaterials(String search, String sortBy, String order) {
+        Sort.Direction direction = Sort.Direction.fromString(order);
+        Sort sort = Sort.by(direction, sortBy);
+
+        return materialRepository.findAllByFilters(search, sort);
     }
 
     @Override
