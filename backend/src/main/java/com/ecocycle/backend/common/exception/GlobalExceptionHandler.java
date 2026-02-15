@@ -2,6 +2,7 @@ package com.ecocycle.backend.common.exception;
 
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.common.web.ApiErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -95,6 +96,19 @@ public class GlobalExceptionHandler {
                 ApiErrorResponse.of(
                         HttpStatus.UNAUTHORIZED,
                         ex.getMessage(),
+                        "EXPIRED_JWT"
+                )
+        );
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ApiErrorResponse> handleExpiredJwtException(
+            ExpiredJwtException ex) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                ApiErrorResponse.of(
+                        HttpStatus.UNAUTHORIZED,
+                        "JWT token has expired",
                         "EXPIRED_JWT"
                 )
         );

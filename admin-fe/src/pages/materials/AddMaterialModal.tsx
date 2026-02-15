@@ -49,7 +49,6 @@ const AddMaterialModal = ({
 
   const {
     handleChange,
-    handleSelectChange,
     handleFileChange,
     handleDrop,
     handleDragOver,
