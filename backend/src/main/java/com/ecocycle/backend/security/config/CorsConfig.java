@@ -14,7 +14,8 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(List.of(
+        // TODO: Remove the localhost in dev
+        corsConfiguration.setAllowedOriginPatterns(List.of(
                 "http://localhost:8080", "http://localhost:5173", "https://*.ecocycletalipapa.com"
         ));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
