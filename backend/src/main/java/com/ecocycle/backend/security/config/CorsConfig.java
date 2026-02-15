@@ -15,8 +15,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         // TODO: Remove the localhost in dev
-        corsConfiguration.setAllowedOriginPatterns(List.of(
-                "http://localhost:8080", "http://localhost:5173", "https://*.ecocycletalipapa.com"
+        corsConfiguration.setAllowedOrigin(List.of(
+                "http://localhost:8080", "http://localhost:5173", "https://admin.ecocycletalipapa.com"
         ));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
