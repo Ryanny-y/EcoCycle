@@ -147,7 +147,7 @@ const AddRewardItemModal = ({
           </div>
 
           <div>
-            <DialogTitle> Add New Reward</DialogTitle>
+            <DialogTitle>Add New Reward</DialogTitle>
             <DialogDescription>
               Fill in the details to create a add new reward
             </DialogDescription>

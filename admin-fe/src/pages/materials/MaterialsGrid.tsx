@@ -76,10 +76,10 @@ const MaterialsGrid = ({
             </p>
           </CardContent>
 
-          <CardFooter className="px-4 mt-5 flex items-center justify-between flex-wrap gap-x-5">
-            <p className="text-sm font-semibold text-muted-foreground">
+          <CardFooter className="px-4 flex items-center justify-between flex-wrap gap-x-5 mt-auto pt-3">
+            <p className="text-sm text-primary font-bold">
               <span>
-                <Scale /> 1kg = {material.pointsPerKg}{" "}
+                <Scale className="inline mr-1" size={18}/> 1kg = {material.pointsPerKg}{" "}
                 {material.pointsPerKg > 1 ? "pts" : "pt"}
               </span>
             </p>

@@ -79,6 +79,7 @@ const RewardItems = () => {
         </Card>
       )}
 
+      {/* MODALS */}
       {isAddRewardModalOpen && (
         <AddRewardItemModal
           isAddRewardModalOpen={isAddRewardModalOpen}
@@ -87,7 +88,6 @@ const RewardItems = () => {
         />
       )}
 
-      {/* MODALS */}
       {(isEditRewardOpen && rewardToEdit) && (
         <EditRewardItemModal
           isEditRewardOpen={isEditRewardOpen}

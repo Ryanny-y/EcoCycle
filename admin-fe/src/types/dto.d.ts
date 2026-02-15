@@ -18,7 +18,7 @@ export interface RecordInterface {
 export interface Material {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   pointsPerKg: number;
   imageUrl: string;
   createdAt: Date;

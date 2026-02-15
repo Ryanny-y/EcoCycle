@@ -5,6 +5,7 @@ import type { Material } from "@/types/dto";
 import { Card, CardContent } from "@/components/ui/card";
 import MaterialsGrid from "./materials/MaterialsGrid";
 import useMaterials from "@/contexts/MaterialsContext";
+import AddMaterialModal from "./materials/AddMaterialModal";
 
 const Materials = () => {
   const [materialsLayout, setMaterialsLayout] = useState<"GRID" | "TABLE">(
@@ -77,6 +78,15 @@ const Materials = () => {
             /> */}
           </CardContent>
         </Card>
+      )}
+
+      {/* MODALS */}
+      {isAddMaterialModalOpen && (
+        <AddMaterialModal
+          isAddMaterialModalOpen={isAddMaterialModalOpen}
+          setIsAddMaterialModalOpen={setIsAddMaterialModalOpen}
+          refetchData={refetchData}
+        />
       )}
     </div>
   );
