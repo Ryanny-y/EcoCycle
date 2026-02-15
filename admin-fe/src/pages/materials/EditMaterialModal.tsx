@@ -193,7 +193,7 @@ const EditMaterialModal = ({
                       <img
                         src={URL.createObjectURL(formData.imageFile)}
                         alt="Preview"
-                        className="mx-auto max-h-20 rounded-lg object-contain"
+                        className="mx-auto max-h-20  rounded-lg object-contain"
                       />
                       <p className="text-primary font-medium">
                         {formData.imageFile.name}

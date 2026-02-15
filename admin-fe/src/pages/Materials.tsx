@@ -8,6 +8,7 @@ import useMaterials from "@/contexts/MaterialsContext";
 import AddMaterialModal from "./materials/AddMaterialModal";
 import MaterialsTable from "./materials/MaterialsTable";
 import EditMaterialModal from "./materials/EditMaterialModal";
+import DeleteMaterialModal from "./materials/DeleteMaterialModal";
 
 const Materials = () => {
   const [materialsLayout, setMaterialsLayout] = useState<"GRID" | "TABLE">(
@@ -17,7 +18,6 @@ const Materials = () => {
     },
   );
 
-  
   const { data, loading, error, refetchData } = useMaterials();
 
   const handleSetLayout = (value: "GRID" | "TABLE") => {
@@ -97,6 +97,16 @@ const Materials = () => {
           setIsEditMaterialOpen={setIsEditMaterialOpen}
           materialToEdit={materialToEdit}
           setMaterialToEdit={setMaterialToEdit}
+          refetchData={refetchData}
+        />
+      )}
+
+      {isDeleteMaterialOpen && materialToDelete && (
+        <DeleteMaterialModal
+          isDeleteMaterialOpen={isDeleteMaterialOpen}
+          setIsDeleteMaterialOpen={setIsDeleteMaterialOpen}
+          materialToDelete={materialToDelete}
+          setMaterialToDelete={setMaterialToDelete}
           refetchData={refetchData}
         />
       )}
