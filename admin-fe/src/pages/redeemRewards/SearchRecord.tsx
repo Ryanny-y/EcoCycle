@@ -1,26 +1,31 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { ArrowLeftRight, ChevronRight, Gift, Search, X } from "lucide-react";
-import type { RecordInterface } from "@/types/dto";
 import {
-  useEffect,
-  useMemo,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChevronRight, Gift, Search, X, ArrowLeftRight } from "lucide-react";
+import type { RecordInterface } from "@/types/dto";
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { formatName } from "@/utils/formatter";
 
 type SearchRecordProps = {
-  records: RecordInterface[] | undefined;
+  recordsData: {
+    records: RecordInterface[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchData: () => Promise<void>;
+  };
   selectedRecord: RecordInterface | null;
   setSearch: Dispatch<SetStateAction<string>>;
   setSelectedRecordId: Dispatch<SetStateAction<string | null>>;
 };
 
 const SearchRecord = ({
-  records,
+  recordsData,
   selectedRecord,
   setSelectedRecordId,
   setSearch,
@@ -28,17 +33,18 @@ const SearchRecord = ({
   const [searchInput, setSearchInput] = useState<string>("");
 
   const debouncedSearch = useDebounce(searchInput, 700);
+  const isDebouncing = searchInput !== debouncedSearch;
 
   useEffect(() => {
     setSearch(debouncedSearch);
   }, [debouncedSearch, setSearch]);
 
   const foundRecords = useMemo(() => {
-    return (records ?? [])
+    return (recordsData.records ?? [])
       .slice()
       .sort((a, b) => a.lastName.localeCompare(b.lastName));
-  }, [records]);
-  
+  }, [recordsData.records]);
+
   return (
     <>
       <Card className="gap-4">
@@ -61,32 +67,65 @@ const SearchRecord = ({
               placeholder="Search record to swap points..."
             />
 
-            {searchInput && foundRecords.length > 0 && (
+            {searchInput && (
               <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-100 rounded-xl shadow-xl z-20 overflow-hidden divide-y divide-gray-50">
-                {foundRecords.map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => {
-                      setSelectedRecordId(r.id);
-                      setSearchInput("");
-                    }}
-                    className="w-full flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 transition-colors text-left"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
-                      {r.firstName[0]}
-                      {r.lastName[0]}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-bold text-gray-900">
-                        {r.lastName}, {r.firstName}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        Balance: {r.points} pts
-                      </p>
-                    </div>
-                    <ChevronRight size={18} className="text-gray-300" />
-                  </button>
-                ))}
+                {recordsData.loading || isDebouncing ? (
+                  <div className="p-4 space-y-4">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <div key={i} className="flex items-center gap-4">
+                        <Skeleton className="h-10 w-10 rounded-full" />
+                        <div className="flex-1 space-y-2">
+                          <Skeleton className="h-4 w-2/3" />
+                          <Skeleton className="h-3 w-1/4" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : recordsData.error ? (
+                  <div className="p-6 text-center">
+                    <p className="text-sm font-semibold text-red-500">
+                      Failed to load records
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Please check your connection and try again.
+                    </p>
+                  </div>
+                ) : foundRecords.length === 0 ? (
+                  <div className="p-6 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      No residents found
+                    </p>
+                  </div>
+                ) : (
+                  foundRecords.map((record) => (
+                    <button
+                      key={record.id}
+                      onClick={() => {
+                        setSelectedRecordId(record.id);
+                        setSearchInput("");
+                      }}
+                      className="w-full flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 transition-colors text-left"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-sm">
+                        {record.firstName[0]}
+                        {record.lastName[0]}
+                      </div>
+
+                      <div className="flex-1">
+                        <p className="font-bold text-gray-900">
+                          {formatName(
+                            record.lastName,
+                            record.firstName,
+                            record.middleName,
+                          )}
+                        </p>
+                        <p className="text-xs text-gray-500">{record.points} pts</p>
+                      </div>
+
+                      <ChevronRight size={16} className="text-gray-300" />
+                    </button>
+                  ))
+                )}
               </div>
             )}
           </div>
@@ -109,9 +148,7 @@ const SearchRecord = ({
                 </h3>
                 <p className="text-sm sm:text-base text-emerald-800">
                   Available Points:{" "}
-                  <span className="font-bold underline">
-                    {selectedRecord.points} pts
-                  </span>
+                  <span className="font-bold underline">{selectedRecord.points} pts</span>
                 </p>
               </div>
               <button

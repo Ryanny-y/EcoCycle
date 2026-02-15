@@ -1,4 +1,11 @@
-import { CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
 import {
   Table,
@@ -8,11 +15,13 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 type TableSkeletonProps = {
-  rows?: number
-  headLength?: number
-}
+  rows?: number;
+  headLength?: number;
+};
 
 export const TableSkeleton = ({
   rows = 5,
@@ -45,7 +54,6 @@ export const TableSkeleton = ({
   </div>
 );
 
-
 export const Step2MaterialsSkeleton = () => {
   return (
     <>
@@ -53,9 +61,7 @@ export const Step2MaterialsSkeleton = () => {
         <CardTitle className="text-lg md:text-xl font-bold">
           Recyclables List
         </CardTitle>
-        <CardDescription>
-          Loading materials...
-        </CardDescription>
+        <CardDescription>Loading materials...</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -85,5 +91,43 @@ export const Step2MaterialsSkeleton = () => {
         </div>
       </CardContent>
     </>
+  );
+};
+
+export const RewardCardSkeleton = () => {
+  return (
+    <Card className="pt-0 gap-3 animate-pulse">
+      {/* Image placeholder */}
+      <div className="h-40 flex items-center justify-center w-full bg-muted py-5">
+        <Skeleton className="w-full h-full" />
+      </div>
+
+      {/* Content */}
+      <CardContent className="space-y-3">
+        <Badge>
+          <Skeleton className="h-4 w-20" />
+        </Badge>
+
+        <div className="text-lg font-bold space-y-1">
+          <Skeleton className="h-5 w-32" /> {/* Reward Name */}
+          <Skeleton className="h-4 w-20" /> {/* Points */}
+        </div>
+
+        <div className="flex items-center justify-between text-xs">
+          <p className="text-muted-foreground">
+            <Skeleton className="h-3 w-12" />
+          </p>
+          <p className="font-bold">
+            <Skeleton className="h-3 w-10" />
+          </p>
+        </div>
+      </CardContent>
+
+      <CardFooter>
+        <Button className="w-full py-5" disabled>
+          <Skeleton className="h-5 w-full" />
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };

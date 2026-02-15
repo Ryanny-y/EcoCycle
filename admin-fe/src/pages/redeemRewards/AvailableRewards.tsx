@@ -1,3 +1,5 @@
+import { ErrorState } from "@/components/ErrorState";
+import { RewardCardSkeleton } from "@/components/SkeletonLoadings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -6,18 +8,19 @@ import { ShoppingBag } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
 type AvailableRewardsProps = {
-  rewards: RewardItem[] | undefined;
-  loading: boolean;
-  error: string | null;
+  rewardsData: {
+    rewards: RewardItem[] | undefined;
+    loading: boolean;
+    error: string | null;
+    refetchData: () => Promise<void>
+  }
   selectedRecord: RecordInterface;
   setRewardToRedeem: Dispatch<SetStateAction<RewardItem | null>>;
   setIsRedeemModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
 const AvailableRewards = ({
-  rewards,
-  loading,
-  error,
+  rewardsData,
   selectedRecord,
   setRewardToRedeem,
   setIsRedeemModalOpen
@@ -26,7 +29,7 @@ const AvailableRewards = ({
 
   // TODO: Check Rewards error or null
 
-  const availableRewards = rewards?.filter(
+  const availableRewards = rewardsData.rewards?.filter(
     (reward) => reward.requiredPoints <= selectedRecord.points,
   );
 
@@ -34,6 +37,40 @@ const AvailableRewards = ({
     setRewardToRedeem(reward);
     setIsRedeemModalOpen(true);
   };
+
+  if (rewardsData.loading) {
+    return (
+      <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <RewardCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (rewardsData.error) {
+    return (
+      <Card>
+        <CardContent>
+          <ErrorState
+            title="Failed to load rewards"
+            onRetry={rewardsData.refetchData}
+            retryLabel="Retry"
+          />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!availableRewards || availableRewards.length === 0) {
+    return (
+      <Card>
+        <CardContent className="text-center text-muted-foreground py-10">
+          No rewards available for this resident
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div

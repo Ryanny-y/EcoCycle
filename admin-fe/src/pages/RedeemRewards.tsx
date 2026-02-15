@@ -46,7 +46,12 @@ const RedeemRewards = () => {
 
       {/* Search */}
       <SearchRecord
-        records={records?.content}
+        recordsData={{
+          records: records?.content,
+          loading: recordsLoading,
+          error: recordsErr,
+          refetchData: refetchRecord,
+        }}
         setSearch={setSearch}
         selectedRecord={selectedRecord}
         setSelectedRecordId={setSelectedRecordId}
@@ -55,9 +60,12 @@ const RedeemRewards = () => {
       {/* Available Rewards */}
       {selectedRecord && (
         <AvailableRewards
-          rewards={rewards?.data}
-          loading={rewardsLoading}
-          error={rewardsErr}
+          rewardsData={{
+            rewards: rewards?.data,
+            loading: rewardsLoading,
+            error: rewardsErr,
+            refetchData: refetchRewards,
+          }}
           selectedRecord={selectedRecord}
           setRewardToRedeem={setRewardToRedeem}
           setIsRedeemModalOpen={setIsRedeemModalOpen}
