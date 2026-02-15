@@ -129,6 +129,7 @@ const EditRewardItemModal = ({
       refetchData();
       toast.success(response.message);
       setIsEditRewardOpen(false);
+      setRewardToEdit(null);
     } catch (error: any) {
       toast.error(error.message);
     } finally {

@@ -6,6 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import MaterialsGrid from "./materials/MaterialsGrid";
 import useMaterials from "@/contexts/MaterialsContext";
 import AddMaterialModal from "./materials/AddMaterialModal";
+import MaterialsTable from "./materials/MaterialsTable";
+import EditMaterialModal from "./materials/EditMaterialModal";
 
 const Materials = () => {
   const [materialsLayout, setMaterialsLayout] = useState<"GRID" | "TABLE">(
@@ -69,13 +71,13 @@ const Materials = () => {
       ) : (
         <Card>
           <CardContent>
-            {/* <RewardItemsTable
+            <MaterialsTable
               data={data}
               loading={loading}
               error={error}
-              openEditReward={openEditReward}
-              openDeleteReward={openDeleteReward}
-            /> */}
+              openEditMaterial={openEditMaterial}
+              openDeleteMaterial={openDeleteMaterial}
+            />
           </CardContent>
         </Card>
       )}
@@ -85,6 +87,16 @@ const Materials = () => {
         <AddMaterialModal
           isAddMaterialModalOpen={isAddMaterialModalOpen}
           setIsAddMaterialModalOpen={setIsAddMaterialModalOpen}
+          refetchData={refetchData}
+        />
+      )}
+
+      {isEditMaterialOpen && (
+        <EditMaterialModal
+          isEditMaterialOpen={isEditMaterialOpen}
+          setIsEditMaterialOpen={setIsEditMaterialOpen}
+          materialToEdit={materialToEdit}
+          setMaterialToEdit={setMaterialToEdit}
           refetchData={refetchData}
         />
       )}
