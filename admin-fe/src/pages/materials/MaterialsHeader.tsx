@@ -70,7 +70,7 @@ const MaterialsHeader = ({
                 <SelectGroup>
                   <SelectItem value="createdAt">Created Date</SelectItem>
                   <SelectItem value="name">Name (A-Z)</SelectItem>
-                  <SelectItem value="points">Points</SelectItem>
+                  <SelectItem value="pointsPerKg">Points</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
