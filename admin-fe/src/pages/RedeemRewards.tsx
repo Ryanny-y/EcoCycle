@@ -1,13 +1,41 @@
 import PageHeader from "@/components/shared/PageHeader";
-import type { RecordInterface } from "@/types/dto";
-import { useState } from "react";
+import type { RecordInterface, RewardItem } from "@/types/dto";
+import { useMemo, useState } from "react";
 import SearchRecord from "./redeemRewards/SearchRecord";
 import AvailableRewards from "./redeemRewards/AvailableRewards";
+import RedeemModal from "./redeemRewards/RedeemModal";
+import useRewardItems from "@/contexts/RewardItemsContext";
+import type { PaginatedResponse } from "@/types/api";
+import useFetchData from "@/hooks/useFetchData";
 
-const ExchangeItems = () => {
-  const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(
-    null,
+const RedeemRewards = () => {
+  const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
+  const [search, setSearch] = useState<string>("");
+
+  // Records and Rewards
+  const {
+    data: records,
+    loading: recordsLoading,
+    error: recordsErr,
+    refetchData: refetchRecord,
+  } = useFetchData<PaginatedResponse<RecordInterface>>(
+    `records?search=${search}`,
   );
+
+  const {
+    data: rewards,
+    loading: rewardsLoading,
+    error: rewardsErr,
+    refetchData: refetchRewards,
+  } = useRewardItems();
+
+  // Modals
+  const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
+  const [rewardToRedeem, setRewardToRedeem] = useState<RewardItem | null>(null);
+
+  const selectedRecord = useMemo(() => {
+    return records?.content.find((r) => r.id === selectedRecordId) ?? null;
+  }, [records, selectedRecordId]);
 
   return (
     <div id="redeem_points" className="space-y-8">
@@ -18,14 +46,37 @@ const ExchangeItems = () => {
 
       {/* Search */}
       <SearchRecord
+        records={records?.content}
+        setSearch={setSearch}
         selectedRecord={selectedRecord}
-        setSelectedRecord={setSelectedRecord}
+        setSelectedRecordId={setSelectedRecordId}
       />
 
       {/* Available Rewards */}
-      {selectedRecord && <AvailableRewards selectedRecord={selectedRecord} />}
+      {selectedRecord && (
+        <AvailableRewards
+          rewards={rewards?.data}
+          loading={rewardsLoading}
+          error={rewardsErr}
+          selectedRecord={selectedRecord}
+          setRewardToRedeem={setRewardToRedeem}
+          setIsRedeemModalOpen={setIsRedeemModalOpen}
+        />
+      )}
+
+      {/* MODALS */}
+      {isRedeemModalOpen && rewardToRedeem && (
+        <RedeemModal
+          selectedRecord={selectedRecord}
+          rewardToRedeem={rewardToRedeem}
+          isRedeemModalOpen={isRedeemModalOpen}
+          setIsRedeemModalOpen={setIsRedeemModalOpen}
+          refetchRewards={refetchRewards}
+          refetchRecord={refetchRecord}
+        />
+      )}
     </div>
   );
 };
 
-export default ExchangeItems;
+export default RedeemRewards;

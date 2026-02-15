@@ -2,33 +2,43 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ArrowLeftRight, ChevronRight, Gift, Search, X } from "lucide-react";
 import type { RecordInterface } from "@/types/dto";
-import { useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import useDebounce from "@/hooks/useDebounce";
-import useFetchData from "@/hooks/useFetchData";
-import type { PaginatedResponse } from "@/types/api";
 import { formatName } from "@/utils/formatter";
 
 type SearchRecordProps = {
+  records: RecordInterface[] | undefined;
   selectedRecord: RecordInterface | null;
-  setSelectedRecord: Dispatch<SetStateAction<RecordInterface | null>>;
+  setSearch: Dispatch<SetStateAction<string>>;
+  setSelectedRecordId: Dispatch<SetStateAction<string | null>>;
 };
 
 const SearchRecord = ({
+  records,
   selectedRecord,
-  setSelectedRecord,
+  setSelectedRecordId,
+  setSearch,
 }: SearchRecordProps) => {
   const [searchInput, setSearchInput] = useState<string>("");
 
   const debouncedSearch = useDebounce(searchInput, 700);
 
-  const { data, loading, error } = useFetchData<
-    PaginatedResponse<RecordInterface>
-  >(`records?search=${debouncedSearch}`);
+  useEffect(() => {
+    setSearch(debouncedSearch);
+  }, [debouncedSearch, setSearch]);
 
-  const foundRecords = data?.content
-    ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
-    : [];
-
+  const foundRecords = useMemo(() => {
+    return (records ?? [])
+      .slice()
+      .sort((a, b) => a.lastName.localeCompare(b.lastName));
+  }, [records]);
+  
   return (
     <>
       <Card className="gap-4">
@@ -47,7 +57,7 @@ const SearchRecord = ({
             <Input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="py-3 pl-12 pr-5 text-lg! h-full w-full"
+              className="py-3 pl-12 pr-5 text-sm sm:text-lg! h-full w-full"
               placeholder="Search record to swap points..."
             />
 
@@ -57,7 +67,7 @@ const SearchRecord = ({
                   <button
                     key={r.id}
                     onClick={() => {
-                      setSelectedRecord(r);
+                      setSelectedRecordId(r.id);
                       setSearchInput("");
                     }}
                     className="w-full flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 transition-colors text-left"
@@ -105,7 +115,7 @@ const SearchRecord = ({
                 </p>
               </div>
               <button
-                onClick={() => setSelectedRecord(null)}
+                onClick={() => setSelectedRecordId(null)}
                 className="absolute top-4 right-4 p-2 text-primary/70 hover:text-primary transition-colors"
               >
                 <X size={20} />
@@ -116,7 +126,7 @@ const SearchRecord = ({
       </Card>
 
       {!selectedRecord && (
-        <div className="border border-dashed bg-white rounded-xl h-72 flex items-center justify-center flex-col">
+        <div className="border border-dashed bg-white rounded-xl h-72 flex items-center justify-center flex-col text-center p-10">
           <ArrowLeftRight className="mb-3 text-muted-foreground" size={40} />
           <p className="text-muted-foreground/80 font-bold text-xl">
             Please select a resident first
