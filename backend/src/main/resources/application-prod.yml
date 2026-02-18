@@ -8,3 +8,9 @@ spring:
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
