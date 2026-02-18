@@ -58,7 +58,7 @@ public class RewardServiceImpl implements RewardService {
             activity.getMaterials().add(
                     RewardActivityMaterial.builder()
                             .activity(activity)
-                            .materialId(input.getId())
+                            .material(material)
                             .weight(input.getWeight())
                             .points(materialPoints)
                             .build()

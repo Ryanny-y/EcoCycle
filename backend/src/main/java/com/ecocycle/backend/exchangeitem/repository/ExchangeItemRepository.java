@@ -28,4 +28,11 @@ public interface ExchangeItemRepository extends JpaRepository<ExchangeItem, UUID
       @Param("mainCategory") MainCategory mainCategory,
       @Param("itemType") ItemType itemType
     );
+
+    @Query("""
+        SELECT COUNT(e)
+        FROM ExchangeItem e
+        WHERE e.stocks <= :threshold
+    """)
+    Long countLowStockItems(@Param("threshold") Integer threshold);
 }

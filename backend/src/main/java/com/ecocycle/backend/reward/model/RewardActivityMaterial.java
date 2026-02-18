@@ -1,5 +1,6 @@
 package com.ecocycle.backend.reward.model;
 
+import com.ecocycle.backend.material.model.Material;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,8 +24,9 @@ public class RewardActivityMaterial {
     @JoinColumn(name = "activity_id", nullable = false)
     private RewardActivity activity;
 
-    @Column(name = "material_id", nullable = false)
-    private UUID materialId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "material_id", nullable = false)
+    private Material material;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal weight;

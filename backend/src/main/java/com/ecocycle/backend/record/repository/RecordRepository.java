@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,4 +42,10 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
     Optional<Record> findByLastNameIgnoreCaseAndFirstNameIgnoreCase(String lastName, String firstName);
 
     List<Record> findByLastNameIgnoreCase(String lastName);
+
+//   TODO: Make a test for this onwards
+    Long countByIsResidentTrue();
+
+    @Query("SELECT COALESCE(AVG(r.points), 0) FROM Record r WHERE r.isResident = true")
+    BigDecimal getAveragePoints();
 }
