@@ -18,8 +18,6 @@ const EarnPoints = () => {
     Record<string, number>
   >({});
 
-  // Handle the case where data is null
-
   const totalWeight: number = useMemo(() => {
     return Object.values(materialWeights).reduce(
       (total: number, weight: number) => total + weight,

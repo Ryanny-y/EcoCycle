@@ -16,6 +16,7 @@ import RewardItems from "./pages/RewardItems.tsx";
 import { RewardItemsProvider } from "./contexts/RewardItemsContext.tsx";
 import Materials from "./pages/Materials.tsx";
 import { MaterialsProvider } from "./contexts/MaterialsContext.tsx";
+import Statistics from "./pages/Statistics.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -51,6 +52,7 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="rewards">
                     <Route path="earn-points" element={<EarnPoints />} />
                     <Route path="redeem" element={<RedeemRewards />} />
+                    <Route path="statistics" element={<Statistics />} />
                   </Route>
 
                   {/* Inventory */}

@@ -40,7 +40,7 @@ const RedeemRewards = () => {
   return (
     <div id="redeem_points" className="space-y-8">
       <PageHeader
-        title="Redeem Reward"
+        title="Redeem Points"
         description="Redeem accumulated points for community products and rewards"
       />
 

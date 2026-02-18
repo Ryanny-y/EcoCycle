@@ -12,8 +12,8 @@ import {
 import useAuth from "@/contexts/AuthContext";
 import {
   ArrowLeftRight,
-  Box,
   Boxes,
+  ChartColumn,
   LayoutDashboard,
   LogOut,
   Package,
@@ -68,9 +68,14 @@ export function AppSidebar() {
           icon: Recycle,
         },
         {
-          title: "Redeem Rewards",
+          title: "Redeem Points",
           url: "/rewards/redeem",
           icon: ArrowLeftRight,
+        },
+        {
+          title: "Statistics",
+          url: "/rewards/statistics",
+          icon: ChartColumn,
         },
       ],
     },
