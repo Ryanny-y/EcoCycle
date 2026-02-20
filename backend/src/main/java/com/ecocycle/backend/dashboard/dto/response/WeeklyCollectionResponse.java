@@ -12,6 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class WeeklyCollectionResponse {
-    private String weekLabel; // e.g., "Week 1"
+    private String weekLabel;
     private BigDecimal totalCollected;
 }

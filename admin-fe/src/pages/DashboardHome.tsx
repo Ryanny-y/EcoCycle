@@ -1,62 +1,91 @@
 import PageHeader from "@/components/shared/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
-import { Boxes, Coins, RefreshCcw, Users } from "lucide-react";
-
+import useFetchData from "@/hooks/useFetchData";
+import type { DashboardDataResponse } from "@/types/dto";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ErrorState } from "@/components/ErrorState";
+import CardSummary from "./dashboard/CardSummary";
+import LowStockAlert from "./dashboard/LowStockAlert";
+import MonthlyStats from "./dashboard/MonthlyStats";
 
 const DashboardHome = () => {
+  const { data, loading, error, refetchData } =
+    useFetchData<DashboardDataResponse>("dashboard");
+
+  if (loading) {
+    return (
+      <div id="home" className="space-y-8">
+        <PageHeader
+          title="Dashboard"
+          description="System status and recent recycling activity."
+        />
+        <div className="grid grid-cols-4 gap-5">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Card key={index}>
+              <CardContent className="flex flex-col items-start gap-1">
+                <Skeleton className="h-12 w-12 rounded-md mb-2" />
+                <Skeleton className="h-4 w-24 mb-1" />
+                <Skeleton className="h-8 w-16" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Skeleton className="h-10 w-10 rounded-md" />
+              <div>
+                <Skeleton className="h-6 w-32 mb-1" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+            </div>
+            <Skeleton className="h-24 w-full" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div id="home" className="space-y-8">
+        <PageHeader
+          title="Dashboard"
+          description="System status and recent recycling activity."
+        />
+        <ErrorState message={error} onRetry={refetchData} />
+      </div>
+    );
+  }
+
+  if (!data) return;
+
   return (
     <div id="home" className="space-y-8">
       <PageHeader
         title="Dashboard"
         description="System status and recent recycling activity."
       />
-      
+
       {/* Cards */}
-      <div className="grid grid-cols-4 gap-5">
-        <Card>
-          <CardContent className="flex flex-col items-start gap-1">
-            <div className="p-2.5 bg-blue-50 rounded-md mb-2">
-              <Users size={28} strokeWidth={2} className="text-blue-500"/>
-            </div>
-            <p className="text-xs font-bold text-muted-foreground/80">TOTAL RESIDENTS</p>
-            <p className="font-bold text-2xl tracking-tighter">15</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="flex flex-col items-start gap-1">
-            <div className="p-2.5 bg-green-50 rounded-md mb-2">
-              <Boxes size={28} strokeWidth={2} className="text-green-500"/>
-            </div>
-            <p className="text-xs font-bold text-muted-foreground/80">TOTAL MATERIALS</p>
-            <p className="font-bold text-2xl tracking-tighter">15 kg</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="flex flex-col items-start gap-1">
-            <div className="p-2.5 bg-yellow-50 rounded-md mb-2">
-              <Coins size={28} strokeWidth={2} className="text-yellow-500"/>
-            </div>
-            <p className="text-xs font-bold text-muted-foreground/80">TOTAL POINTS EARNED</p>
-            <p className="font-bold text-2xl tracking-tighter">1325</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="flex flex-col items-start gap-1">
-            <div className="p-2.5 bg-purple-50 rounded-md mb-2">
-              <RefreshCcw size={28} strokeWidth={2} className="text-purple-500"/>
-            </div>
-            <p className="text-xs font-bold text-muted-foreground/80">REWARDS REDEEMED</p>
-            <p className="font-bold text-2xl tracking-tighter">15</p>
-          </CardContent>
-        </Card>
-      </div>
+      <CardSummary
+        totalResidents={data.totalResidents}
+        totalPointsEarned={data.totalPointsEarned}
+        totalMaterialsCollected={data.totalMaterialsCollected}
+        totalRewardsRedeemed={data.totalRewardsRedeemed}
+      />
 
       {/* Low Stock */}
+      <LowStockAlert lowStockRewardsCount={data.lowStockRewardsCount} />
+
       
 
+      {/* Quick Insights */}
+      <MonthlyStats
+        pointsEarnedThisMonth={data.pointsEarnedThisMonth}
+        rewardsRedeemedThisMonth={data.rewardsRedeemedThisMonth}
+        averagePointsPerResident={data.averagePointsPerResident}
+      />
     </div>
   );
 };

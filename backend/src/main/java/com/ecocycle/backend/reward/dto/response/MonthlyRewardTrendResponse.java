@@ -1,4 +1,4 @@
-package com.ecocycle.backend.dashboard.dto.response;
+package com.ecocycle.backend.reward.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MonthlyCollectionResponse {
+
+public class MonthlyRewardTrendResponse {
     private String month;
-    private BigDecimal totalCollected;
+    private BigDecimal earnedPoints;
+    private BigDecimal redeemedPoints;
+
 }

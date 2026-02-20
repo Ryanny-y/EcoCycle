@@ -1,3 +1,33 @@
+// Dashboard Types
+export interface TopMaterialResponse {
+  name: string;
+  quantity: number;
+}
+
+export interface WeeklyCollectionResponse {
+  week: number;
+  total: number;
+}
+
+export interface MonthlyCollectionResponse {
+  month: string;
+  total: number;
+}
+
+export interface DashboardDataResponse {
+  totalResidents: number;
+  totalMaterialsCollected: number;
+  totalPointsEarned: number;
+  totalRewardsRedeemed: number;
+  lowStockRewardsCount: number;
+  topCollectedMaterials: TopMaterialResponse[];
+  weeklyCollections: WeeklyCollectionResponse[];
+  monthlyCollections: MonthlyCollectionResponse[];
+  pointsEarnedThisMonth: number;
+  rewardsRedeemedThisMonth: number;
+  averagePointsPerResident: number;
+}
+
 export type Gender = 'MALE' | 'FEMALE' | 'LGBTQIA_PLUS' | 'PREFER_NOT_TO_SAY'; 
 
 export interface RecordInterface {

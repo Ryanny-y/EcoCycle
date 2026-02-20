@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,4 +71,11 @@ public interface RewardActivityRepository extends JpaRepository<RewardActivity, 
                 ORDER BY FUNCTION('DATE_PART', 'week', r.createdAt)
             """)
     List<WeeklyCollectionResponse> getWeeklyCollections();
+
+    @Query("""
+                SELECT r
+                FROM RewardActivity r
+                WHERE r.createdAt >= :startDate
+            """)
+    List<RewardActivity> findAllFromDate(@Param("startDate") LocalDateTime startDate);
 }

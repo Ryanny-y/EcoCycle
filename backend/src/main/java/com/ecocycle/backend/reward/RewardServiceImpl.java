@@ -10,6 +10,7 @@ import com.ecocycle.backend.reward.dto.request.EarnPointsRequest;
 import com.ecocycle.backend.reward.dto.request.MaterialInput;
 import com.ecocycle.backend.reward.dto.request.RedeemItemRequest;
 import com.ecocycle.backend.reward.dto.response.EarnPointsResponse;
+import com.ecocycle.backend.reward.dto.response.MonthlyRewardTrendResponse;
 import com.ecocycle.backend.reward.dto.response.RedeemItemResponse;
 import com.ecocycle.backend.reward.exceptions.InsufficientPointsException;
 import com.ecocycle.backend.reward.exceptions.InsufficientStockException;
@@ -24,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.*;
 
 // TODO: Make Test for this service
 @Service
@@ -107,5 +110,50 @@ public class RewardServiceImpl implements RewardService {
                 .pointsDeducted(totalCost)
                 .totalPoints(record.getPoints())
                 .build();
+    }
+
+    @Override
+    public List<MonthlyRewardTrendResponse> getLastSixMonthsTrend() {
+
+        LocalDateTime sixMonthsAgo = YearMonth.now()
+                .minusMonths(5)
+                .atDay(1)
+                .atStartOfDay();
+
+        List<RewardActivity> activities =
+                rewardActivityRepository.findAllFromDate(sixMonthsAgo);
+
+        Map<YearMonth, MonthlyRewardTrendResponse> trendMap = new TreeMap<>();
+
+        for (int i = 0; i < 6; i++) {
+            YearMonth ym = YearMonth.now().minusMonths(i);
+            trendMap.put(ym, MonthlyRewardTrendResponse.builder()
+                    .month(ym.toString())
+                    .earnedPoints(BigDecimal.ZERO)
+                    .redeemedPoints(BigDecimal.ZERO)
+                    .build());
+        }
+
+        for (RewardActivity activity : activities) {
+
+            YearMonth ym = YearMonth.from(activity.getCreatedAt());
+
+            if (!trendMap.containsKey(ym)) continue;
+
+            MonthlyRewardTrendResponse trend = trendMap.get(ym);
+
+            if (activity.getType() == RewardType.EARN) {
+                trend.setEarnedPoints(
+                        trend.getEarnedPoints().add(activity.getPoints()));
+            } else if (activity.getType() == RewardType.REDEEM) {
+                trend.setRedeemedPoints(
+                        trend.getRedeemedPoints().add(activity.getPoints()));
+            }
+        }
+
+        return new ArrayList<>(trendMap.values())
+                .stream()
+                .sorted(Comparator.comparing(MonthlyRewardTrendResponse::getMonth))
+                .toList();
     }
 }
