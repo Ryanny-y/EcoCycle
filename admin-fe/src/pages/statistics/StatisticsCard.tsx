@@ -2,12 +2,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Coins, TrendingDown, TrendingUp } from "lucide-react";
 
 type StatisticsCardProps = {
-  totalPointsEarned: number;
-  totalPointsRedeemed: number;
-  totalActivePoints: number;
-}
+  totalPointsEarned: number | undefined;
+  totalPointsRedeemed: number | undefined;
+  totalActivePoints: number | undefined;
+};
 
-const StatisticsCard = ({ totalPointsEarned, totalPointsRedeemed, totalActivePoints }: StatisticsCardProps) => {
+const StatisticsCard = ({
+  totalPointsEarned,
+  totalPointsRedeemed,
+  totalActivePoints,
+}: StatisticsCardProps) => {
   return (
     <div className="grid grid-cols-3 gap-5">
       <Card>
@@ -19,7 +23,9 @@ const StatisticsCard = ({ totalPointsEarned, totalPointsRedeemed, totalActivePoi
             <p className="text-xs font-bold text-muted-foreground/80 uppercase">
               Total Points Earned
             </p>
-            <p className="font-bold text-2xl tracking-tighter">{totalPointsEarned}</p>
+            <p className="font-bold text-2xl tracking-tighter">
+              {totalPointsEarned}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -37,7 +43,9 @@ const StatisticsCard = ({ totalPointsEarned, totalPointsRedeemed, totalActivePoi
             <p className="text-xs font-bold text-muted-foreground/80 uppercase">
               TOTAL Points Redeemed
             </p>
-            <p className="font-bold text-2xl tracking-tighter">{totalPointsRedeemed}</p>
+            <p className="font-bold text-2xl tracking-tighter">
+              {totalPointsRedeemed}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -51,7 +59,9 @@ const StatisticsCard = ({ totalPointsEarned, totalPointsRedeemed, totalActivePoi
             <p className="text-xs font-bold text-muted-foreground/80 uppercase">
               Points In Circulation
             </p>
-            <p className="font-bold text-2xl tracking-tighter">{totalActivePoints}</p>
+            <p className="font-bold text-2xl tracking-tighter">
+              {totalActivePoints}
+            </p>
           </div>
         </CardContent>
       </Card>

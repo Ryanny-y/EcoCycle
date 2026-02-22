@@ -17,6 +17,7 @@ import {
 } from "../ui/table";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import PageHeader from "./PageHeader";
 
 type TableSkeletonProps = {
   rows?: number;
@@ -136,7 +137,7 @@ export const GridCardSkeleton = () => {
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-5">
       {Array.from({ length: 6 }).map((_, i) => (
-        <Card className="pt-0 gap-2 animate-pulse">
+        <Card key={i} className="pt-0 gap-2 animate-pulse">
           {/* Image placeholder */}
           <div className="relative h-44 rounded-t-xl overflow-hidden bg-muted">
             <Skeleton className="h-full w-full" />
@@ -165,6 +166,80 @@ export const GridCardSkeleton = () => {
           </CardFooter>
         </Card>
       ))}
+    </div>
+  );
+};
+
+export const StatisticsSkeleton = () => {
+  return (
+    <div id="statistics" className="space-y-8">
+      <PageHeader
+        title="Dashboard"
+        description="System status and recent recycling activity."
+      />
+      <div className="grid grid-cols-4 gap-5">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Card key={index}>
+            <CardContent className="flex flex-col items-start gap-1">
+              <Skeleton className="h-12 w-12 rounded-md mb-2" />
+              <Skeleton className="h-4 w-24 mb-1" />
+              <Skeleton className="h-8 w-16" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 gap-5">
+        {Array.from({ length: 2 }).map((_, index) => (
+          <Card className="h-120" key={index}>
+            <CardContent className="px-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Skeleton className="h-10 w-10 rounded-md" />
+                <div>
+                  <Skeleton className="h-6 w-32 mb-1" />
+                  <Skeleton className="h-4 w-48" />
+                </div>
+              </div>
+              <Skeleton className="w-full h-80" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <Card>
+        <CardHeader className="flex items-center justify-between">
+          <CardTitle className="font-black text-lg">
+            Top Active Residents
+          </CardTitle>
+          <CardDescription className="text-primary font-semibold uppercase bg-emerald-100 py-1.5 px-3 rounded-full text-xs">
+            TOP 10 Contributors
+          </CardDescription>
+        </CardHeader>
+
+        <div>
+          <Table>
+            <TableHeader className="bg-stone-200">
+              <TableRow className="bg-stone-200">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <TableHead key={index}>
+                    <Skeleton className="h-6 w-20 " />
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {Array.from({ length: 5 }).map((_, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  {Array.from({ length: 5 }).map((_, colIndex) => (
+                    <TableCell key={colIndex} className="py-5 bg-gray-100">
+                      <Skeleton className="h-5 w-24" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>{" "}
+        </div>
+      </Card>
     </div>
   );
 };
