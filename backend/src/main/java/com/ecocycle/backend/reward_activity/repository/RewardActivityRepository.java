@@ -3,6 +3,7 @@ package com.ecocycle.backend.reward_activity.repository;
 import com.ecocycle.backend.dashboard.dto.response.MonthlyCollectionResponse;
 import com.ecocycle.backend.dashboard.dto.response.WeeklyCollectionResponse;
 import com.ecocycle.backend.reward_activity.dto.response.MaterialsCollectionResponse;
+import com.ecocycle.backend.reward_activity.dto.response.TopContributorResponse;
 import com.ecocycle.backend.reward_activity.model.RewardActivity;
 import com.ecocycle.backend.reward_activity.model.RewardType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -81,16 +82,32 @@ public interface RewardActivityRepository extends JpaRepository<RewardActivity, 
     List<RewardActivity> findAllFromDate(@Param("startDate") LocalDateTime startDate);
 
     @Query("""
-        SELECT new com.ecocycle.backend.reward_activity.dto.response.MaterialsCollectionResponse(
-            m.name,
-            SUM(ram.weight)
-        )
-        FROM RewardActivityMaterial ram
-        JOIN ram.activity ra
-        JOIN ram.material m
-        WHERE ra.type = 'EARN'
-        GROUP BY m.name
-        ORDER BY SUM(ram.weight) DESC
-    """)
+                SELECT new com.ecocycle.backend.reward_activity.dto.response.MaterialsCollectionResponse(
+                    m.name,
+                    SUM(ram.weight)
+                )
+                FROM RewardActivityMaterial ram
+                JOIN ram.activity ra
+                JOIN ram.material m
+                WHERE ra.type = 'EARN'
+                GROUP BY m.name
+                ORDER BY SUM(ram.weight) DESC
+            """)
     List<MaterialsCollectionResponse> getMaterialsCollection();
+
+    @Query("""
+                SELECT new com.ecocycle.backend.reward_activity.dto.response.TopContributorResponse(
+                        CONCAT(COALESCE(r.lastName, ''), ', ', COALESCE(r.firstName, ''), ' ', COALESCE(SUBSTRING(r.middleName, 1, 1), ''), '.'),
+                        SUM(CASE WHEN ra.type = 'EARN' THEN ra.points ELSE 0 END),
+                        SUM(CASE WHEN ra.type = 'REDEEM' THEN ra.points ELSE 0 END),
+                        COUNT(ra.id)
+                )
+                FROM RewardActivity ra
+                JOIN ra.record r
+                WHERE ra.type IN ('EARN', 'REDEEM')
+                GROUP BY CONCAT(COALESCE(r.lastName, ''), ', ', COALESCE(r.firstName, ''), ' ', COALESCE(SUBSTRING(r.middleName, 1, 1), ''))
+                ORDER BY SUM(CASE WHEN ra.type = 'EARN' THEN ra.points ELSE 0 END) DESC
+                LIMIT 10
+            """)
+    List<TopContributorResponse> get10TopContributors();
 }

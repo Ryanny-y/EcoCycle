@@ -35,6 +35,7 @@ export interface RewardStatisticsResponse {
 
   last6MonthsTrend: Last6MonthTrend[];
   materialsCollection: MaterialsCollection[];
+  topContributors: TopContributor[];
 }
 
 export interface Last6MonthTrend {
@@ -46,6 +47,13 @@ export interface Last6MonthTrend {
 export interface MaterialsCollection {
   materialName: string;
   totalWeight: number;
+}
+
+export interface TopContributor {
+  fullName: string;
+  earnedPoints: number;
+  redeemedPoints: number;
+  transactionCount: number;
 }
 
 export type Gender = 'MALE' | 'FEMALE' | 'LGBTQIA_PLUS' | 'PREFER_NOT_TO_SAY'; 

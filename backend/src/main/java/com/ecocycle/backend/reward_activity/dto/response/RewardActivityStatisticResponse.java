@@ -19,4 +19,5 @@ public class RewardActivityStatisticResponse {
 
     private List<MonthlyRewardTrendResponse> last6MonthsTrend;
     private List<MaterialsCollectionResponse> materialsCollection;
+    private List<TopContributorResponse> topContributors;
 }

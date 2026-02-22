@@ -34,7 +34,7 @@ const Statistics = () => {
       />
 
       {/* Table */}
-      <StatisticsRanking />
+      <StatisticsRanking topContributors={data.data.topContributors}/>
     </div>
   );
 };

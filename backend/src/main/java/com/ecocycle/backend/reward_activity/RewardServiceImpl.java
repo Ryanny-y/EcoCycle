@@ -125,11 +125,14 @@ public class RewardServiceImpl implements RewardService {
 
         List<MaterialsCollectionResponse> materialsCollectionResponses = rewardActivityRepository.getMaterialsCollection();
 
+        List<TopContributorResponse> topContributorResponses = rewardActivityRepository.get10TopContributors();
+
         return RewardActivityStatisticResponse.builder()
                 .totalPointsEarned(totalPointsEarned)
                 .totalPointsRedeemed(totalPointsRedeemed)
                 .totalActivePoints(totalActivePoints)
                 .last6MonthsTrend(last6MonthsTrend)
+                .topContributors(topContributorResponses)
                 .materialsCollection(materialsCollectionResponses)
                 .build();
     }
