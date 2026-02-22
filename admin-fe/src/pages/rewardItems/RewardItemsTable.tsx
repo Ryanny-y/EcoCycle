@@ -1,5 +1,5 @@
-import { ErrorState } from "@/components/ErrorState";
-import { TableSkeleton } from "@/components/SkeletonLoadings";
+import { ErrorState } from "@/components/shared/ErrorState";
+import { TableSkeleton } from "@/components/shared/SkeletonLoadings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {

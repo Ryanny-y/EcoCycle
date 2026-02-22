@@ -117,7 +117,7 @@ public class RewardServiceImpl implements RewardService {
                 rewardActivityRepository.getTotalPointsByType(RewardType.EARN);
 
         BigDecimal totalPointsRedeemed =
-                rewardActivityRepository.getTotalPointsByType(RewardType.REDEEM);
+                rewardActivityRepository.getTotalPointsByType(RewardType.REDEEM).abs();
 
         BigDecimal totalActivePoints = totalPointsEarned.subtract(totalPointsRedeemed);
 
@@ -168,7 +168,7 @@ public class RewardServiceImpl implements RewardService {
                         trend.getEarnedPoints().add(activity.getPoints()));
             } else if (activity.getType() == RewardType.REDEEM) {
                 trend.setRedeemedPoints(
-                        trend.getRedeemedPoints().add(activity.getPoints()));
+                        trend.getRedeemedPoints().abs().add(activity.getPoints().abs()));
             }
         }
 

@@ -114,9 +114,9 @@ const AddMaterialModal = ({
           </div>
 
           <div>
-            <DialogTitle>Add New Reward</DialogTitle>
+            <DialogTitle>Add New Material</DialogTitle>
             <DialogDescription>
-              Fill in the details to create a add new reward
+              Fill in the details to create a add new material
             </DialogDescription>
           </div>
         </DialogHeader>
@@ -133,7 +133,7 @@ const AddMaterialModal = ({
                 required
                 value={formData.name}
                 onChange={handleChange}
-                placeholder="Eco Rug"
+                placeholder="Plastics"
               />
             </div>
 

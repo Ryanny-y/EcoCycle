@@ -47,7 +47,7 @@ const DeleteMaterialModal = ({
     setIsDeleting(true);
     try {
       const response: ApiResponse<any> = await execute(
-        `exchange-items/${materialToDelete.id}`,
+        `materials/${materialToDelete.id}`,
         {
           method: "DELETE",
         },
@@ -71,7 +71,7 @@ const DeleteMaterialModal = ({
             <TriangleAlert size={28} />
           </div>
           <DialogTitle className="font-bold text-[24px]">
-            Delete Reward Item?
+            Delete Material?
           </DialogTitle>
           <DialogDescription className="text-center text-base">
             Are you sure you want to delete{" "}

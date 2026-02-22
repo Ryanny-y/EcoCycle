@@ -1,5 +1,5 @@
-import { ErrorState } from "@/components/ErrorState";
-import { GridCardSkeleton } from "@/components/SkeletonLoadings";
+import { ErrorState } from "@/components/shared/ErrorState";
+import { GridCardSkeleton } from "@/components/shared/SkeletonLoadings";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {

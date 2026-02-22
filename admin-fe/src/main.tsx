@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Protected from "./components/Protected.tsx";
+import Protected from "./components/shared/Protected.tsx";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import Login from "./pages/Login.tsx";
@@ -24,7 +24,6 @@ createRoot(document.getElementById("root")!).render(
       <Toaster
         position="bottom-right"
         richColors
-        // theme="system"
       />
 
       <AuthProvider>

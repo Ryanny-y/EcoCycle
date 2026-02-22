@@ -1,5 +1,5 @@
-import { ErrorState } from "@/components/ErrorState";
-import { Step2MaterialsSkeleton } from "@/components/SkeletonLoadings";
+import { ErrorState } from "@/components/shared/ErrorState";
+import { Step2MaterialsSkeleton } from "@/components/shared/SkeletonLoadings";
 import { Button } from "@/components/ui/button";
 import {
   CardContent,

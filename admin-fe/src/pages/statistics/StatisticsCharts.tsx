@@ -6,51 +6,49 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
-} from "@/components/ui/chart";
-import type { Last6MonthTrend } from "@/types/dto";
-import { LineChartIcon, TrendingUp } from "lucide-react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-} from "recharts";
+import type { ChartConfig } from "@/components/ui/chart";
+import BarChartComp from "@/components/ui/charts/BarChartComp";
+import MultipleLineChart from "@/components/ui/charts/MultipleLineChart";
+import type { Last6MonthTrend, MaterialsCollection } from "@/types/dto";
+import { LineChartIcon } from "lucide-react";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+const barChartConfig = {
+  materials: {
+    label: "Materials",
+    color: "var(--chart-3)",
+  },
+} satisfies ChartConfig;
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
+const multipleLineChartConfig = {
+  earnedPoints: {
+    label: "Earned Points",
     color: "var(--chart-1)",
   },
-  mobile: {
-    label: "Mobile",
+  redeemedPoints: {
+    label: "Redeemed Points",
     color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
 type StatisticsChartsProps = {
   last6MonthsTrend: Last6MonthTrend[];
+  materialsCollection: MaterialsCollection[];
 };
 
-const StatisticsCharts = ({ last6MonthsTrend }: StatisticsChartsProps) => {
+const StatisticsCharts = ({
+  last6MonthsTrend,
+  materialsCollection,
+}: StatisticsChartsProps) => {
+  const trendData = last6MonthsTrend.map((entry) => ({
+    month: entry.month,
+    earnedPoints: entry.earnedPoints,
+    redeemedPoints: entry.redeemedPoints,
+  }));
 
-  
+  const materialsCollectionData = materialsCollection.map((entry) => ({
+    material: entry.materialName,
+    weight: entry.totalWeight,
+  }));
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -58,7 +56,7 @@ const StatisticsCharts = ({ last6MonthsTrend }: StatisticsChartsProps) => {
       <Card>
         <CardHeader className="flex gap-2">
           <div className="bg-emerald-100 p-2">
-            <LineChartIcon className="text-emerald-700"/>
+            <LineChartIcon className="text-emerald-700" />
           </div>
           <div>
             <CardTitle className="font-bold">Points Activity Trend</CardTitle>
@@ -66,52 +64,11 @@ const StatisticsCharts = ({ last6MonthsTrend }: StatisticsChartsProps) => {
           </div>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart
-              accessibilityLayer
-              data={last6MonthsTrend}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                domain={[0, "auto"]} 
-                ticks={[0, 100, 200, 300, 400, 500, 600]}
-                tickFormatter={(tick) => `${tick}`}
-              />
-              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-              <Line
-                dataKey="earnedPoints"
-                type="monotone"
-                stroke="var(--color-desktop)"
-                strokeWidth={2}
-                dot={{
-                  fill: "var(--chart-1)",
-                }}
-              />
-              <Line
-                dataKey="redeemedPoints"
-                type="monotone"
-                stroke="var(--color-mobile)"
-                strokeWidth={2}
-                dot={{
-                  fill: "var(--chart-2)",
-                }}
-              />
-            </LineChart>
-          </ChartContainer>
+          <MultipleLineChart
+            chartConfig={multipleLineChartConfig}
+            chartData={trendData}
+            xKey="month"
+          />
         </CardContent>
         <CardFooter>
           <div className="flex items-center justify-center text-sm w-full gap-5">
@@ -126,7 +83,6 @@ const StatisticsCharts = ({ last6MonthsTrend }: StatisticsChartsProps) => {
           </div>
         </CardFooter>
       </Card>
-      
 
       {/* Bar Chart */}
       <Card>
@@ -135,32 +91,13 @@ const StatisticsCharts = ({ last6MonthsTrend }: StatisticsChartsProps) => {
           <CardDescription>January - June 2024</CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={chartConfig}>
-            <BarChart accessibilityLayer data={chartData}>
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent hideLabel />}
-              />
-              <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
-            </BarChart>
-          </ChartContainer>
+          <BarChartComp
+            chartConfig={barChartConfig}
+            chartData={materialsCollectionData}
+            dataKey="weight" 
+            xKey="material"
+          />
         </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm">
-          <div className="flex gap-2 leading-none font-medium">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-          </div>
-          <div className="text-muted-foreground leading-none">
-            Showing total visitors for the last 6 months
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );

@@ -28,7 +28,10 @@ const Statistics = () => {
       />
 
       {/* Charts */}
-      <StatisticsCharts last6MonthsTrend={data.data.last6MonthsTrend}/>
+      <StatisticsCharts
+        last6MonthsTrend={data.data.last6MonthsTrend}
+        materialsCollection={data.data.materialsCollection}
+      />
 
       {/* Table */}
       <StatisticsRanking />
