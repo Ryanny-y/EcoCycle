@@ -1,7 +1,7 @@
-package com.ecocycle.backend.reward.repository;
+package com.ecocycle.backend.reward_activity.repository;
 
 import com.ecocycle.backend.dashboard.dto.response.TopMaterialResponse;
-import com.ecocycle.backend.reward.model.RewardActivityMaterial;
+import com.ecocycle.backend.reward_activity.model.RewardActivityMaterial;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +19,7 @@ public interface RewardActivityMaterialRepository
         SELECT COALESCE(SUM(m.weight), 0)
         FROM RewardActivityMaterial m
         JOIN m.activity a
-        WHERE a.type = com.ecocycle.backend.reward.model.RewardType.EARN
+        WHERE a.type = 'EARN'
     """)
     BigDecimal getTotalCollectedWeight();
 
@@ -30,7 +30,7 @@ public interface RewardActivityMaterialRepository
         )
         FROM RewardActivityMaterial m
         JOIN m.activity a
-        WHERE a.type = com.ecocycle.backend.reward.model.RewardType.EARN
+        WHERE a.type = 'EARN'
         GROUP BY m.material.name
         ORDER BY SUM(m.weight) DESC
     """)

@@ -1,4 +1,4 @@
-package com.ecocycle.backend.reward.dto.request;
+package com.ecocycle.backend.reward_activity.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

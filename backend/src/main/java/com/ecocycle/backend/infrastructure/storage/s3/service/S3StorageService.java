@@ -51,12 +51,6 @@ public class S3StorageService implements FileStorageService {
     }
 
     @Override
-    public String getFileUrl(String key) {
-        return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                bucketName, region, key);
-    }
-
-    @Override
     public void deleteFile(String imageUrl) {
         if (imageUrl == null || imageUrl.isBlank()) return;
 

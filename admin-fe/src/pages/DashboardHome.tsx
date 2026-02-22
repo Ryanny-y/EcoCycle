@@ -78,10 +78,8 @@ const DashboardHome = () => {
       {/* Low Stock */}
       <LowStockAlert lowStockRewardsCount={data.lowStockRewardsCount} />
 
-      
-
       {/* Quick Insights */}
-      <MonthlyStats
+      <MonthlyStats 
         pointsEarnedThisMonth={data.pointsEarnedThisMonth}
         rewardsRedeemedThisMonth={data.rewardsRedeemedThisMonth}
         averagePointsPerResident={data.averagePointsPerResident}

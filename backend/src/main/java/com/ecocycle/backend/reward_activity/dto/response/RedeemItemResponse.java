@@ -1,4 +1,4 @@
-package com.ecocycle.backend.reward.dto.response;
+package com.ecocycle.backend.reward_activity.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

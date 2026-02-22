@@ -1,4 +1,4 @@
-package com.ecocycle.backend.reward.model;
+package com.ecocycle.backend.reward_activity.model;
 
 import com.ecocycle.backend.material.model.Material;
 import jakarta.persistence.*;

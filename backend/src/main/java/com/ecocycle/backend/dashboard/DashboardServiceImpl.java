@@ -3,9 +3,9 @@ package com.ecocycle.backend.dashboard;
 import com.ecocycle.backend.dashboard.dto.response.DashboardDataResponse;
 import com.ecocycle.backend.exchangeitem.repository.ExchangeItemRepository;
 import com.ecocycle.backend.record.repository.RecordRepository;
-import com.ecocycle.backend.reward.model.RewardType;
-import com.ecocycle.backend.reward.repository.RewardActivityMaterialRepository;
-import com.ecocycle.backend.reward.repository.RewardActivityRepository;
+import com.ecocycle.backend.reward_activity.model.RewardType;
+import com.ecocycle.backend.reward_activity.repository.RewardActivityMaterialRepository;
+import com.ecocycle.backend.reward_activity.repository.RewardActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -54,8 +54,8 @@ public class DashboardServiceImpl implements DashboardService {
                 .totalRewardsRedeemed(totalRewardsRedeemed)
                 .lowStockRewardsCount(lowStockItems)
                 .topCollectedMaterials(materialRepository.getTop5Materials(pageable))
-                .weeklyCollections(rewardActivityRepository.getWeeklyCollections())
-                .monthlyCollections(rewardActivityRepository.getMonthlyCollections())
+                .weeklyCollections(rewardActivityRepository.getWeeklyCollections(RewardType.EARN))
+                .monthlyCollections(rewardActivityRepository.getMonthlyCollections(RewardType.EARN))
                 .pointsEarnedThisMonth(pointsThisMonth)
                 .rewardsRedeemedThisMonth(redeemedThisMonth)
                 .averagePointsPerResident(avgPoints)

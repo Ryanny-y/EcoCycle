@@ -28,6 +28,26 @@ export interface DashboardDataResponse {
   averagePointsPerResident: number;
 }
 
+export interface RewardStatisticsResponse {
+  totalPointsEarned: number;
+  totalPointsRedeemed: number;
+  totalActivePoints: number;
+
+  last6MonthsTrend: Last6MonthTrend[];
+  materialsCollection: MaterialsCollection[];
+}
+
+export interface Last6MonthTrend {
+  month: string;
+  earnedPoints: number;
+  redeemedPoints: number;
+}
+
+export interface MaterialsCollection {
+  materialName: string;
+  totalWeight: number;
+}
+
 export type Gender = 'MALE' | 'FEMALE' | 'LGBTQIA_PLUS' | 'PREFER_NOT_TO_SAY'; 
 
 export interface RecordInterface {

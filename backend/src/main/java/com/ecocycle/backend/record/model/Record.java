@@ -1,6 +1,6 @@
 package com.ecocycle.backend.record.model;
 
-import com.ecocycle.backend.reward.model.RewardActivity;
+import com.ecocycle.backend.reward_activity.model.RewardActivity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

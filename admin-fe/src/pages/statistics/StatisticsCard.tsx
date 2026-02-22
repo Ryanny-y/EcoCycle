@@ -1,7 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Coins, TrendingDown, TrendingUp } from "lucide-react";
 
-const StatisticsCard = () => {
+type StatisticsCardProps = {
+  totalPointsEarned: number;
+  totalPointsRedeemed: number;
+  totalActivePoints: number;
+}
+
+const StatisticsCard = ({ totalPointsEarned, totalPointsRedeemed, totalActivePoints }: StatisticsCardProps) => {
+
+  console.log(totalPointsEarned);
+  
+
   return (
     <div className="grid grid-cols-3 gap-5">
       <Card>
@@ -13,7 +23,7 @@ const StatisticsCard = () => {
             <p className="text-xs font-bold text-muted-foreground/80 uppercase">
               Total Points Earned
             </p>
-            <p className="font-bold text-2xl tracking-tighter">15</p>
+            <p className="font-bold text-2xl tracking-tighter">{totalPointsEarned}</p>
           </div>
         </CardContent>
       </Card>
@@ -31,7 +41,7 @@ const StatisticsCard = () => {
             <p className="text-xs font-bold text-muted-foreground/80 uppercase">
               TOTAL Points Redeemed
             </p>
-            <p className="font-bold text-2xl tracking-tighter">15</p>
+            <p className="font-bold text-2xl tracking-tighter">{totalPointsRedeemed}</p>
           </div>
         </CardContent>
       </Card>
@@ -45,7 +55,7 @@ const StatisticsCard = () => {
             <p className="text-xs font-bold text-muted-foreground/80 uppercase">
               Points In Circulation
             </p>
-            <p className="font-bold text-2xl tracking-tighter">1325</p>
+            <p className="font-bold text-2xl tracking-tighter">{totalActivePoints}</p>
           </div>
         </CardContent>
       </Card>

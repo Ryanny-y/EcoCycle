@@ -1,4 +1,4 @@
-package com.ecocycle.backend.reward.model;
+package com.ecocycle.backend.reward_activity.model;
 
 import com.ecocycle.backend.record.model.Record;
 import jakarta.persistence.*;

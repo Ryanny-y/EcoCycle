@@ -22,9 +22,9 @@ const StatisticsRanking = () => {
       </CardHeader>
 
       <div className="custom-scroll rounded-xl max-h-150">
-        <Table>
+        <Table>   
           <TableHeader className="bg-stone-100 text-muted-foreground">
-            <TableRow className="hover:bg-primary">
+            <TableRow className="hover:bg-primary/10">
               <TableHead className="uppercase py-6 text-start pl-10!">
                 Rank
               </TableHead>
@@ -36,7 +36,7 @@ const StatisticsRanking = () => {
           </TableHeader>
 
           <TableBody>
-            <TableRow className="hover:bg-primary font-bold">
+            <TableRow className="hover:bg-primary/10 font-bold">
               <TableCell className="uppercase py-6 text-start pl-10!">
                 <span className="h-10 w-10 p-2 px-4 bg-yellow-100 text-yellow-700 rounded-full font-black">
                   1

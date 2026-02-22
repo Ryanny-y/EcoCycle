@@ -1,11 +1,12 @@
-package com.ecocycle.backend.reward;
+package com.ecocycle.backend.reward_activity;
 
 import com.ecocycle.backend.common.web.ApiResponse;
-import com.ecocycle.backend.reward.dto.request.EarnPointsRequest;
-import com.ecocycle.backend.reward.dto.request.RedeemItemRequest;
-import com.ecocycle.backend.reward.dto.response.EarnPointsResponse;
-import com.ecocycle.backend.reward.dto.response.MonthlyRewardTrendResponse;
-import com.ecocycle.backend.reward.dto.response.RedeemItemResponse;
+import com.ecocycle.backend.reward_activity.dto.request.EarnPointsRequest;
+import com.ecocycle.backend.reward_activity.dto.request.RedeemItemRequest;
+import com.ecocycle.backend.reward_activity.dto.response.EarnPointsResponse;
+import com.ecocycle.backend.reward_activity.dto.response.MonthlyRewardTrendResponse;
+import com.ecocycle.backend.reward_activity.dto.response.RedeemItemResponse;
+import com.ecocycle.backend.reward_activity.dto.response.RewardActivityStatisticResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -52,14 +53,29 @@ public class RewardController {
         return ResponseEntity.ok(apiResponse);
     }
 
-    @GetMapping("/trend/last-6-months")
-    public ResponseEntity<ApiResponse<List<MonthlyRewardTrendResponse>>> getLastSixMonthsTrend() {
+//    @GetMapping("/trend/last-6-months")
+//    public ResponseEntity<ApiResponse<List<MonthlyRewardTrendResponse>>> getLastSixMonthsTrend() {
+//
+//        List<MonthlyRewardTrendResponse> response =
+//                rewardService.getLastSixMonthsTrend();
+//
+//        ApiResponse<List<MonthlyRewardTrendResponse>> apiResponse =
+//                ApiResponse.<List<MonthlyRewardTrendResponse>>builder()
+//                        .success(true)
+//                        .message("Last 6 months reward trend retrieved successfully.")
+//                        .data(response)
+//                        .build();
+//
+//        return ResponseEntity.ok(apiResponse);
+//    }
 
-        List<MonthlyRewardTrendResponse> response =
-                rewardService.getLastSixMonthsTrend();
+    @GetMapping("/statistics")
+    public ResponseEntity<ApiResponse<RewardActivityStatisticResponse>> getRewardActivityStatisticResponse() {
 
-        ApiResponse<List<MonthlyRewardTrendResponse>> apiResponse =
-                ApiResponse.<List<MonthlyRewardTrendResponse>>builder()
+        RewardActivityStatisticResponse response = rewardService.getRewardActivityStatisticResponse();
+
+        ApiResponse<RewardActivityStatisticResponse> apiResponse =
+                ApiResponse.<RewardActivityStatisticResponse>builder()
                         .success(true)
                         .message("Last 6 months reward trend retrieved successfully.")
                         .data(response)
@@ -67,6 +83,5 @@ public class RewardController {
 
         return ResponseEntity.ok(apiResponse);
     }
-
 
 }

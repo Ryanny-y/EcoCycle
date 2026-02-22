@@ -1,4 +1,4 @@
-package com.ecocycle.backend.reward;
+package com.ecocycle.backend.reward_activity;
 
 import com.ecocycle.backend.exchangeitem.ExchangeItemService;
 import com.ecocycle.backend.exchangeitem.model.ExchangeItem;
@@ -6,18 +6,16 @@ import com.ecocycle.backend.material.MaterialService;
 import com.ecocycle.backend.material.model.Material;
 import com.ecocycle.backend.record.RecordService;
 import com.ecocycle.backend.record.model.Record;
-import com.ecocycle.backend.reward.dto.request.EarnPointsRequest;
-import com.ecocycle.backend.reward.dto.request.MaterialInput;
-import com.ecocycle.backend.reward.dto.request.RedeemItemRequest;
-import com.ecocycle.backend.reward.dto.response.EarnPointsResponse;
-import com.ecocycle.backend.reward.dto.response.MonthlyRewardTrendResponse;
-import com.ecocycle.backend.reward.dto.response.RedeemItemResponse;
-import com.ecocycle.backend.reward.exceptions.InsufficientPointsException;
-import com.ecocycle.backend.reward.exceptions.InsufficientStockException;
-import com.ecocycle.backend.reward.model.RewardActivity;
-import com.ecocycle.backend.reward.model.RewardActivityMaterial;
-import com.ecocycle.backend.reward.model.RewardType;
-import com.ecocycle.backend.reward.repository.RewardActivityRepository;
+import com.ecocycle.backend.reward_activity.dto.request.EarnPointsRequest;
+import com.ecocycle.backend.reward_activity.dto.request.MaterialInput;
+import com.ecocycle.backend.reward_activity.dto.request.RedeemItemRequest;
+import com.ecocycle.backend.reward_activity.dto.response.*;
+import com.ecocycle.backend.reward_activity.exceptions.InsufficientPointsException;
+import com.ecocycle.backend.reward_activity.exceptions.InsufficientStockException;
+import com.ecocycle.backend.reward_activity.model.RewardActivity;
+import com.ecocycle.backend.reward_activity.model.RewardActivityMaterial;
+import com.ecocycle.backend.reward_activity.model.RewardType;
+import com.ecocycle.backend.reward_activity.repository.RewardActivityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,8 +110,31 @@ public class RewardServiceImpl implements RewardService {
                 .build();
     }
 
+
     @Override
-    public List<MonthlyRewardTrendResponse> getLastSixMonthsTrend() {
+    public RewardActivityStatisticResponse getRewardActivityStatisticResponse() {
+        BigDecimal totalPointsEarned =
+                rewardActivityRepository.getTotalPointsByType(RewardType.EARN);
+
+        BigDecimal totalPointsRedeemed =
+                rewardActivityRepository.getTotalPointsByType(RewardType.REDEEM);
+
+        BigDecimal totalActivePoints = totalPointsEarned.subtract(totalPointsRedeemed);
+
+        List<MonthlyRewardTrendResponse> last6MonthsTrend = this.getLastSixMonthsTrend();
+
+        List<MaterialsCollectionResponse> materialsCollectionResponses = rewardActivityRepository.getMaterialsCollection();
+
+        return RewardActivityStatisticResponse.builder()
+                .totalPointsEarned(totalPointsEarned)
+                .totalPointsRedeemed(totalPointsRedeemed)
+                .totalActivePoints(totalActivePoints)
+                .last6MonthsTrend(last6MonthsTrend)
+                .materialsCollection(materialsCollectionResponses)
+                .build();
+    }
+
+    private List<MonthlyRewardTrendResponse> getLastSixMonthsTrend() {
 
         LocalDateTime sixMonthsAgo = YearMonth.now()
                 .minusMonths(5)
@@ -156,4 +177,5 @@ public class RewardServiceImpl implements RewardService {
                 .sorted(Comparator.comparing(MonthlyRewardTrendResponse::getMonth))
                 .toList();
     }
+
 }

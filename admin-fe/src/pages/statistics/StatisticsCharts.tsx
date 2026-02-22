@@ -12,8 +12,17 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import type { Last6MonthTrend } from "@/types/dto";
+import { LineChartIcon, TrendingUp } from "lucide-react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -35,25 +44,39 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const StatisticsCharts = () => {
+type StatisticsChartsProps = {
+  last6MonthsTrend: Last6MonthTrend[];
+};
+
+const StatisticsCharts = ({ last6MonthsTrend }: StatisticsChartsProps) => {
+
+  
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {/* Line Chart */}
       <Card>
-        <CardHeader>
-          <CardTitle>Points Activity Trend</CardTitle>
-          <CardDescription>Last 6 months</CardDescription>
+        <CardHeader className="flex gap-2">
+          <div className="bg-emerald-100 p-2">
+            <LineChartIcon className="text-emerald-700"/>
+          </div>
+          <div>
+            <CardTitle className="font-bold">Points Activity Trend</CardTitle>
+            <CardDescription>Last 6 months</CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={chartData}
+              data={last6MonthsTrend}
               margin={{
                 left: 12,
                 right: 12,
               }}
             >
               <CartesianGrid vertical={false} />
+
               <XAxis
                 dataKey="month"
                 tickLine={false}
@@ -61,9 +84,16 @@ const StatisticsCharts = () => {
                 tickMargin={8}
                 tickFormatter={(value) => value.slice(0, 3)}
               />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                domain={[0, "auto"]} 
+                ticks={[0, 100, 200, 300, 400, 500, 600]}
+                tickFormatter={(tick) => `${tick}`}
+              />
               <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
               <Line
-                dataKey="desktop"
+                dataKey="earnedPoints"
                 type="monotone"
                 stroke="var(--color-desktop)"
                 strokeWidth={2}
@@ -72,7 +102,7 @@ const StatisticsCharts = () => {
                 }}
               />
               <Line
-                dataKey="mobile"
+                dataKey="redeemedPoints"
                 type="monotone"
                 stroke="var(--color-mobile)"
                 strokeWidth={2}
@@ -96,7 +126,9 @@ const StatisticsCharts = () => {
           </div>
         </CardFooter>
       </Card>
+      
 
+      {/* Bar Chart */}
       <Card>
         <CardHeader>
           <CardTitle>Bar Chart</CardTitle>
