@@ -7,6 +7,7 @@ import com.ecocycle.backend.reward_activity.dto.response.EarnPointsResponse;
 import com.ecocycle.backend.reward_activity.dto.response.MonthlyRewardTrendResponse;
 import com.ecocycle.backend.reward_activity.dto.response.RedeemItemResponse;
 import com.ecocycle.backend.reward_activity.dto.response.RewardActivityStatisticResponse;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class RewardController {
 
     private final RewardService rewardService;
 
+    @RateLimit(limit = 5, duration = 1)
     @PostMapping("/earn/{recordId}")
     public ResponseEntity<ApiResponse<EarnPointsResponse>> earnPoints(
             @PathVariable("recordId") UUID recordId,
@@ -37,6 +39,7 @@ public class RewardController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 5, duration = 1)
     @PostMapping("/redeem/{recordId}")
     public ResponseEntity<ApiResponse<RedeemItemResponse>> redeemItem(
             @PathVariable("recordId") UUID recordId,
@@ -53,22 +56,7 @@ public class RewardController {
         return ResponseEntity.ok(apiResponse);
     }
 
-//    @GetMapping("/trend/last-6-months")
-//    public ResponseEntity<ApiResponse<List<MonthlyRewardTrendResponse>>> getLastSixMonthsTrend() {
-//
-//        List<MonthlyRewardTrendResponse> response =
-//                rewardService.getLastSixMonthsTrend();
-//
-//        ApiResponse<List<MonthlyRewardTrendResponse>> apiResponse =
-//                ApiResponse.<List<MonthlyRewardTrendResponse>>builder()
-//                        .success(true)
-//                        .message("Last 6 months reward trend retrieved successfully.")
-//                        .data(response)
-//                        .build();
-//
-//        return ResponseEntity.ok(apiResponse);
-//    }
-
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/statistics")
     public ResponseEntity<ApiResponse<RewardActivityStatisticResponse>> getRewardActivityStatisticResponse() {
 

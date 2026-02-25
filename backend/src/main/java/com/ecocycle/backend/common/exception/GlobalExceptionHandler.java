@@ -2,6 +2,7 @@ package com.ecocycle.backend.common.exception;
 
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.common.web.ApiErrorResponse;
+import com.ecocycle.backend.security.ratelimit.RateLimitException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.MessageSourceResolvable;
@@ -125,6 +126,20 @@ public class GlobalExceptionHandler {
                         HttpStatus.CONFLICT,
                         "Request violates database constraints",
                         "DATA_INTEGRITY_VIOLATION"
+                )
+        );
+    }
+
+    // -------- TOO MANY REQUEST --------
+    @ExceptionHandler(RateLimitException.class)
+    public ResponseEntity<ApiErrorResponse> handleRateLimitExceptionException(
+            RateLimitException ex) {
+
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(
+                ApiErrorResponse.of(
+                        HttpStatus.TOO_MANY_REQUESTS,
+                        "Too Many Request, Please Try Again Later.",
+                        "TOO_MANY_REQUEST"
                 )
         );
     }

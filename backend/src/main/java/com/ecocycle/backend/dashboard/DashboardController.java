@@ -1,5 +1,6 @@
 package com.ecocycle.backend.dashboard;
 
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ public class DashboardController {
 
     private final DashboardService dashboardService;
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping
     public ResponseEntity<DashboardDataResponse> getDashboardData(Pageable pageable) {
         DashboardDataResponse response = dashboardService.getDashboardData(pageable);

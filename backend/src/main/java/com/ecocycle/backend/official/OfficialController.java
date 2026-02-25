@@ -5,6 +5,7 @@ import com.ecocycle.backend.official.dto.OfficialDto;
 import com.ecocycle.backend.official.dto.request.CreateOfficialRequest;
 import com.ecocycle.backend.official.dto.request.UpdateOfficialRequest;
 import com.ecocycle.backend.official.model.Official;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class OfficialController {
     private final OfficialService officialService;
     private final OfficialMapper officialMapper;
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping
     public ResponseEntity<ApiResponse<List<OfficialDto>>> getOfficials() {
         List<Official> officials = officialService.getOfficials();
@@ -39,6 +41,7 @@ public class OfficialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<OfficialDto>> getOfficial(
             @PathVariable("id") UUID id
@@ -54,6 +57,7 @@ public class OfficialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping
     public ResponseEntity<ApiResponse<OfficialDto>> createOfficial(
             @Valid @ModelAttribute CreateOfficialRequest request
@@ -69,6 +73,7 @@ public class OfficialController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<OfficialDto>> updateOfficial(
             @PathVariable("id") UUID id,
@@ -85,6 +90,7 @@ public class OfficialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteOfficial(
             @PathVariable("id") UUID id

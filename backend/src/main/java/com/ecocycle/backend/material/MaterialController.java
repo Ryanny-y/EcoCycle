@@ -5,6 +5,7 @@ import com.ecocycle.backend.material.dto.MaterialDto;
 import com.ecocycle.backend.material.dto.request.CreateMaterialRequest;
 import com.ecocycle.backend.material.dto.request.UpdateMaterialRequest;
 import com.ecocycle.backend.material.model.Material;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class MaterialController {
     private final MaterialService materialService;
     private final MaterialMapper materialMapper;
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping
     public ResponseEntity<ApiResponse<List<MaterialDto>>> getMaterials(
             @RequestParam(value = "search", required = false) String search,
@@ -40,6 +42,7 @@ public class MaterialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<MaterialDto>> getMaterial(
             @PathVariable("id") UUID id
@@ -55,6 +58,7 @@ public class MaterialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping
     public ResponseEntity<ApiResponse<MaterialDto>> createMaterial(
             @Valid @ModelAttribute CreateMaterialRequest request
@@ -69,6 +73,7 @@ public class MaterialController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<MaterialDto>> updatedMaterial(
             @PathVariable("id") UUID id,
@@ -85,6 +90,7 @@ public class MaterialController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteMaterial(
             @PathVariable("id") UUID id

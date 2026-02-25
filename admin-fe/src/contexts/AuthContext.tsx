@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         method: "POST",
         credentials: "include",
       });
+      toast.success("Logged out.")
     } catch (error: any) {
       toast.error(error.message || "Session expired. Please log in again.");
     } finally {

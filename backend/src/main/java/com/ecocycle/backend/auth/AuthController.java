@@ -8,6 +8,7 @@ import com.ecocycle.backend.auth.dto.response.LoginResponse;
 import com.ecocycle.backend.auth.dto.request.LoginRequest;
 import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import com.ecocycle.backend.user.UserService;
 import com.ecocycle.backend.user.model.User;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +29,7 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
 
+    @RateLimit(limit = 5, duration = 1)
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse<SignupResponse>> signup(
             @Valid @RequestBody SignupRequest signupRequest
@@ -49,6 +51,7 @@ public class AuthController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 5, duration = 1)
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login (
             @Valid @RequestBody LoginRequest loginRequest,
@@ -73,6 +76,7 @@ public class AuthController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 15)
     @PostMapping("/refresh-token")
     public ResponseEntity<ApiResponse<RefreshResponse>> refreshToken(
             @CookieValue(name = "refreshToken", required = false) String token
@@ -96,6 +100,7 @@ public class AuthController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             @AuthenticationPrincipal UserPrincipal userPrincipal,

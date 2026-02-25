@@ -5,6 +5,7 @@ import com.ecocycle.backend.achievement.dto.request.CreateAchievementRequest;
 import com.ecocycle.backend.achievement.dto.request.UpdateAchievementRequest;
 import com.ecocycle.backend.common.web.ApiResponse;
 import com.ecocycle.backend.achievement.model.Achievement;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class AchievementController {
     private final AchievementService achievementsService;
     private final AchievementMapper achievementsMapper;
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping
     public ResponseEntity<ApiResponse<List<AchievementDto>>> getAchievements() {
         List<Achievement> achievements = achievementsService.getAchievements();
@@ -36,6 +38,7 @@ public class AchievementController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<AchievementDto>> getAchievement(
             @PathVariable("id") UUID id
@@ -51,6 +54,7 @@ public class AchievementController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping
     public ResponseEntity<ApiResponse<AchievementDto>> createAchievement(
             @Valid @ModelAttribute CreateAchievementRequest request
@@ -65,6 +69,7 @@ public class AchievementController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<AchievementDto>> updateAchievement(
             @PathVariable("id") UUID id,
@@ -81,6 +86,7 @@ public class AchievementController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 5, duration = 1)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteAchievement(
             @PathVariable("id") UUID id

@@ -8,6 +8,7 @@ import com.ecocycle.backend.record.dto.response.LookupResponse;
 import com.ecocycle.backend.record.model.Record;
 import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import com.ecocycle.backend.record.dto.response.CreateRecordResponse;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ public class RecordController {
     private final RecordService recordService;
     private final RecordMapper recordMapper;
 
+    @RateLimit(limit = 120, duration = 1)
     @GetMapping
     public ResponseEntity<PageResponse<RecordDto>> getRecords(
             @RequestParam(required = false) Boolean isResident,
@@ -49,6 +51,7 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping
     public ResponseEntity<ApiResponse<CreateRecordResponse>> createRecord(
             @Valid @RequestBody CreateRecordRequest request
@@ -69,6 +72,7 @@ public class RecordController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<RecordDto>> updateRecord(
             @PathVariable("id") UUID id,
@@ -86,6 +90,7 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteRecord(@PathVariable("id") UUID id) {
         Record deletedRecord = recordService.deleteRecord(id);
@@ -98,6 +103,7 @@ public class RecordController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/lookup")
     public ResponseEntity<ApiResponse<LookupResponse>> lookupRecord(
             @RequestParam("lastName") String lastName,

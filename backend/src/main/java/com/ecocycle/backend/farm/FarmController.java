@@ -5,6 +5,7 @@ import com.ecocycle.backend.farm.dto.FarmDto;
 import com.ecocycle.backend.farm.dto.request.CreateFarmRequest;
 import com.ecocycle.backend.farm.dto.request.UpdateFarmRequest;
 import com.ecocycle.backend.farm.model.Farm;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class FarmController {
     private final FarmService farmService;
     private final FarmMapper farmMapper;
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping
     public ResponseEntity<ApiResponse<List<FarmDto>>> getFarms() {
         List<Farm> farms = farmService.getFarms();
@@ -39,6 +41,7 @@ public class FarmController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<FarmDto>> getFarm(
             @PathVariable("id") UUID id
@@ -54,6 +57,7 @@ public class FarmController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ApiResponse<FarmDto>> createFarm(
             @Valid @ModelAttribute CreateFarmRequest request
@@ -71,6 +75,7 @@ public class FarmController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<FarmDto>> updateFarm(
             @PathVariable("id") UUID id,
@@ -87,6 +92,7 @@ public class FarmController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteFarm(
             @PathVariable("id") UUID id

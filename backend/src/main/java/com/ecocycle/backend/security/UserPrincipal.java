@@ -1,6 +1,7 @@
 package com.ecocycle.backend.security;
 
 import com.ecocycle.backend.user.model.User;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Getter
 public class UserPrincipal implements UserDetails {
 
     private final User user;
@@ -28,9 +30,5 @@ public class UserPrincipal implements UserDetails {
     @Override
     public String getUsername() {
         return user.getUsername();
-    }
-
-    public User getUser() {
-        return this.user;
     }
 }

@@ -7,6 +7,7 @@ import com.ecocycle.backend.exchangeitem.dto.request.UpdateExchangeItemRequest;
 import com.ecocycle.backend.exchangeitem.model.ExchangeItem;
 import com.ecocycle.backend.exchangeitem.model.ItemType;
 import com.ecocycle.backend.exchangeitem.model.MainCategory;
+import com.ecocycle.backend.security.ratelimit.RateLimit;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class ExchangeItemController {
     private final ExchangeItemService exchangeItemService;
     private final ExchangeItemMapper exchangeItemMapper;
 
+    @RateLimit(limit = 120, duration = 1)
     @GetMapping
     public ResponseEntity<ApiResponse<List<ExchangeItemDto>>> getExchangeItems(
             @RequestParam(value = "search", required = false) String search,
@@ -42,6 +44,7 @@ public class ExchangeItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 60, duration = 1)
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<ExchangeItemDto>> getExchangeItem(
             @PathVariable("id") UUID id
@@ -57,6 +60,7 @@ public class ExchangeItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PostMapping
     public ResponseEntity<ApiResponse<ExchangeItemDto>> createExchangeItem(
             @Valid @ModelAttribute CreateExchangeItemRequest request
@@ -71,6 +75,7 @@ public class ExchangeItemController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @PatchMapping("/{id}")
     public ResponseEntity<ApiResponse<ExchangeItemDto>> updateExchangeItem(
             @PathVariable("id") UUID id,
@@ -87,6 +92,7 @@ public class ExchangeItemController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @RateLimit(limit = 10, duration = 1)
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteExchangeItem(
             @PathVariable("id") UUID id
