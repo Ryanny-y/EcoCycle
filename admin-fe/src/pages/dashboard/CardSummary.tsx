@@ -10,7 +10,7 @@ type CardSummaryProps = {
 
 const CardSummary = ({ totalResidents, totalMaterialsCollected, totalPointsEarned, totalRewardsRedeemed }:CardSummaryProps ) => {
   return (
-    <div className="grid grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 gap-5">
       <Card>
         <CardContent className="flex flex-col items-start gap-1">
           <div className="p-2.5 bg-blue-50 rounded-md mb-2">

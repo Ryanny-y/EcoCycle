@@ -18,12 +18,14 @@ type MultipleLineChartProps<T extends string> = {
   chartConfig: ChartConfig<T>;
   chartData: ChartData<T>;
   xKey: string;
+  className?: string
 };
 
 const MultipleLineChart = <T extends string>({
   chartConfig,
   chartData,
   xKey,
+  className
 }: MultipleLineChartProps<T>) => {
   const lineKeys = Object.keys(chartConfig) as T[];
   
@@ -43,7 +45,7 @@ const MultipleLineChart = <T extends string>({
   // Generate the 6 ticks (always divisible by 5 or 10)
   const ticks = Array.from({ length: 6 }, (_, i) => i * tickInterval);
   return (
-    <ChartContainer config={chartConfig}>
+    <ChartContainer config={chartConfig} className={className}>
       <LineChart
         accessibilityLayer
         data={chartData}

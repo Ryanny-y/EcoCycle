@@ -1,4 +1,10 @@
 // Dashboard Types
+export interface MontlyRecordGrowth {
+  month: string;
+  totalResidents: number;
+  totalNonResidents: number;
+}
+
 export interface TopMaterialResponse {
   name: string;
   quantity: number;
@@ -20,6 +26,7 @@ export interface DashboardDataResponse {
   totalPointsEarned: number;
   totalRewardsRedeemed: number;
   lowStockRewardsCount: number;
+  monthlyRecordGrowth: MontlyRecordGrowth[]
   topCollectedMaterials: TopMaterialResponse[];
   weeklyCollections: WeeklyCollectionResponse[];
   monthlyCollections: MonthlyCollectionResponse[];

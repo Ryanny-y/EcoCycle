@@ -7,10 +7,13 @@ import { ErrorState } from "@/components/shared/ErrorState";
 import CardSummary from "./dashboard/CardSummary";
 import LowStockAlert from "./dashboard/LowStockAlert";
 import MonthlyStats from "./dashboard/MonthlyStats";
+import DashboardCharts from "./dashboard/DashboardCharts";
 
 const DashboardHome = () => {
   const { data, loading, error, refetchData } =
     useFetchData<DashboardDataResponse>("dashboard");
+
+  console.log(data);
 
   if (loading) {
     return (
@@ -78,8 +81,11 @@ const DashboardHome = () => {
       {/* Low Stock */}
       <LowStockAlert lowStockRewardsCount={data.lowStockRewardsCount} />
 
+      {/* Charts */}
+      <DashboardCharts monthlyRecordGrowth={data.monthlyRecordGrowth} />
+
       {/* Quick Insights */}
-      <MonthlyStats 
+      <MonthlyStats
         pointsEarnedThisMonth={data.pointsEarnedThisMonth}
         rewardsRedeemedThisMonth={data.rewardsRedeemedThisMonth}
         averagePointsPerResident={data.averagePointsPerResident}

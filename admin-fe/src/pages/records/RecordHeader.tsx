@@ -55,7 +55,7 @@ const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen 
           <Download size={14} color="white" /> Export CSV
         </Button>
         <Button className="hidden md:flex" onClick={() => setIsAddRecordOpen(true)}>
-          <Plus size={14} color="white" /> Add Resident
+          <Plus size={14} color="white" /> {isResident ? "Add Resident" : "Add Non-Resident"}
         </Button>
       </div>
     </>
