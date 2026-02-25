@@ -18,6 +18,7 @@ public class DashboardDataResponse {
     private Long lowStockRewardsCount;
 
     // === Charts / Insights ===
+    private List<MonthlyRecordGrowth> monthlyRecordGrowth;
     private List<TopMaterialResponse> topCollectedMaterials;
     private List<WeeklyCollectionResponse> weeklyCollections;
     private List<MonthlyCollectionResponse> monthlyCollections;

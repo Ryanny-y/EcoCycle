@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,4 +49,6 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
 
     @Query("SELECT COALESCE(AVG(r.points), 0) FROM Record r WHERE r.isResident = true")
     BigDecimal getAveragePoints();
+
+    List<Record> findByCreatedAtGreaterThanEqual(LocalDateTime startDate);
 }
