@@ -51,7 +51,7 @@ const MonthlyStats = ({
             Avg Points / Resident
           </span>
           <h4 className="text-3xl font-black text-gray-900 mt-1">
-            {averagePointsPerResident}
+            {averagePointsPerResident.toFixed(2)}
           </h4>
           <p className="text-xs mt-2 text-gray-500">
             Healthy point circulation
