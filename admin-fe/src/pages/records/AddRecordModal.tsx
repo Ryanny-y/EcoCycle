@@ -69,7 +69,6 @@ const AddRecordModal = ({
   const validateForm = (): string | null => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";
-    // if (!formData.birthDate) return "Birthdate is required";
     if (!formData.contactNumber && formData.contactNumber.length !== 11)
       return "Invalid contact number";
 
@@ -204,7 +203,6 @@ const AddRecordModal = ({
                 id="birthDate"
                 name="birthDate"
                 type="date"
-                // required
                 value={formData.birthDate}
                 onChange={handleChange}
               />

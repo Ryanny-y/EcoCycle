@@ -1,4 +1,9 @@
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import {
   Pagination,
   PaginationContent,
@@ -122,20 +127,45 @@ const NonResidentRecords = () => {
               </PaginationItem>
 
               {/* Page Numbers */}
-              {Array.from({ length: totalPages }, (_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    href="#"
-                    isActive={currentPage === index}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      changePage(index);
-                    }}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+              {(() => {
+                const maxVisible = 5;
+
+                let startPage = currentPage - Math.floor(maxVisible / 2);
+                let endPage = currentPage + Math.floor(maxVisible / 2);
+
+                // Fix if near beginning
+                if (startPage < 0) {
+                  startPage = 0;
+                  endPage = Math.min(maxVisible - 1, totalPages - 1);
+                }
+
+                // Fix if near end
+                if (endPage > totalPages - 1) {
+                  endPage = totalPages - 1;
+                  startPage = Math.max(0, totalPages - maxVisible);
+                }
+
+                const pages = [];
+
+                for (let i = startPage; i <= endPage; i++) {
+                  pages.push(
+                    <PaginationItem key={i}>
+                      <PaginationLink
+                        href="#"
+                        isActive={currentPage === i}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          changePage(i);
+                        }}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>,
+                  );
+                }
+
+                return pages;
+              })()}
 
               {/* Next */}
               <PaginationItem>
