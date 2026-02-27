@@ -6,6 +6,7 @@ import com.ecocycle.backend.record.dto.request.CreateRecordRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,4 +17,7 @@ public interface RecordService {
     Record getRecordById(UUID id);
     Record deleteRecord(UUID id);
     Record lookupRecord(String lastName, String firstName);
+
+//    Export
+    String downloadRecords(Boolean isResident) throws IOException;
 }

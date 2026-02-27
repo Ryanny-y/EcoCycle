@@ -51,4 +51,6 @@ public interface RecordRepository extends JpaRepository<Record, UUID>, PagingAnd
     BigDecimal getAveragePoints();
 
     List<Record> findByCreatedAtGreaterThanEqual(LocalDateTime startDate);
+
+    List<Record> findByIsResident(Boolean isResident);
 }

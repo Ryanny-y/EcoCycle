@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -124,6 +125,34 @@ public class RecordServiceImpl implements RecordService {
         }
 
         return foundRecords.getFirst();
+    }
+
+    @Override
+    public String downloadRecords(Boolean isResident) throws IOException {
+        List<Record> records = recordRepository.findByIsResident(isResident);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("id,last_name,first_name,middle_name,suffix,birth_date,gender,is_resident,address,points,contact_number,version,updated_at,created_at\n");
+
+        for (Record r : records) {
+            sb.append(r.getId()).append(",")
+                    .append(r.getLastName()).append(",")
+                    .append(r.getFirstName()).append(",")
+                    .append(r.getMiddleName()).append(",")
+                    .append(r.getSuffix()).append(",")
+                    .append(r.getBirthDate()).append(",")
+                    .append(r.getGender()).append(",")
+                    .append(r.getIsResident()).append(",")
+                    .append(r.getAddress()).append(",")
+                    .append(r.getPoints()).append(",")
+                    .append(r.getContactNumber()).append(",")
+                    .append(r.getVersion()).append(",")
+                    .append(r.getUpdatedAt()).append(",")
+                    .append(r.getCreatedAt())
+                    .append("\n");
+        }
+
+        return sb.toString();
     }
 
     private boolean isRecordExistsByName(String firstName, String middleName, String lastName) {
