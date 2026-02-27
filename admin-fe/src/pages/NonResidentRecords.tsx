@@ -1,5 +1,12 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { useState } from "react";
 import type { RecordInterface } from "@/types/dto";
 import { useSearchParams } from "react-router";
@@ -16,7 +23,7 @@ import useDebounce from "@/hooks/useDebounce";
 const NonResidentRecords = () => {
   // const [records, setRecords] = useState<RecordInterface[] | null>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || "0";
 
   const debouncedSearch = useDebounce(searchQuery, 500);
@@ -28,6 +35,17 @@ const NonResidentRecords = () => {
   const records = data?.content
     ? [...data.content].sort((a, b) => a.lastName.localeCompare(b.lastName))
     : [];
+
+  const totalPages = data?.totalPages ?? 0;
+  const currentPage = data?.page ?? 0;
+
+  const changePage = (newPage: number) => {
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set("page", newPage.toString());
+      return params;
+    });
+  };
 
   // Modals
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
@@ -84,6 +102,61 @@ const NonResidentRecords = () => {
         </CardContent>
 
         {/* Pagination */}
+        <CardFooter>
+          <Pagination>
+            <PaginationContent>
+              {/* Previous */}
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage > 0) {
+                      changePage(currentPage - 1);
+                    }
+                  }}
+                  className={
+                    currentPage === 0 ? "pointer-events-none opacity-50" : ""
+                  }
+                />
+              </PaginationItem>
+
+              {/* Page Numbers */}
+              {Array.from({ length: totalPages }, (_, index) => (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    href="#"
+                    isActive={currentPage === index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      changePage(index);
+                    }}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+
+              {/* Next */}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages - 1) {
+                      changePage(currentPage + 1);
+                    }
+                  }}
+                  className={
+                    currentPage === totalPages - 1
+                      ? "pointer-events-none opacity-50"
+                      : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </CardFooter>
       </Card>
 
       {/* Modals */}
