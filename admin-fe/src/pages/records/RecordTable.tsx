@@ -91,7 +91,7 @@ const RecordTable = ({
                   >
                     <TableCell className="font-semibold">{fullName}</TableCell>
                     <TableCell>{record.gender}</TableCell>
-                    <TableCell>{age}</TableCell>
+                    <TableCell>{age ? age : "No Age Provided"}</TableCell>
                     <TableCell>{record.points}</TableCell>
                     <TableCell className="truncate max-w-32">
                       {record.address ? record.address : "No Address Provided"}
