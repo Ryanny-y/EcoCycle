@@ -45,15 +45,15 @@ const StatisticsRanking = ({ topContributors }: StatisticsRankingProps) => {
           </TableHeader>
 
           <TableBody>
-            {topContributors.map((contributor) => (
+            {topContributors.map((contributor, i) => (
               <TableRow
                 key={contributor.fullName}
                 className="hover:bg-primary/10 font-bold"
               >
                 <TableCell className="uppercase py-6 text-start pl-10!">
-                  <span className="h-10 w-10 p-2 px-4 bg-yellow-100 text-yellow-700 rounded-full font-black">
-                    1
-                  </span>
+                  {i < 3 && <span className="h-10 w-10 p-2 px-4 bg-yellow-100 text-yellow-700 rounded-full font-black">
+                    i + 1
+                  </span>}
                 </TableCell>
                 <TableCell className="uppercase py-6">
                   {contributor.fullName}
