@@ -52,7 +52,7 @@ const StatisticsRanking = ({ topContributors }: StatisticsRankingProps) => {
               >
                 <TableCell className="uppercase py-6 text-start pl-10!">
                   {i < 3 && <span className="h-10 w-10 p-2 px-4 bg-yellow-100 text-yellow-700 rounded-full font-black">
-                    i + 1
+                    {i + 1}
                   </span>}
                 </TableCell>
                 <TableCell className="uppercase py-6">
