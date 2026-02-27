@@ -13,7 +13,7 @@ const StatisticsCard = ({
   totalActivePoints,
 }: StatisticsCardProps) => {
   return (
-    <div className="grid grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
       <Card>
         <CardContent className="flex items-start gap-3">
           <div className="p-2.5 bg-green-50 rounded-md mb-2">
