@@ -126,29 +126,35 @@ const Step1 = ({
         </div>
 
         {selectedRecord && (
-          <div className="w-full flex items-center gap-5 bg-emerald-50 border border-primary p-5 rounded-xl">
-            <span className="h-14 w-14 grid place-items-center bg-primary text-white text-2xl rounded-full">
-              {selectedRecord.lastName[0].toUpperCase()}
-            </span>
+          <div className="w-full flex flex-col md:flex-row md:items-center gap-5 bg-emerald-50 border border-primary p-5 rounded-xl">
+  
+  {/* Left Section (Avatar + Name) */}
+  <div className="flex items-center gap-5">
+    <span className="h-14 w-14 grid place-items-center bg-primary text-white text-2xl rounded-full">
+      {selectedRecord.lastName[0].toUpperCase()}
+    </span>
 
-            <div>
-              <h1 className="font-bold text-lg">
-                {formatName(
-                  selectedRecord.lastName,
-                  selectedRecord.firstName,
-                  selectedRecord.middleName,
-                )}
-              </h1>
-              <p className="text-sm">Normal Resident</p>
-            </div>
+    <div>
+      <h1 className="font-bold text-lg">
+        {formatName(
+          selectedRecord.lastName,
+          selectedRecord.firstName,
+          selectedRecord.middleName,
+        )}
+      </h1>
+      <p className="text-sm">Normal Resident</p>
+    </div>
+  </div>
 
-            <button
-              onClick={() => setStep(2)}
-              className="bg-primary text-white rounded-lg font-semibold gap-2 ml-auto px-7 py-2.5 flex items-center hover:opacity-90 duration-200"
-            >
-              Next <ChevronRight />
-            </button>
-          </div>
+  {/* Button */}
+  <button
+    onClick={() => setStep(2)}
+    className="bg-primary text-white rounded-lg font-semibold gap-2 md:ml-auto px-7 py-2.5 flex items-center hover:opacity-90 duration-200"
+  >
+    Next <ChevronRight />
+  </button>
+
+</div>
         )}
       </CardContent>
 
