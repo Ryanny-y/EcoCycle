@@ -140,8 +140,6 @@ public class RecordController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename=\"" + fileName + "\"")
-                .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,
-                        HttpHeaders.CONTENT_DISPOSITION)
                 .contentType(MediaType.parseMediaType("text/csv"))
                 .body(csv.getBytes(StandardCharsets.UTF_8));
     }

@@ -44,7 +44,9 @@ const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen 
         throw new Error("Failed to fetch file");
       }
       const contentDisposition = response.headers.get("Content-Disposition");
-      let fileName = "records.csv";
+      let fileName = isResident
+                ? "resident_records.csv"
+                : "non_resident_records.csv";
 
       if (contentDisposition) {
         const match = contentDisposition.match(/filename="?(.+?)"?$/);
