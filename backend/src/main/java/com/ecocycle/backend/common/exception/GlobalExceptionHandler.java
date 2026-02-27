@@ -3,6 +3,7 @@ package com.ecocycle.backend.common.exception;
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.common.web.ApiErrorResponse;
 import com.ecocycle.backend.security.ratelimit.RateLimitException;
+import com.ecocycle.backend.user.exceptions.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.MessageSourceResolvable;
@@ -59,6 +60,20 @@ public class GlobalExceptionHandler {
         );
     }
 
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiErrorResponse> IllegalArgumentException(
+            EntityNotFoundException ex) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ApiErrorResponse.of(
+                        HttpStatus.BAD_REQUEST,
+                        ex.getMessage(),
+                        "BAD_REQUEST"
+                )
+        );
+    }
+
     // -------- NOT FOUND --------
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -70,6 +85,19 @@ public class GlobalExceptionHandler {
                         HttpStatus.NOT_FOUND,
                         ex.getMessage(),
                         "RESOURCE_NOT_FOUND"
+                )
+        );
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> UserNotFoundException(
+            EntityNotFoundException ex) {
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ApiErrorResponse.of(
+                        HttpStatus.NOT_FOUND,
+                        ex.getMessage(),
+                        "USER_NOT_FOUND"
                 )
         );
     }
