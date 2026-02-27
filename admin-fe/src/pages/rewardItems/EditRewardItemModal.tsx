@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
-import useRewardItems from "@/contexts/RewardItemsContext";
 import useFormHandlers from "@/hooks/useFormHandlers";
 import useMutation from "@/hooks/useMutation";
 import type {
@@ -328,7 +327,7 @@ const EditRewardItemModal = ({
                       <img
                         src={URL.createObjectURL(formData.imageFile)}
                         alt="Preview"
-                        className="mx-auto max-h-48 rounded-lg object-contain"
+                        className="mx-auto max-h-28 rounded-lg object-contain"
                       />
                       <p className="text-primary font-medium">
                         {formData.imageFile.name}

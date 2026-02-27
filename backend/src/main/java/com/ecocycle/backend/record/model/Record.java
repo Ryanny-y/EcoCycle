@@ -39,7 +39,7 @@ public class Record {
     @Column(length = 10)
     private String suffix;
 
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Column(length = 50, nullable = false)

@@ -319,15 +319,22 @@ const AddRewardItemModal = ({
                     handleFileChange(e.target.files?.[0] || null)
                   }
                 />
-
+                
                 <label
                   htmlFor="fileUpload"
                   className="cursor-pointer block p-5"
                 >
                   {formData.image ? (
-                    <p className="text-primary font-medium">
-                      {formData.image.name}
-                    </p>
+                    <div className="space-y-2">
+                      <img
+                        src={URL.createObjectURL(formData.image)}
+                        alt="Preview"
+                        className="mx-auto max-h-28 rounded-lg object-contain "
+                      />
+                      <p className="text-primary font-medium">
+                        {formData.image.name}
+                      </p>
+                    </div>
                   ) : (
                     <p className="text-gray-500">
                       Drag & drop an image here, or click to select a file

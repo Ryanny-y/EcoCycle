@@ -172,7 +172,7 @@ const AddMaterialModal = ({
               <div
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
-                className="border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer h-28 grid items-center hover:border-primary duration-300"
+                className="border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer grid items-center hover:border-primary duration-300"
               >
                 <Input
                   type="file"
@@ -189,9 +189,16 @@ const AddMaterialModal = ({
                   className="cursor-pointer block p-5"
                 >
                   {formData.image ? (
-                    <p className="text-primary font-medium">
-                      {formData.image.name}
-                    </p>
+                    <div className="space-y-2">
+                      <img
+                        src={URL.createObjectURL(formData.image)}
+                        alt="Preview"
+                        className="mx-auto max-h-28 rounded-lg object-contain "
+                      />
+                      <p className="text-primary font-medium">
+                        {formData.image.name}
+                      </p>
+                    </div>
                   ) : (
                     <p className="text-gray-500">
                       Drag & drop an image here, or click to select a file

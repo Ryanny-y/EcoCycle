@@ -31,7 +31,7 @@ const CardSummary = ({ totalResidents, totalMaterialsCollected, totalPointsEarne
             <Boxes size={28} strokeWidth={2} className="text-green-500" />
           </div>
           <p className="text-xs font-bold text-muted-foreground/80">
-            TOTAL MATERIALS
+            MATERIALS COLLECTED (KG)
           </p>
           <p className="font-bold text-2xl tracking-tighter">
             {totalMaterialsCollected} kg

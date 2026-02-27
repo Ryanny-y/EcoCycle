@@ -27,8 +27,8 @@ public class CreateRecordRequest {
     @Size(max = 10, message = "Suffix must not exceed 10 characters")
     private String suffix;
 
-    @NotNull(message = "Birth date is required")
-    @Past(message = "Birth date must be in the past")
+//    @NotNull(message = "Birth date is required")
+//    @Past(message = "Birth date must be in the past")
     private LocalDate birthDate;
 
     @NotNull(message = "Gender is required")
