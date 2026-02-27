@@ -28,10 +28,11 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public Page<Record> getRecords(Boolean isResident, String search, Pageable pageable) {
         Pageable fixedPageable = PageRequest.of(
-                pageable.getPageNumber(),
-                10,
-                Sort.by(Sort.Direction.ASC, "lastName")
-        );
+        pageable.getPageNumber(),
+        10,
+        Sort.by(Sort.Direction.ASC, "lastName")
+            .and(Sort.by(Sort.Direction.ASC, "firstName"))
+);
 
         return recordRepository.findAllWithFilters(isResident, search, fixedPageable);
     }
