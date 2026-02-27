@@ -30,7 +30,7 @@ public class RecordServiceImpl implements RecordService {
         Pageable fixedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 10,
-                Sort.by(Sort.Direction.ASC, "name")
+                Sort.by(Sort.Direction.ASC, "lastName")
         );
 
         return recordRepository.findAllWithFilters(isResident, search, fixedPageable);
