@@ -157,7 +157,7 @@ const Step1 = ({
           <span className="bg-stone-100 p-5 rounded-full">
             <UserCheck size={40} className="text-stone-400" />
           </span>
-          <p className="font-semibold text-muted-foreground">
+          <p className="flex items-center justify-content-center font-semibold text-center text-muted-foreground">
             Search and select a resident to proceed
           </p>
         </div>
