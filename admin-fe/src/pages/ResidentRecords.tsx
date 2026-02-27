@@ -126,7 +126,7 @@ const ResidentRecords = () => {
 
               {/* Page Numbers */}
               {(() => {
-                const maxVisible = 3;
+                const maxVisible = 5;
 
                 let startPage = currentPage - Math.floor(maxVisible / 2);
                 let endPage = currentPage + Math.floor(maxVisible / 2);
