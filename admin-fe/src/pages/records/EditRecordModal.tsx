@@ -62,7 +62,7 @@ const EditRecordModal = ({
     middleName: recordToEdit.middleName,
     suffix: recordToEdit.suffix,
     gender: recordToEdit.gender,
-    birthDate: recordToEdit.birthDate,
+    birthDate: recordToEdit.birthDate ?? "",
     contactNumber: recordToEdit.contactNumber,
     isResident: recordToEdit.isResident,
     address: recordToEdit.address,
@@ -214,12 +214,13 @@ const EditRecordModal = ({
             {/* Birthdate */}
             <div className="space-y-2">
               <Label htmlFor="birthDate">
-                Birthdate <span className="text-red-500">*</span>
+                Birthdate
               </Label>
               <Input
                 id="birthDate"
                 name="birthDate"
                 type="date"
+                required={false}
                 value={formData.birthDate}
                 onChange={handleChange}
               />
