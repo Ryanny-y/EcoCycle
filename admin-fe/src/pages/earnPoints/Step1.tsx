@@ -126,7 +126,7 @@ const Step1 = ({
         </div>
 
         {selectedRecord && (
-          <div className="w-full flex flex-col md:flex-row md:items-center gap-5 bg-emerald-50 border border-primary p-5 rounded-xl">
+          <div className="w-full flex flex-col items-start md:flex-row md:items-center gap-5 bg-emerald-50 border border-primary p-5 rounded-xl">
   
   {/* Left Section (Avatar + Name) */}
   <div className="flex items-center gap-5">
