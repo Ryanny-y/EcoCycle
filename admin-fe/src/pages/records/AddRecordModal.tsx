@@ -218,7 +218,13 @@ const AddRecordModal = ({
                 name="contactNumber"
                 type="tel"
                 value={formData.contactNumber}
-                onChange={handleChange}
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/\D/g, "");
+                  setFormData((prev) => ({
+                    ...prev,
+                    contactNumber: numericValue.slice(0, 11),
+                  }));
+                }}
                 placeholder="09123456789"
               />
             </div>
