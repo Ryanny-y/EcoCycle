@@ -16,6 +16,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
+      const data = await refreshToken();
+        if (data) {
+          if(data.data.role || ["ADMIN", "SUPER_ADMIN"].includes(data.data.role)) {
+            setAuthResponse(data);
+          } else {
+            setAuthResponse(null);
+            await logout();
+          }
+        } else {
+          await logout();
+        }
       setLoading(false);
     };
     initializeAuth();
