@@ -42,7 +42,7 @@ const Settings = () => {
 
       {/* Administrator Management */}
       <Card>
-        <CardHeader className="flex flex-col md:flex-row gap-3 items-center justify-between">
+        <CardHeader className="flex flex-col md:flex-row gap-3 items-start md:items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-xl font-bold">
             <span className="bg-emerald-100 text-emerald-600 p-2 rounded-lg">
               <Shield />
