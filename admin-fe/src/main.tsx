@@ -17,6 +17,7 @@ import { RewardItemsProvider } from "./contexts/RewardItemsContext.tsx";
 import Materials from "./pages/Materials.tsx";
 import { MaterialsProvider } from "./contexts/MaterialsContext.tsx";
 import Statistics from "./pages/Statistics.tsx";
+import Settings from "./pages/Settings.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -38,6 +39,13 @@ createRoot(document.getElementById("root")!).render(
                 <Route element={<Dashboard />}>
                   <Route index element={<DashboardHome />} />
 
+                  {/* ----------- SUPER ADMIN ONLY -------------*/}
+                  <Route element={<Protected allowedRoles={["SUPER_ADMIN"]}/>}>
+                    <Route path="settings" element={<Settings />}/>
+                  </Route>
+
+
+                  {/* ----------- ADMIN OR SUPER ADMIN -------------*/}
                   {/* Records */}
                   <Route path="records">
                     <Route path="residents" element={<ResidentRecords />} />

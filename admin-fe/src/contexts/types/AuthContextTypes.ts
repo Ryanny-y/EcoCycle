@@ -1,9 +1,11 @@
+export type Role = "ADMIN" | "SUPER_ADMIN";
+
 export type AuthResponseType = {
   success: boolean,
   message: string,
   data: {
     accessToken: string,
-    roles: string[],
+    roles: Role[],
     username: string,
   }
 }
