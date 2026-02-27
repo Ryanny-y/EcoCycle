@@ -8,6 +8,7 @@ import UserTable from "./settings/UserTable";
 import { useState } from "react";
 import type { ApiResponse } from "@/types/api";
 import CreateUserModal from "./settings/CreateUserModal";
+import EditUserModal from "./settings/EditUserModal";
 
 const Settings = () => {
   const { data, loading, error, refetchData } =
@@ -75,18 +76,18 @@ const Settings = () => {
         />
       )}
 
-      {/* {isEditRecordOpen && (
-        <EditRecordModal
-          recordToEdit={recordToEdit}
-          setRecordToEdit={setRecordToEdit}
-          isEditRecordOpen={isEditRecordOpen}
-          setIsEditRecordOpen={setIsEditRecordOpen}
+      {isEditUserOpen && (
+        <EditUserModal
+          userToEdit={userToEdit}
+          setUserToEdit={setUserToEdit}
+          isEditUserOpen={isEditUserOpen}
+          setIsEditUserOpen={setIsEditUserOpen}
           refetchData={refetchData}
         />
       )}
 
-      {isDeleteRecordOpen && (
-        <DeleteRecordModal
+      {/* {isDeleteUserOpen && (
+        <DeleteUserModal
           recordToDelete={recordToDelete}
           setRecordToDelete={setRecordToDelete}
           isDeleteRecordOpen={isDeleteRecordOpen}
