@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,7 @@ public class RecordServiceImpl implements RecordService {
         Pageable fixedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 10,
-                pageable.getSort()
+                Sort.by(Sort.Direction.ASC, "name")
         );
 
         return recordRepository.findAllWithFilters(isResident, search, fixedPageable);
