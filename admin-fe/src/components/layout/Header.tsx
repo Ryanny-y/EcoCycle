@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import useAuth from "@/contexts/AuthContext";
 
 const Header = () => {
-  const { logout } = useAuth();
+  const { authResponse, logout } = useAuth();
   const [time, setTime] = useState(new Date())
 
   useEffect(() => {
@@ -49,9 +49,9 @@ const Header = () => {
 
       <div className="flex items-center gap-5 pr-5">
         <div className="text-right">
-          <p className="font-bold text-sm">Username</p>
+          <p className="font-bold text-sm">{authResponse?.data.username}</p>
           <p className="text-xs uppercase font-semibold text-muted-foreground">
-            Admin Staff
+            {authResponse?.data.role}
           </p>
         </div>
 

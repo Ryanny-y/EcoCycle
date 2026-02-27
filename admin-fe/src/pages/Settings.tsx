@@ -9,6 +9,7 @@ import { useState } from "react";
 import type { ApiResponse } from "@/types/api";
 import CreateUserModal from "./settings/CreateUserModal";
 import EditUserModal from "./settings/EditUserModal";
+import DeleteUserModal from "./settings/DeleteUserModal";
 
 const Settings = () => {
   const { data, loading, error, refetchData } =
@@ -86,15 +87,15 @@ const Settings = () => {
         />
       )}
 
-      {/* {isDeleteUserOpen && (
+      {isDeleteUserOpen && (
         <DeleteUserModal
-          recordToDelete={recordToDelete}
-          setRecordToDelete={setRecordToDelete}
-          isDeleteRecordOpen={isDeleteRecordOpen}
-          setIsDeleteRecordOpen={setIsDeleteRecordOpen}
+          userToDelete={userToDelete}
+          setUserToDelete={setUserToDelete}
+          isDeleteUserOpen={isDeleteUserOpen}
+          setIsDeleteUserOpen={setIsDeleteUserOpen}
           refetchData={refetchData}
         />
-      )} */}
+      )}
     </div>
   );
 };
