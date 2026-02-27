@@ -13,8 +13,6 @@ const DashboardHome = () => {
   const { data, loading, error, refetchData } =
     useFetchData<DashboardDataResponse>("dashboard");
 
-  console.log(data);
-
   if (loading) {
     return (
       <div id="home" className="space-y-8">

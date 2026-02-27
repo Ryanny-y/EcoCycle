@@ -1,3 +1,5 @@
+import type { Role } from "@/contexts/types/AuthContextTypes";
+
 // Dashboard Types
 export interface MontlyRecordGrowth {
   month: string;
@@ -107,4 +109,12 @@ export interface RewardItem {
   lastRestocked?: Date;
   imageUrl: string;
   createdAt: Date;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  roles: Role[];
+  createdAt: Date
 }
