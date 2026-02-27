@@ -5,7 +5,6 @@ import com.ecocycle.backend.auth.dto.request.SignupRequest;
 import com.ecocycle.backend.auth.exceptions.InvalidCredentialsException;
 import com.ecocycle.backend.security.UserPrincipal;
 import com.ecocycle.backend.security.jwt.JwtService;
-import com.ecocycle.backend.user.model.Roles;
 import com.ecocycle.backend.user.model.User;
 import com.ecocycle.backend.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,8 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 // TODO: Make a test for this service
 @Service
@@ -45,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
-                .roles(request.getRoles())
+                .role(request.getRole())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
@@ -55,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public UserDetails authenticate(LoginRequest request, HttpServletResponse response) {
-        User user = userRepository.findByUsernameWithRoles(request.getUsername())
+        User user = userRepository.findByUsernameWithRole(request.getUsername())
                 .orElseThrow(() -> new InvalidCredentialsException("Username or Password is incorrect."));
 
         try {

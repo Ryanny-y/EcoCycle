@@ -1,5 +1,5 @@
 package com.ecocycle.backend.user.model;
 
-public enum Roles {
+public enum UserRole {
     ADMIN, SUPER_ADMIN
 }

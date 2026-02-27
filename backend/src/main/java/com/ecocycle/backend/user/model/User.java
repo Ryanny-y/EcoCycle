@@ -33,15 +33,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Column(
-            name = "role",
-            nullable = false
-    )
     @Builder.Default
-    private Set<Roles> roles = new HashSet<>();
+    private UserRole role = UserRole.ADMIN;
 
     @Column(name = "refresh_token")
     private String refreshToken;

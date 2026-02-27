@@ -46,8 +46,8 @@ const UserTable = ({
 
   if (!users) return;
 
-  const transformedRole = (roles: Role[]) => {
-    if (roles.includes("SUPER_ADMIN")) return <Badge className="uppercase">Super Admin</Badge>;
+  const transformedRole = (role: Role) => {
+    if (role === "SUPER_ADMIN") return <Badge className="uppercase">Super Admin</Badge>;
 
     return <Badge className="bg-emerald-100 text-emerald-700 uppercase">Admin</Badge>;
   };
@@ -96,7 +96,7 @@ const UserTable = ({
                       {user.username}
                     </TableCell>
                     <TableCell>{user.email}</TableCell>
-                    <TableCell>{transformedRole(user.roles)}</TableCell>
+                    <TableCell>{transformedRole(user.role)}</TableCell>
                     <TableCell>
                       {dayjs(user.createdAt).format("YYYY-MM-DD")}
                     </TableCell>

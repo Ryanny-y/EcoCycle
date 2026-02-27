@@ -5,7 +5,7 @@ export type AuthResponseType = {
   message: string,
   data: {
     accessToken: string,
-    roles: Role[],
+    role: Role,
     username: string,
   }
 }

@@ -13,6 +13,7 @@ import com.ecocycle.backend.user.UserService;
 import com.ecocycle.backend.user.model.User;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +24,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
@@ -64,7 +66,7 @@ public class AuthController {
         LoginResponse loginResponse = new LoginResponse(
                 accessToken,
                 user.getUsername(),
-                user.getRoles()
+                user.getRole()
         );
 
         ApiResponse<LoginResponse> apiResponse = ApiResponse.<LoginResponse>builder()
@@ -88,7 +90,7 @@ public class AuthController {
         RefreshResponse refreshResponse = new RefreshResponse(
                 accessToken,
                 user.getUsername(),
-                user.getRoles()
+                user.getRole()
         );
 
         ApiResponse<RefreshResponse> apiResponse = ApiResponse.<RefreshResponse>builder()

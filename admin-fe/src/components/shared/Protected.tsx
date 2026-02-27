@@ -20,9 +20,7 @@ const Protected = ({ allowedRoles } : RoleProtectedProps ) => {
     return <Outlet />;
   }
 
-  const userRoles = authResponse?.data?.roles ?? [];
-
-  if (!userRoles.some(role => allowedRoles.includes(role))) {
+  if (!allowedRoles.includes(authResponse.data.role)) {
     return <Navigate to="/" replace />;
   }
 

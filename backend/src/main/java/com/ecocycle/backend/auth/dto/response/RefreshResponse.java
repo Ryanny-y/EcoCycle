@@ -1,6 +1,6 @@
 package com.ecocycle.backend.auth.dto.response;
 
-import com.ecocycle.backend.user.model.Roles;
+import com.ecocycle.backend.user.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +15,5 @@ import java.util.Set;
 public class RefreshResponse {
     private String accessToken;
     private String username;
-    Set<Roles> roles;
+    private UserRole role;
 }

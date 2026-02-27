@@ -62,9 +62,6 @@ public class FarmController {
     public ResponseEntity<ApiResponse<FarmDto>> createFarm(
             @Valid @ModelAttribute CreateFarmRequest request
     ) {
-        log.info("Value: " + (request.getSize() != null ? request.getSize().getValue() : "null"));
-        log.info("Unit: " + (request.getSize() != null ? request.getSize().getUnit() : "null"));
-
         Farm createdFarm = farmService.createFarm(request);
         ApiResponse<FarmDto> apiResponse = ApiResponse.<FarmDto>builder()
                 .success(true)

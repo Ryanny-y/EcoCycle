@@ -7,13 +7,14 @@ import { Plus, Shield } from "lucide-react";
 import UserTable from "./settings/UserTable";
 import { useState } from "react";
 import type { ApiResponse } from "@/types/api";
+import CreateUserModal from "./settings/CreateUserModal";
 
 const Settings = () => {
   const { data, loading, error, refetchData } =
     useFetchData<ApiResponse<User[]>>("users");
 
   // Modals
-  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
   const [isEditUserOpen, setIsEditUserOpen] = useState(false);
   const [isDeleteUserOpen, setIsDeleteUserOpen] = useState(false);
 
@@ -47,7 +48,7 @@ const Settings = () => {
             Administrator Management
           </CardTitle>
 
-          <Button>
+          <Button onClick={() => setIsCreateUserOpen(true)}>
             <Plus />
             Add Administrator
           </Button>
@@ -64,6 +65,35 @@ const Settings = () => {
           />
         </div>
       </Card>
+
+      {/* Modals */}
+      {isCreateUserOpen && (
+        <CreateUserModal
+          isCreateUserOpen={isCreateUserOpen}
+          setIsCreateUserOpen={setIsCreateUserOpen}
+          refetchData={refetchData}
+        />
+      )}
+
+      {/* {isEditRecordOpen && (
+        <EditRecordModal
+          recordToEdit={recordToEdit}
+          setRecordToEdit={setRecordToEdit}
+          isEditRecordOpen={isEditRecordOpen}
+          setIsEditRecordOpen={setIsEditRecordOpen}
+          refetchData={refetchData}
+        />
+      )}
+
+      {isDeleteRecordOpen && (
+        <DeleteRecordModal
+          recordToDelete={recordToDelete}
+          setRecordToDelete={setRecordToDelete}
+          isDeleteRecordOpen={isDeleteRecordOpen}
+          setIsDeleteRecordOpen={setIsDeleteRecordOpen}
+          refetchData={refetchData}
+        />
+      )} */}
     </div>
   );
 };

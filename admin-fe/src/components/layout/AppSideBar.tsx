@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import useAuth from "@/contexts/AuthContext";
+import useAuth, { AuthProvider } from "@/contexts/AuthContext";
 import {
   ArrowLeftRight,
   Boxes,
@@ -32,7 +32,7 @@ export function AppSidebar() {
 
   useEffect(() => {
     setOpenMobile(false);
-  }, [location.pathname])
+  }, [location.pathname]);
 
   const navGroups = [
     {
@@ -42,8 +42,7 @@ export function AppSidebar() {
           title: "Dashboard",
           url: "/",
           icon: LayoutDashboard,
-          roles: ["ADMIN", "SUPER_ADMIN"]
-
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
       ],
     },
@@ -54,13 +53,13 @@ export function AppSidebar() {
           title: "Residents",
           url: "/records/residents",
           icon: Users,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
         {
           title: "Non-Residents",
           url: "/records/non-residents",
           icon: UserPlus,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
       ],
     },
@@ -71,19 +70,19 @@ export function AppSidebar() {
           title: "Earn Points",
           url: "/rewards/earn-points",
           icon: Recycle,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
         {
           title: "Redeem Points",
           url: "/rewards/redeem",
           icon: ArrowLeftRight,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
         {
           title: "Statistics",
           url: "/rewards/statistics",
           icon: ChartColumn,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
       ],
     },
@@ -94,13 +93,13 @@ export function AppSidebar() {
           title: "Reward Items",
           url: "/inventory/reward-items",
           icon: Boxes,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
         {
           title: "Materials",
           url: "/inventory/materials",
           icon: Package,
-          roles: ["ADMIN", "SUPER_ADMIN"]
+          roles: ["ADMIN", "SUPER_ADMIN"],
         },
       ],
     },
@@ -111,25 +110,23 @@ export function AppSidebar() {
           title: "Settings",
           url: "/settings",
           icon: Settings,
-          roles: ["SUPER_ADMIN"]
+          roles: ["SUPER_ADMIN"],
         },
       ],
     },
   ];
 
-  if(!authResponse) return null;
+  if (!authResponse) return null;
   const filteredGroups = navGroups
-  .map(group => ({
-    ...group,
-    items: group.items.filter(item => {
-      if (!item.roles) return true;
+    .map((group) => ({
+      ...group,
+      items: group.items.filter((item) => {
+        if (!item.roles) return true;
 
-      return authResponse.data.roles.some(userRole =>
-        item.roles.includes(userRole)
-      );
-    })
-  }))
-  .filter(group => group.items.length > 0);
+        return item.roles.includes(authResponse.data.role);
+      }),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <Sidebar>

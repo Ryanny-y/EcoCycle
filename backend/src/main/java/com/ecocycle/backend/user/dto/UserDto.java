@@ -1,6 +1,6 @@
 package com.ecocycle.backend.user.dto;
 
-import com.ecocycle.backend.user.model.Roles;
+import com.ecocycle.backend.user.model.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +18,6 @@ public class UserDto {
     private UUID id;
     private String username;
     private String email;
-    private Set<Roles> roles;
+    private UserRole role;
     private LocalDateTime createdAt;
 }

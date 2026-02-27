@@ -1,10 +1,7 @@
 package com.ecocycle.backend.auth.dto.request;
 
-import com.ecocycle.backend.user.model.Roles;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import com.ecocycle.backend.user.model.UserRole;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +23,8 @@ public class SignupRequest {
     @Email(message = "Email must be valid")
     private String email;
 
-    @NotEmpty(message = "Roles are required")
-    private Set<Roles> roles;
+    @NotNull(message = "At least one role is required")
+    private UserRole role;
 
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must be at least 8 characters long")

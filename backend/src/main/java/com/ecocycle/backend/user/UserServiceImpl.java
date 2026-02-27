@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User getUserByUsername(String username) {
-        return userRepository.findByUsernameWithRoles(username)
+        return userRepository.findByUsernameWithRole(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with username: " + username));
     }
 
