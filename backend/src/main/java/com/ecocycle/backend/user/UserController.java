@@ -57,4 +57,19 @@ public class UserController {
 
         return ResponseEntity.ok(apiResponse);
     }
+
+    @RateLimit(limit = 50, duration = 1)
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(
+            @PathVariable("id") UUID userId
+    ) {
+        User deletedUser = userService.deleteUser(userId);
+
+        ApiResponse<Void> apiResponse = ApiResponse.<Void>builder()
+                .success(true)
+                .message("User " + deletedUser.getUsername() + " Deleted Successfully.")
+                .build();
+
+        return ResponseEntity.ok(apiResponse);
+    }
 }

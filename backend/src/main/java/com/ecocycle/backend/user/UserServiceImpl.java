@@ -54,6 +54,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User deleteUser(UUID userId) {
+        User user = this.getUserById(userId);
+        userRepository.delete(user);
+        return user;
+    }
+
     public User getUserById(UUID id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + id));
