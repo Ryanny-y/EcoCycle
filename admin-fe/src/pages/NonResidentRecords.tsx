@@ -89,6 +89,7 @@ const NonResidentRecords = () => {
           <RecordHeader
             isResident={false}
             records={records}
+            totalRecords={data?.totalElements ?? 0}
             setSearchQuery={setSearchQuery}
             setIsAddRecordOpen={setIsAddRecordOpen}
           />
