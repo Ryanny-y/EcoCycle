@@ -13,11 +13,12 @@ import useAuth from "@/contexts/AuthContext";
 interface RecordHeader {
   isResident: boolean;
   records: RecordInterface[] | undefined;
+  totalRecords: number;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   setIsAddRecordOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen }: RecordHeader) => {
+const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen, totalRecords }: RecordHeader) => {
   const { authResponse } = useAuth();
   const [searchInput, setSearchInput] = useState<string>("");
   const [ isExportingUserData, setIsExportingUserData ] = useState<boolean>(false);
@@ -86,7 +87,7 @@ const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen 
         <div className="flex items-center gap-2 flex-1">
           <CardTitle className="text-lg">{isResident ? "Residents" : "Non-Residents"}</CardTitle>
           <Badge variant="secondary">
-            {records?.length ? records.length : 0} Total
+            {totalRecords} Total
           </Badge>
         </div>
 
