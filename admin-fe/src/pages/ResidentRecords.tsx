@@ -87,6 +87,7 @@ const ResidentRecords = () => {
         <CardHeader className="flex flex-col items-start justify-between xl:flex-row xl:justify-between">
           <RecordHeader
             isResident={true}
+            totalRecords={data?.totalElements ?? 0}
             records={records}
             setSearchQuery={setSearchQuery}
             setIsAddRecordOpen={setIsAddRecordOpen}
