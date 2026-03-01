@@ -39,9 +39,3 @@ aws:
   secret-key: ${AWS_SECRET_ACCESS_KEY}
   region: ap-southeast-1
   bucket-name: ecocycle-storage-test
-
-logging:
-  level:
-    org.flywaydb: DEBUG
-    org.springframework.boot.context.config: DEBUG
-    org.springframework.boot.autoconfigure.flyway: DEBUG
