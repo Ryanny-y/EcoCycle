@@ -1,0 +1,5 @@
+ALTER TABLE resident_records
+ADD COLUMN area INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE resident_records
+ADD COLUMN subdivision VARCHAR(100) NOT NULL DEFAULT 'OTHER';

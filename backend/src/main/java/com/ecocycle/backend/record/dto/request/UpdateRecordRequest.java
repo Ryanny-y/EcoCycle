@@ -46,4 +46,12 @@ public class UpdateRecordRequest {
             message = "Contact number must contain digits only"
     )
     private String contactNumber;
+
+    @NotNull(message = "Area is required")
+    @Min(1)
+    @Max(7)
+    private Integer area;
+
+    @NotBlank(message = "Subdivision is required.")
+    private String subdivision;
 }

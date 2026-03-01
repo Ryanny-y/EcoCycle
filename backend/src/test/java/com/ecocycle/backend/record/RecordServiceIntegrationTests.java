@@ -82,7 +82,9 @@ public class RecordServiceIntegrationTests {
                 created.getGender(),
                 false,
                 "Updated Address",
-                "09000000000"
+                "09000000000",
+                1,
+                "OTHER"
         );
 
         Record updated = underTest.updateRecord(created.getId(), updateRequest);
@@ -97,15 +99,15 @@ public class RecordServiceIntegrationTests {
     void getRecords_shouldApplyFiltersAndPagination() {
         underTest.createRecord(new CreateRecordRequest(
                 "Juan", "Santos", "Dela Cruz",
-                null, LocalDate.now(), Gender.MALE, true, "QC", "1"
+                null, LocalDate.now(), Gender.MALE, true, "QC", "1", 1, "OTHER"
         ));
         underTest.createRecord(new CreateRecordRequest(
                 "Maria", "Lopez", "Reyes",
-                null, LocalDate.now(), Gender.FEMALE, false, "Cebu", "2"
+                null, LocalDate.now(), Gender.FEMALE, false, "Cebu", "2", 1, "OTHER"
         ));
         underTest.createRecord(new CreateRecordRequest(
                 "Maria", "Santos", "Mendoza",
-                null, LocalDate.now(), Gender.FEMALE, true, "Davao", "3"
+                null, LocalDate.now(), Gender.FEMALE, true, "Davao", "3", 1, "OTHER"
         ));
 
         Page<Record> result = underTest.getRecords(
@@ -166,7 +168,9 @@ public class RecordServiceIntegrationTests {
                 Gender.MALE,
                 true,
                 "Quezon City",
-                "09123456789"
+                "09123456789",
+                1,
+                "OTHER"
         );
     }
 
@@ -180,7 +184,9 @@ public class RecordServiceIntegrationTests {
                 Gender.MALE,
                 true,
                 "Quezon City",
-                "09123456789"
+                "09123456789",
+                1,
+                "OTHER"
         );
     }
 }

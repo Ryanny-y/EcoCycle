@@ -55,8 +55,14 @@ public class Record {
     @Builder.Default
     private BigDecimal points = BigDecimal.ZERO;
 
-    @Column(length = 11, name = "contact_number", nullable = false)
+    @Column(length = 11, name = "contact_number")
     private String contactNumber;
+
+    @Column(name = "area", nullable = false)
+    private Integer area;
+
+    @Column(name = "subdivision", nullable = false)
+    private String subdivision;
 
     @Version
     private Long version;

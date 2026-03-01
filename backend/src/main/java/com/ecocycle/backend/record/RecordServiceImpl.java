@@ -59,6 +59,8 @@ public class RecordServiceImpl implements RecordService {
                 .isResident(request.getIsResident())
                 .address(request.getAddress())
                 .contactNumber(request.getContactNumber())
+                .area(request.getArea())
+                .subdivision(request.getSubdivision())
                 .build();
 
         return recordRepository.save(newRecord);
@@ -92,6 +94,8 @@ public class RecordServiceImpl implements RecordService {
         record.setIsResident(request.getIsResident());
         record.setAddress(request.getAddress());
         record.setContactNumber(request.getContactNumber());
+        record.setArea(request.getArea());
+        record.setSuffix(request.getSubdivision());
 
         return recordRepository.save(record);
     }

@@ -18,6 +18,8 @@ public class TestDataUtils {
                 .isResident(true)
                 .address("123 Barangay Greenfield, Quezon City")
                 .contactNumber("09123456789")
+                .area(1)
+                .subdivision("OTHER")
                 .build();
     }
 
@@ -32,6 +34,8 @@ public class TestDataUtils {
                 .isResident(false)
                 .address("456 Purok Mabuhay, Cebu City")
                 .contactNumber("09987654321")
+                .area(1)
+                .subdivision("OTHER")
                 .build();
     }
 
@@ -46,6 +50,8 @@ public class TestDataUtils {
                 .isResident(false)
                 .address("789 Sitio Maligaya, Davao City")
                 .contactNumber("09771234567")
+                .area(1)
+                .subdivision("OTHER")
                 .build();
     }
 
@@ -60,6 +66,8 @@ public class TestDataUtils {
                 .isResident(true)
                 .address("789 Sitio Maligaya, Davao City")
                 .contactNumber("09771234567")
+                .area(1)
+                .subdivision("OTHER")
                 .build();
     }
 }
