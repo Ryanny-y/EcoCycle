@@ -197,7 +197,7 @@ const AddRecordModal = ({
             {/* Birthdate */}
             <div className="space-y-2">
               <Label htmlFor="birthDate">
-                Birthdate <span className="text-red-500">*</span>
+                Birthdate
               </Label>
               <Input
                 id="birthDate"

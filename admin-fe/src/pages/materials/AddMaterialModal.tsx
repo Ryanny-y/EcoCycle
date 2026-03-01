@@ -145,6 +145,7 @@ const AddMaterialModal = ({
                 id="pointsPerKg"
                 name="pointsPerKg"
                 type="number"
+                step="any"
                 min={0}
                 value={formData.pointsPerKg}
                 required
