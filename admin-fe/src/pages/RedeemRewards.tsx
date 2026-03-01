@@ -1,6 +1,6 @@
 import PageHeader from "@/components/shared/PageHeader";
 import type { RecordInterface, RewardItem } from "@/types/dto";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import SearchRecord from "./redeemRewards/SearchRecord";
 import AvailableRewards from "./redeemRewards/AvailableRewards";
 import RedeemModal from "./redeemRewards/RedeemModal";
@@ -9,7 +9,7 @@ import type { PaginatedResponse } from "@/types/api";
 import useFetchData from "@/hooks/useFetchData";
 
 const RedeemRewards = () => {
-  const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(null);
   const [search, setSearch] = useState<string>("");
 
   // Records and Rewards
@@ -33,10 +33,6 @@ const RedeemRewards = () => {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const [rewardToRedeem, setRewardToRedeem] = useState<RewardItem | null>(null);
 
-  const selectedRecord = useMemo(() => {
-    return records?.content.find((r) => r.id === selectedRecordId) ?? null;
-  }, [records, selectedRecordId]);
-
   return (
     <div id="redeem_points" className="space-y-8">
       <PageHeader
@@ -54,7 +50,7 @@ const RedeemRewards = () => {
         }}
         setSearch={setSearch}
         selectedRecord={selectedRecord}
-        setSelectedRecordId={setSelectedRecordId}
+        setSelectedRecord={setSelectedRecord}
       />
 
       {/* Available Rewards */}

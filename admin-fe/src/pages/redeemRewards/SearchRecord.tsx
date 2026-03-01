@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, Gift, Search, X, ArrowLeftRight } from "lucide-react";
 import type { RecordInterface } from "@/types/dto";
-import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { formatName } from "@/utils/formatter";
 
@@ -21,13 +21,13 @@ type SearchRecordProps = {
   };
   selectedRecord: RecordInterface | null;
   setSearch: Dispatch<SetStateAction<string>>;
-  setSelectedRecordId: Dispatch<SetStateAction<string | null>>;
+  setSelectedRecord: Dispatch<SetStateAction<RecordInterface | null>>;
 };
 
 const SearchRecord = ({
   recordsData,
   selectedRecord,
-  setSelectedRecordId,
+  setSelectedRecord,
   setSearch,
 }: SearchRecordProps) => {
   const [searchInput, setSearchInput] = useState<string>("");
@@ -38,12 +38,6 @@ const SearchRecord = ({
   useEffect(() => {
     setSearch(debouncedSearch);
   }, [debouncedSearch, setSearch]);
-
-  const foundRecords = useMemo(() => {
-    return (recordsData.records ?? [])
-      .slice()
-      .sort((a, b) => a.lastName.localeCompare(b.lastName));
-  }, [recordsData.records]);
 
   return (
     <>
@@ -90,18 +84,18 @@ const SearchRecord = ({
                       Please check your connection and try again.
                     </p>
                   </div>
-                ) : foundRecords.length === 0 ? (
+                ) : (recordsData?.records ?? []).length === 0 ? (
                   <div className="p-6 text-center">
                     <p className="text-sm text-muted-foreground">
                       No residents found
                     </p>
                   </div>
                 ) : (
-                  foundRecords.map((record) => (
+                  (recordsData?.records ?? []).map((record) => (
                     <button
                       key={record.id}
                       onClick={() => {
-                        setSelectedRecordId(record.id);
+                        setSelectedRecord(record);
                         setSearchInput("");
                       }}
                       className="w-full flex items-center gap-4 px-6 py-4 hover:bg-emerald-50 transition-colors text-left"
@@ -152,7 +146,7 @@ const SearchRecord = ({
                 </p>
               </div>
               <button
-                onClick={() => setSelectedRecordId(null)}
+                onClick={() => setSelectedRecord(null)}
                 className="absolute top-4 right-4 p-2 text-primary/70 hover:text-primary transition-colors"
               >
                 <X size={20} />
