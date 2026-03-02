@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,8 +20,9 @@ import { Save, User } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender } from "@/types/dto";
+import type { Gender, UserRole } from "@/types/dto";
 import useFormHandlers from "@/hooks/useFormHandlers";
+import { areaSubdivisions } from "./CONSTANT";
 
 type AddRecordModalProps = {
   isResident: boolean;
@@ -38,10 +38,11 @@ type FormData = {
   suffix: string;
   birthDate: string;
   gender: Gender;
+  role: UserRole;
   contactNumber: string;
   isResident: boolean;
-  // role: UserRole;
-  address: string;
+  area: number;
+  subdivision: string;
 };
 
 const AddRecordModal = ({
@@ -57,20 +58,43 @@ const AddRecordModal = ({
     suffix: "",
     gender: "MALE",
     birthDate: "",
+    role: "RESIDENT",
     contactNumber: "",
     isResident,
-    address: "",
+    area: 1,
+    subdivision: "BIGLANG AWA",
   });
+
+  useEffect(() => {
+    const subdivisions = areaSubdivisions[formData.area] || [];
+
+    if (subdivisions.length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        subdivision: subdivisions[0],
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        subdivision: "",
+      }));
+    }
+  }, [formData.area]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { execute } = useMutation();
 
-  const { handleChange, handleSelectChange } = useFormHandlers<FormData>(setFormData);
+  const { handleChange, handleSelectChange } =
+    useFormHandlers<FormData>(setFormData);
 
   const validateForm = (): string | null => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";
     if (!formData.contactNumber && formData.contactNumber.length !== 11)
       return "Invalid contact number";
+    if (!formData.role) return "Role is required.";
+    if (!formData.area) return "Area is Required.";
+    if (!formData.subdivision) return "Subdivision is required.";
 
     return null;
   };
@@ -181,7 +205,9 @@ const AddRecordModal = ({
               <Label>Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value: Gender) => handleSelectChange("gender", value)}
+                onValueChange={(value: Gender) =>
+                  handleSelectChange("gender", value)
+                }
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -196,9 +222,7 @@ const AddRecordModal = ({
 
             {/* Birthdate */}
             <div className="space-y-2">
-              <Label htmlFor="birthDate">
-                Birthdate
-              </Label>
+              <Label htmlFor="birthDate">Birthdate</Label>
               <Input
                 id="birthDate"
                 name="birthDate"
@@ -208,8 +232,30 @@ const AddRecordModal = ({
               />
             </div>
 
+            {/* ROLE */}
+            <div className="space-y-2">
+              <Label>
+                Role <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.role}
+                onValueChange={(value: UserRole) =>
+                  handleSelectChange("role", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="RESIDENT">Resident</SelectItem>
+                  <SelectItem value="STAFF">Staff</SelectItem>
+                  <SelectItem value="NON_RESIDENT">Non-Resident</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Contact */}
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-2">
               <Label htmlFor="contactNumber">Contact Number</Label>
               <Input
                 id="contactNumber"
@@ -227,40 +273,59 @@ const AddRecordModal = ({
               />
             </div>
 
-            {/* Account Type */}
-            {/* <div className="space-y-2">
-              <Label>Account Type</Label>
+            {/* Area */}
+            <div className="space-y-2">
+              <Label>
+                Area <span className="text-red-500">*</span>
+              </Label>
               <Select
-                value={formData.role}
-                onValueChange={(value) =>
-                  handleSelectChange("role", value as UserRole)
-                }
+                value={formData.area.toString()}
+                onValueChange={(value) => {
+                  handleSelectChange("area", Number(value));
+                }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={UserRole.NORMAL}>
-                    Normal Resident
-                  </SelectItem>
-                  <SelectItem value={UserRole.STAFF}>
-                    Staff
-                  </SelectItem>
+                <SelectContent position="popper">
+                  {Object.keys(areaSubdivisions).map((area) => (
+                    <SelectItem key={area} value={area}>
+                      {area}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
 
-            {/* Address */}
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="address">Complete Address</Label>
-              <Textarea
-                id="address"
-                name="address"
-                rows={3}
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="St., Brgy, City, Province"
-              />
+            {/* Subdivision */}
+            <div className="space-y-2">
+              <Label>
+                Subdivision <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.subdivision}
+                onValueChange={(value) =>
+                  handleSelectChange("subdivision", value)
+                }
+                disabled={!areaSubdivisions[formData.area]?.length}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select subdivision" />
+                </SelectTrigger>
+                <SelectContent
+                  position="popper"
+                  side="bottom"
+                  align="start"
+                  sideOffset={4}
+                  avoidCollisions={false}
+                >
+                  {areaSubdivisions[formData.area]?.map((sub) => (
+                    <SelectItem key={sub} value={sub}>
+                      {sub}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
