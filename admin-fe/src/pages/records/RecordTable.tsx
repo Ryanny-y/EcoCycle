@@ -42,7 +42,7 @@ const RecordTable = ({
 
   if (error) return <ErrorState onRetry={refetchData} />;
 
-  if (!records) return;
+  if (!records) return null; 
 
   return (
     <>
@@ -56,7 +56,8 @@ const RecordTable = ({
               <TableHead className="text-white">Gender</TableHead>
               <TableHead className="text-white">Age</TableHead>
               <TableHead className="text-white">Points</TableHead>
-              <TableHead className="text-white">Address</TableHead>
+              <TableHead className="text-white">Area</TableHead>
+              <TableHead className="text-white">Subdivision</TableHead>
               <TableHead className="text-white">Created At</TableHead>
               <TableHead className="text-white text-right">Actions</TableHead>
             </TableRow>
@@ -65,11 +66,13 @@ const RecordTable = ({
             {records.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={7}
+                  colSpan={8}
                   className="h-24 text-center text-muted-foreground py-12"
                 >
                   <div className="flex flex-col items-center justify-center gap-2">
-                    <span className="p-5 rounded-full bg-stone-100"><Search size={30}/></span>
+                    <span className="p-5 rounded-full bg-stone-100">
+                      <Search size={30} />
+                    </span>
                     <p className="text-sm font-medium">No records found</p>
                     <p className="text-xs">
                       Try adjusting your filters or add a new record.
@@ -91,11 +94,10 @@ const RecordTable = ({
                   >
                     <TableCell className="font-semibold">{fullName}</TableCell>
                     <TableCell>{record.gender}</TableCell>
-                    <TableCell>{age ? age : "No Age Provided"}</TableCell>
+                    <TableCell>{record.birthDate ? age : "No Age Provided"}</TableCell>
                     <TableCell>{record.points}</TableCell>
-                    <TableCell className="truncate max-w-32">
-                      {record.address ? record.address : "No Address Provided"}
-                    </TableCell>
+                    <TableCell className={`${record.area === 0 && "text-destructive"}`}>{record.area}</TableCell>
+                    <TableCell className={`${record.subdivision === "OTHER" && "text-destructive"}`}>{record.subdivision}</TableCell>
                     <TableCell>
                       {dayjs(record.createdAt).format("YYYY-MM-DD")}
                     </TableCell>

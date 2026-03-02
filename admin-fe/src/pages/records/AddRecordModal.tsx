@@ -90,7 +90,7 @@ const AddRecordModal = ({
   const validateForm = (): string | null => {
     if (!formData.firstName.trim()) return "First name is required";
     if (!formData.lastName.trim()) return "Last name is required";
-    if (!formData.contactNumber && formData.contactNumber.length !== 11)
+    if (formData.contactNumber && formData.contactNumber.length !== 11)
       return "Invalid contact number";
     if (!formData.role) return "Role is required.";
     if (!formData.area) return "Area is Required.";
