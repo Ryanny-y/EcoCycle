@@ -95,7 +95,7 @@ public class RecordServiceImpl implements RecordService {
         record.setRole(request.getRole());
         record.setContactNumber(request.getContactNumber());
         record.setArea(request.getArea());
-        record.setSuffix(request.getSubdivision());
+        record.setSubdivision(request.getSubdivision());
 
         return recordRepository.save(record);
     }

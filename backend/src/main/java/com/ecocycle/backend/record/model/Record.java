@@ -50,7 +50,7 @@ public class Record {
     private Boolean isResident;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "role")
     private Role role = Role.RESIDENT;
 
     private String address;

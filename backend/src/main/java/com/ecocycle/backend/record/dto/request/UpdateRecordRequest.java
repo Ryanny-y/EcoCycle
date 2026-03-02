@@ -40,10 +40,9 @@ public class UpdateRecordRequest {
     @NotNull(message = "Role is required")
     private Role role;
 
-    @Size(min = 11, max = 11, message = "Contact number must be exactly 11 digits")
     @Pattern(
-            regexp = "^[0-9]+$",
-            message = "Contact number must contain digits only"
+            regexp = "^$|^\\d{11}$",
+            message = "Contact number must be exactly 11 digits"
     )
     private String contactNumber;
 
