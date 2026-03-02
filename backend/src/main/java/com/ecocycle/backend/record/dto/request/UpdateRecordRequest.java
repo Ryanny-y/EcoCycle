@@ -1,6 +1,7 @@
 package com.ecocycle.backend.record.dto.request;
 
 import com.ecocycle.backend.record.model.Gender;
+import com.ecocycle.backend.record.model.Role;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,10 +37,9 @@ public class UpdateRecordRequest {
     @NotNull(message = "Resident status is required")
     private Boolean isResident;
 
-    @Size(max = 255, message = "Address is too long")
-    private String address;
+    @NotNull(message = "Role is required")
+    private Role role;
 
-    @NotBlank(message = "Contact number is required")
     @Size(min = 11, max = 11, message = "Contact number must be exactly 11 digits")
     @Pattern(
             regexp = "^[0-9]+$",

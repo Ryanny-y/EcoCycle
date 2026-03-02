@@ -57,7 +57,7 @@ public class RecordServiceImpl implements RecordService {
                 .birthDate(request.getBirthDate())
                 .gender(request.getGender())
                 .isResident(request.getIsResident())
-                .address(request.getAddress())
+                .role(request.getRole())
                 .contactNumber(request.getContactNumber())
                 .area(request.getArea())
                 .subdivision(request.getSubdivision())
@@ -92,7 +92,7 @@ public class RecordServiceImpl implements RecordService {
         record.setBirthDate(request.getBirthDate());
         record.setGender(request.getGender());
         record.setIsResident(request.getIsResident());
-        record.setAddress(request.getAddress());
+        record.setRole(request.getRole());
         record.setContactNumber(request.getContactNumber());
         record.setArea(request.getArea());
         record.setSuffix(request.getSubdivision());

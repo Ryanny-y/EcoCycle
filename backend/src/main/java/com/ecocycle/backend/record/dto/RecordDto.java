@@ -1,6 +1,7 @@
 package com.ecocycle.backend.record.dto;
 
 import com.ecocycle.backend.record.model.Gender;
+import com.ecocycle.backend.record.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,10 +26,11 @@ public class RecordDto {
     private LocalDate birthDate;
     private Gender gender;
     private Boolean isResident;
-    private String address;
+    private Role role;
     private BigDecimal points;
     private String contactNumber;
+    private Integer area;
+    private String subdivision;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
 }
