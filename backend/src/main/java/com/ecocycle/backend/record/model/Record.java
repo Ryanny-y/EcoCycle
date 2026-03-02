@@ -49,6 +49,10 @@ public class Record {
     @Column(nullable = false)
     private Boolean isResident;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.RESIDENT;
+
     private String address;
 
     @Column(nullable = false, precision = 10, scale = 2)
