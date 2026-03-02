@@ -1,5 +1,5 @@
 import PageHeader from "@/components/shared/PageHeader";
-import type { RecordInterface, RewardItem } from "@/types/dto";
+import type { RewardItem } from "@/types/dto";
 import { useState } from "react";
 import SearchRecord from "./redeemRewards/SearchRecord";
 import AvailableRewards from "./redeemRewards/AvailableRewards";
@@ -7,9 +7,10 @@ import RedeemModal from "./redeemRewards/RedeemModal";
 import useRewardItems from "@/contexts/RewardItemsContext";
 import type { PaginatedResponse } from "@/types/api";
 import useFetchData from "@/hooks/useFetchData";
+import type { IRecord } from "@/types/records.types";
 
 const RedeemRewards = () => {
-  const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<IRecord | null>(null);
   const [search, setSearch] = useState<string>("");
 
   // Records and Rewards
@@ -18,7 +19,7 @@ const RedeemRewards = () => {
     loading: recordsLoading,
     error: recordsErr,
     refetchData: refetchRecord,
-  } = useFetchData<PaginatedResponse<RecordInterface>>(
+  } = useFetchData<PaginatedResponse<IRecord>>(
     `records?search=${search}`,
   );
 

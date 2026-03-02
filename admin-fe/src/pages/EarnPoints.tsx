@@ -1,16 +1,16 @@
 import PageHeader from "@/components/shared/PageHeader";
 import { Card } from "@/components/ui/card";
-import type { RecordInterface } from "@/types/dto";
 import { CheckCircle2 } from "lucide-react";
 import React, { useMemo, useState } from "react";
 import Step1 from "./earnPoints/Step1";
 import Step2 from "./earnPoints/Step2";
 import Step3 from "./earnPoints/Step3";
 import useMaterials from "@/contexts/MaterialsContext";
+import type { IRecord } from "@/types/records.types";
 
 const EarnPoints = () => {
   const [step, setStep] = useState(1);
-  const [selectedRecord, setSelectedRecord] = useState<RecordInterface | null>(
+  const [selectedRecord, setSelectedRecord] = useState<IRecord | null>(
     null,
   );
   const { data, loading: materialsLoading, error: materialsErr, refetchData } = useMaterials();

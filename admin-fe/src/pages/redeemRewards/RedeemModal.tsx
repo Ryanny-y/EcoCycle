@@ -8,13 +8,14 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import useMutation from "@/hooks/useMutation";
 import type { ApiResponse } from "@/types/api";
-import type { RecordInterface, RewardItem } from "@/types/dto";
+import type { RewardItem } from "@/types/dto";
+import type { IRecord } from "@/types/records.types";
 import { AlertCircle, Minus, Plus, ShoppingBag } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { toast } from "sonner";
 
 type RedeemModalTypes = {
-  selectedRecord: RecordInterface | null;
+  selectedRecord: IRecord | null;
   rewardToRedeem: RewardItem | null;
   isRedeemModalOpen: boolean;
   setIsRedeemModalOpen: Dispatch<SetStateAction<boolean>>;

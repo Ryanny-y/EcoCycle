@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useDebounce from "@/hooks/useDebounce";
 import useFetchData from "@/hooks/useFetchData";
 import type { PaginatedResponse } from "@/types/api";
-import type { RecordInterface } from "@/types/dto";
+import type { IRecord } from "@/types/records.types";
 import { formatName } from "@/utils/formatter";
 import { ChevronRight, Search, UserCheck } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
@@ -19,8 +19,8 @@ const Step1 = ({
   setSelectedRecord,
   setStep,
 }: {
-  selectedRecord: RecordInterface | null;
-  setSelectedRecord: Dispatch<SetStateAction<RecordInterface | null>>;
+  selectedRecord: IRecord | null;
+  setSelectedRecord: Dispatch<SetStateAction<IRecord | null>>;
   setStep: Dispatch<SetStateAction<number>>;
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -28,7 +28,7 @@ const Step1 = ({
   const debouncedQuery = useDebounce(searchQuery, 500);
 
   const { data, loading, error } = useFetchData<
-    PaginatedResponse<RecordInterface>
+    PaginatedResponse<IRecord>
   >(`records?search=${debouncedQuery}`);
 
   const isDebouncing = searchQuery !== debouncedQuery;

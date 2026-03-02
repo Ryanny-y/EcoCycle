@@ -17,16 +17,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { RecordInterface } from "@/types/dto";
+import type { IRecord } from "@/types/records.types";
 import dayjs from "dayjs";
 import { Edit, MoreVertical, Search, Trash2 } from "lucide-react";
 
 interface RecordTableProps {
-  records: RecordInterface[] | undefined;
+  records: IRecord[] | undefined;
   loading: boolean;
   error: string | null;
-  openEditRecord: (record: RecordInterface) => void;
-  openDeleteRecord: (record: RecordInterface) => void;
+  openEditRecord: (record: IRecord) => void;
+  openDeleteRecord: (record: IRecord) => void;
   refetchData: () => Promise<void>;
 }
 

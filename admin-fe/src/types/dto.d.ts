@@ -32,24 +32,6 @@ export interface TopContributor {
   transactionCount: number;
 }
 
-export type Gender = 'MALE' | 'FEMALE' | 'LGBTQIA_PLUS' | 'PREFER_NOT_TO_SAY'; 
-
-export interface RecordInterface {
-  id: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  suffix?: string;
-  birthDate: string;
-  gender: Gender;
-  isResident: boolean;
-  role: RecordRole; 
-  points: number;
-  contactNumber: string;
-  area: number;
-  subdivision: string;
-  createdAt: string;
-}
 
 export interface Material {
   id: string;
@@ -87,5 +69,3 @@ export interface User {
   role: Role;
   createdAt: Date
 }
-
-export type RecordRole = "RESIDENT" | "NON_RESIDENT" | "STAFF";

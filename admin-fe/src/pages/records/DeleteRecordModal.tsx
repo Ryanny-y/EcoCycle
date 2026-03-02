@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import useMutation from "@/hooks/useMutation";
 import type { ApiResponse } from "@/types/api";
-import type { RecordInterface } from "@/types/dto";
+import type { IRecord } from "@/types/records.types";
 import { TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 type DeleteRecordModalProps = {
-  recordToDelete: RecordInterface | null;
-  setRecordToDelete: (record: RecordInterface | null) => void;
+  recordToDelete: IRecord | null;
+  setRecordToDelete: (record: IRecord | null) => void;
   isDeleteRecordOpen: boolean;
   setIsDeleteRecordOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;

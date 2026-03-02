@@ -2,23 +2,23 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import type { RecordInterface } from "@/types/dto";
 import { Download, Plus, Search } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import useAuthFetch from "@/hooks/useAuthFetch";
 import { toast } from "sonner";
 import useAuth from "@/contexts/AuthContext";
+import type { IRecord } from "@/types/records.types";
 
 interface RecordHeader {
   isResident: boolean;
-  records: RecordInterface[] | undefined;
+  records: IRecord[] | undefined;
   totalRecords: number;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   setIsAddRecordOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const RecordHeader = ({ isResident, records, setSearchQuery, setIsAddRecordOpen, totalRecords }: RecordHeader) => {
+const RecordHeader = ({ isResident, setSearchQuery, setIsAddRecordOpen, totalRecords }: RecordHeader) => {
   const { authResponse } = useAuth();
   const [searchInput, setSearchInput] = useState<string>("");
   const [ isExportingUserData, setIsExportingUserData ] = useState<boolean>(false);

@@ -13,7 +13,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useState } from "react";
-import type { RecordInterface } from "@/types/dto";
 import { useSearchParams } from "react-router";
 import useFetchData from "@/hooks/useFetchData";
 import type { PaginatedResponse } from "@/types/api";
@@ -24,9 +23,10 @@ import EditRecordModal from "./records/EditRecordModal";
 import DeleteRecordModal from "./records/DeleteRecordModal";
 import PageHeader from "@/components/shared/PageHeader";
 import useDebounce from "@/hooks/useDebounce";
+import type { IRecord } from "@/types/records.types";
 
 const NonResidentRecords = () => {
-  // const [records, setRecords] = useState<RecordInterface[] | null>([]);
+  // const [records, setRecords] = useState<IRecord[] | null>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || "0";
@@ -34,7 +34,7 @@ const NonResidentRecords = () => {
   const debouncedSearch = useDebounce(searchQuery, 500);
 
   const { data, loading, error, refetchData } = useFetchData<
-    PaginatedResponse<RecordInterface>
+    PaginatedResponse<IRecord>
   >(`records?page=${page}&search=${debouncedSearch}&isResident=${false}`);
 
   const records = data?.content
@@ -57,20 +57,20 @@ const NonResidentRecords = () => {
   const [isEditRecordOpen, setIsEditRecordOpen] = useState(false);
   const [isDeleteRecordOpen, setIsDeleteRecordOpen] = useState(false);
 
-  const [recordToEdit, setRecordToEdit] = useState<RecordInterface | null>(
+  const [recordToEdit, setRecordToEdit] = useState<IRecord | null>(
     null,
   );
-  const [recordToDelete, setRecordToDelete] = useState<RecordInterface | null>(
+  const [recordToDelete, setRecordToDelete] = useState<IRecord | null>(
     null,
   );
 
   // onOpenEdit
-  const openEditRecord = (record: RecordInterface) => {
+  const openEditRecord = (record: IRecord) => {
     setIsEditRecordOpen(true);
     setRecordToEdit(record);
   };
 
-  const openDeleteRecord = (record: RecordInterface) => {
+  const openDeleteRecord = (record: IRecord) => {
     setIsDeleteRecordOpen(true);
     setRecordToDelete(record);
   };

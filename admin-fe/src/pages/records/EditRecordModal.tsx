@@ -20,9 +20,9 @@ import { Pencil, Save } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender, RecordInterface, RecordRole } from "@/types/dto";
 import { areaSubdivisions } from "./CONSTANT";
 import useFormHandlers from "@/hooks/useFormHandlers";
+import type { IGender, IRecord, IRecordRole } from "@/types/records.types";
 
 type FormData = {
   firstName: string;
@@ -30,8 +30,8 @@ type FormData = {
   lastName: string;
   suffix?: string;
   birthDate?: string;
-  role: RecordRole;
-  gender: Gender;
+  role: IRecordRole;
+  gender: IGender;
   contactNumber: string;
   isResident: boolean;
   area: number;
@@ -39,8 +39,8 @@ type FormData = {
 };
 
 type EditRecordModalProps = {
-  recordToEdit: RecordInterface | null;
-  setRecordToEdit: (record: RecordInterface | null) => void;
+  recordToEdit: IRecord | null;
+  setRecordToEdit: (record: IRecord | null) => void;
   isEditRecordOpen: boolean;
   setIsEditRecordOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;
@@ -218,7 +218,7 @@ const EditRecordModal = ({
               <Label>Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value: Gender) => handleSelectChange("gender", value)}
+                onValueChange={(value: IGender) => handleSelectChange("gender", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -250,7 +250,7 @@ const EditRecordModal = ({
               </Label>
               <Select
                 value={formData.role}
-                onValueChange={(value: RecordRole) =>
+                onValueChange={(value: IRecordRole) =>
                   handleSelectChange("role", value)
                 }
               >

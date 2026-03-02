@@ -9,7 +9,8 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import useMutation from "@/hooks/useMutation";
 import type { ApiResponse } from "@/types/api";
-import type { Material, RecordInterface } from "@/types/dto";
+import type { Material } from "@/types/dto";
+import type { IRecord } from "@/types/records.types";
 import { formatName } from "@/utils/formatter";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { toast } from "sonner";
@@ -17,8 +18,8 @@ import { toast } from "sonner";
 
 type Step3Props = {
   materials: Material[] | undefined;
-  selectedRecord: RecordInterface | null;
-  setSelectedRecord: Dispatch<SetStateAction<RecordInterface | null>>; 
+  selectedRecord: IRecord | null;
+  setSelectedRecord: Dispatch<SetStateAction<IRecord | null>>; 
   totalWeight: number;
   totalPoints: number;
   materialWeights: Record<string, number>;

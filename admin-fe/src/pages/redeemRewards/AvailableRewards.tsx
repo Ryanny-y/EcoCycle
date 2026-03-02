@@ -3,7 +3,8 @@ import { RewardCardSkeleton } from "@/components/shared/SkeletonLoadings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import type { RecordInterface, RewardItem } from "@/types/dto";
+import type { RewardItem } from "@/types/dto";
+import type { IRecord } from "@/types/records.types";
 import { ShoppingBag } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
@@ -14,7 +15,7 @@ type AvailableRewardsProps = {
     error: string | null;
     refetchData: () => Promise<void>
   }
-  selectedRecord: RecordInterface;
+  selectedRecord: IRecord;
   setRewardToRedeem: Dispatch<SetStateAction<RewardItem | null>>;
   setIsRedeemModalOpen: Dispatch<SetStateAction<boolean>>;
 };
