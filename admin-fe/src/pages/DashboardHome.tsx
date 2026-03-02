@@ -1,13 +1,13 @@
 import PageHeader from "@/components/shared/PageHeader";
 import { Card, CardContent } from "@/components/ui/card";
 import useFetchData from "@/hooks/useFetchData";
-import type { DashboardDataResponse } from "@/types/dto";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorState } from "@/components/shared/ErrorState";
 import CardSummary from "./dashboard/CardSummary";
 import LowStockAlert from "./dashboard/LowStockAlert";
 import MonthlyStats from "./dashboard/MonthlyStats";
 import DashboardCharts from "./dashboard/DashboardCharts";
+import type { DashboardDataResponse } from "@/types/dashboard.types";
 
 const DashboardHome = () => {
   const { data, loading, error, refetchData } =

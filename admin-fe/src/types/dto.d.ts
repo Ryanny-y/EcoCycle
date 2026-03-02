@@ -1,41 +1,8 @@
 import type { Role } from "@/contexts/types/AuthContextTypes";
 
 // Dashboard Types
-export interface MontlyRecordGrowth {
-  month: string;
-  totalResidents: number;
-  totalNonResidents: number;
-}
 
-export interface TopMaterialResponse {
-  name: string;
-  quantity: number;
-}
 
-export interface WeeklyCollectionResponse {
-  week: number;
-  total: number;
-}
-
-export interface MonthlyCollectionResponse {
-  month: string;
-  total: number;
-}
-
-export interface DashboardDataResponse {
-  totalResidents: number;
-  totalMaterialsCollected: number;
-  totalPointsEarned: number;
-  totalRewardsRedeemed: number;
-  lowStockRewardsCount: number;
-  monthlyRecordGrowth: MontlyRecordGrowth[]
-  topCollectedMaterials: TopMaterialResponse[];
-  weeklyCollections: WeeklyCollectionResponse[];
-  monthlyCollections: MonthlyCollectionResponse[];
-  pointsEarnedThisMonth: number;
-  rewardsRedeemedThisMonth: number;
-  averagePointsPerResident: number;
-}
 
 export interface RewardStatisticsResponse {
   totalPointsEarned: number;
@@ -76,9 +43,11 @@ export interface RecordInterface {
   birthDate: string;
   gender: Gender;
   isResident: boolean;
-  address?: string; 
+  role: RecordRole; 
   points: number;
   contactNumber: string;
+  area: number;
+  subdivision: string;
   createdAt: string;
 }
 
@@ -118,3 +87,5 @@ export interface User {
   role: Role;
   createdAt: Date
 }
+
+export type RecordRole = "RESIDENT" | "NON_RESIDENT" | "STAFF";

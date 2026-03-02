@@ -8,7 +8,7 @@ import {
 import MultipleLineChart from "@/components/ui/charts/MultipleLineChart";
 import type { ChartConfig } from "@/components/ui/chart";
 import { LineChartIcon } from "lucide-react";
-import type { MontlyRecordGrowth } from "@/types/dto";
+import type { MontlyRecordGrowth } from "@/types/dashboard.types";
 
 const multipleLineChartConfig = {
   totalResidents: {
