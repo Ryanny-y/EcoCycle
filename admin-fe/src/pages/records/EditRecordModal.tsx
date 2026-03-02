@@ -1,4 +1,4 @@
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -21,7 +20,9 @@ import { Pencil, Save } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender, RecordInterface } from "@/types/dto";
+import type { Gender, RecordInterface, RecordRole } from "@/types/dto";
+import { areaSubdivisions } from "./CONSTANT";
+import useFormHandlers from "@/hooks/useFormHandlers";
 
 type FormData = {
   firstName: string;
@@ -29,11 +30,12 @@ type FormData = {
   lastName: string;
   suffix?: string;
   birthDate?: string;
+  role: RecordRole;
   gender: Gender;
   contactNumber: string;
   isResident: boolean;
-  // role: UserRole;
-  address?: string;
+  area: number;
+  subdivision: string;
 };
 
 type EditRecordModalProps = {
@@ -53,6 +55,8 @@ const EditRecordModal = ({
 }: EditRecordModalProps) => {
   if (!recordToEdit) return;
 
+
+  
   const [isUpdating, setIsUpdating] = useState(false);
   const { execute } = useMutation();
 
@@ -63,26 +67,36 @@ const EditRecordModal = ({
     suffix: recordToEdit.suffix,
     gender: recordToEdit.gender,
     birthDate: recordToEdit.birthDate ?? "",
+    role: recordToEdit.role,
     contactNumber: recordToEdit.contactNumber,
     isResident: recordToEdit.isResident,
-    address: recordToEdit.address,
+    area: recordToEdit.area,
+    subdivision: recordToEdit.subdivision,
   });
+
+  useEffect(() => {
+      const subdivisions = areaSubdivisions[formData.area] || [];
+  
+      if (subdivisions.length > 0) {
+        setFormData((prev) => ({
+          ...prev,
+          subdivision: subdivisions[0],
+        }));
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          subdivision: "",
+        }));
+      }
+    }, [formData.area]);
 
   const onClose = () => {
     setIsEditRecordOpen(false);
     setRecordToEdit(null);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSelectChange = (name: keyof FormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const { handleChange, handleSelectChange } =
+    useFormHandlers<FormData>(setFormData);
 
   // Make it reusable
   const validateForm = () => {
@@ -106,10 +120,13 @@ const EditRecordModal = ({
     setIsUpdating(true);
 
     try {
-      const response: ApiResponse<any> = await execute(`records/${recordToEdit.id}`, {
-        method: "PUT",
-        body: JSON.stringify(formData),
-      });
+      const response: ApiResponse<any> = await execute(
+        `records/${recordToEdit.id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(formData),
+        },
+      );
 
       toast.success(response.message);
       await refetchData();
@@ -130,7 +147,10 @@ const EditRecordModal = ({
           </div>
 
           <div>
-            <DialogTitle> Edit {!recordToEdit.isResident && "Non-"}Resident</DialogTitle>
+            <DialogTitle>
+              {" "}
+              Edit {!recordToEdit.isResident && "Non-"}Resident
+            </DialogTitle>
             <DialogDescription>
               Fill in the details to edit record
             </DialogDescription>
@@ -198,7 +218,7 @@ const EditRecordModal = ({
               <Label>Gender</Label>
               <Select
                 value={formData.gender}
-                onValueChange={(value) => handleSelectChange("gender", value)}
+                onValueChange={(value: Gender) => handleSelectChange("gender", value)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue />
@@ -213,9 +233,7 @@ const EditRecordModal = ({
 
             {/* Birthdate */}
             <div className="space-y-2">
-              <Label htmlFor="birthDate">
-                Birthdate
-              </Label>
+              <Label htmlFor="birthDate">Birthdate</Label>
               <Input
                 id="birthDate"
                 name="birthDate"
@@ -226,8 +244,29 @@ const EditRecordModal = ({
               />
             </div>
 
+            <div className="space-y-2">
+              <Label>
+                Role <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.role}
+                onValueChange={(value: RecordRole) =>
+                  handleSelectChange("role", value)
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="RESIDENT">Resident</SelectItem>
+                  <SelectItem value="STAFF">Staff</SelectItem>
+                  <SelectItem value="NON_RESIDENT">Non-Resident</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Contact */}
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-2">
               <Label htmlFor="contactNumber">Contact Number</Label>
               <Input
                 id="contactNumber"
@@ -239,40 +278,59 @@ const EditRecordModal = ({
               />
             </div>
 
-            {/* Account Type */}
-            {/* <div className="space-y-2">
-              <Label>Account Type</Label>
+            {/* Area */}
+            <div className="space-y-2">
+              <Label>
+                Area <span className="text-red-500">*</span>
+              </Label>
               <Select
-                value={formData.role}
-                onValueChange={(value) =>
-                  handleSelectChange("role", value as UserRole)
-                }
+                value={formData.area.toString()}
+                onValueChange={(value) => {
+                  handleSelectChange("area", Number(value));
+                }}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value={UserRole.NORMAL}>
-                    Normal Resident
-                  </SelectItem>
-                  <SelectItem value={UserRole.STAFF}>
-                    Staff
-                  </SelectItem>
+                <SelectContent position="popper">
+                  {Object.keys(areaSubdivisions).map((area) => (
+                    <SelectItem key={area} value={area}>
+                      {area}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
 
-            {/* Address */}
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="address">Complete Address</Label>
-              <Textarea
-                id="address"
-                name="address"
-                rows={3}
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="St., Brgy, City, Province"
-              />
+            {/* Subdivision */}
+            <div className="space-y-2">
+              <Label>
+                Subdivision <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={formData.subdivision}
+                onValueChange={(value) =>
+                  handleSelectChange("subdivision", value)
+                }
+                disabled={!areaSubdivisions[formData.area]?.length}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select subdivision" />
+                </SelectTrigger>
+                <SelectContent
+                  position="popper"
+                  side="bottom"
+                  align="start"
+                  sideOffset={4}
+                  avoidCollisions={false}
+                >
+                  {areaSubdivisions[formData.area]?.map((sub) => (
+                    <SelectItem key={sub} value={sub}>
+                      {sub}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

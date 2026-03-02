@@ -20,7 +20,7 @@ import { Save, User } from "lucide-react";
 import { toast } from "sonner";
 import type { ApiResponse } from "@/types/api";
 import useMutation from "@/hooks/useMutation";
-import type { Gender, UserRole } from "@/types/dto";
+import type { Gender, RecordRole } from "@/types/dto";
 import useFormHandlers from "@/hooks/useFormHandlers";
 import { areaSubdivisions } from "./CONSTANT";
 
@@ -38,7 +38,7 @@ type FormData = {
   suffix: string;
   birthDate: string;
   gender: Gender;
-  role: UserRole;
+  role: RecordRole;
   contactNumber: string;
   isResident: boolean;
   area: number;
@@ -239,7 +239,7 @@ const AddRecordModal = ({
               </Label>
               <Select
                 value={formData.role}
-                onValueChange={(value: UserRole) =>
+                onValueChange={(value: RecordRole) =>
                   handleSelectChange("role", value)
                 }
               >
