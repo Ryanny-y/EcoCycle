@@ -1,6 +1,7 @@
 package com.ecocycle.backend.achievement.repository;
 
 import com.ecocycle.backend.achievement.model.Achievement;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +17,11 @@ class AchievementRepositoryIntegrationTests {
 
     @Autowired
     private AchievementRepository underTest;
+
+    @BeforeEach
+    void clean() {
+        underTest.deleteAll();
+    }
 
     private Achievement createAchievement(String title) {
         return Achievement.builder()
@@ -51,10 +57,8 @@ class AchievementRepositoryIntegrationTests {
 
     @Test
     void existsByTitleAndIdNot_shouldReturnTrue_whenTitleExistsForDifferentId() {
-        Achievement achievement1 = createAchievement("Eco Warrior");
-        Achievement achievement2 = createAchievement("Recycling Hero");
-
-        underTest.saveAll(List.of(achievement1, achievement2));
+        Achievement achievement1 = underTest.save(createAchievement("Eco Warrior"));
+        Achievement achievement2 = underTest.save(createAchievement("Recycling Hero"));
 
         boolean exists = underTest.existsByTitleAndIdNot(
                 "Recycling Hero",

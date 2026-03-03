@@ -7,6 +7,7 @@ import com.ecocycle.backend.record.exceptions.RecordAlreadyExistsException;
 import com.ecocycle.backend.record.exceptions.RecordNotFoundException;
 import com.ecocycle.backend.record.model.Gender;
 import com.ecocycle.backend.record.model.Record;
+import com.ecocycle.backend.record.model.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -81,7 +82,7 @@ public class RecordServiceIntegrationTests {
                 created.getBirthDate(),
                 created.getGender(),
                 false,
-                "Updated Address",
+                Role.RESIDENT,
                 "09000000000",
                 1,
                 "OTHER"
@@ -90,7 +91,6 @@ public class RecordServiceIntegrationTests {
         Record updated = underTest.updateRecord(created.getId(), updateRequest);
 
         assertThat(updated.getFirstName()).isEqualTo("Juan Updated");
-        assertThat(updated.getAddress()).isEqualTo("Updated Address");
         assertThat(updated.getContactNumber()).isEqualTo("09000000000");
         assertThat(updated.getIsResident()).isFalse();
     }
@@ -99,15 +99,15 @@ public class RecordServiceIntegrationTests {
     void getRecords_shouldApplyFiltersAndPagination() {
         underTest.createRecord(new CreateRecordRequest(
                 "Juan", "Santos", "Dela Cruz",
-                null, LocalDate.now(), Gender.MALE, true, "QC", "1", 1, "OTHER"
+                null, LocalDate.now(), Gender.MALE, true, Role.RESIDENT, "1", 1, "OTHER"
         ));
         underTest.createRecord(new CreateRecordRequest(
                 "Maria", "Lopez", "Reyes",
-                null, LocalDate.now(), Gender.FEMALE, false, "Cebu", "2", 1, "OTHER"
+                null, LocalDate.now(), Gender.FEMALE, false, Role.RESIDENT, "2", 1, "OTHER"
         ));
         underTest.createRecord(new CreateRecordRequest(
                 "Maria", "Santos", "Mendoza",
-                null, LocalDate.now(), Gender.FEMALE, true, "Davao", "3", 1, "OTHER"
+                null, LocalDate.now(), Gender.FEMALE, true, Role.RESIDENT, "3", 1, "OTHER"
         ));
 
         Page<Record> result = underTest.getRecords(
@@ -167,7 +167,7 @@ public class RecordServiceIntegrationTests {
                 LocalDate.of(1995, 6, 15),
                 Gender.MALE,
                 true,
-                "Quezon City",
+                Role.RESIDENT,
                 "09123456789",
                 1,
                 "OTHER"
@@ -183,7 +183,7 @@ public class RecordServiceIntegrationTests {
                 LocalDate.of(1995, 6, 15),
                 Gender.MALE,
                 true,
-                "Quezon City",
+                Role.RESIDENT,
                 "09123456789",
                 1,
                 "OTHER"

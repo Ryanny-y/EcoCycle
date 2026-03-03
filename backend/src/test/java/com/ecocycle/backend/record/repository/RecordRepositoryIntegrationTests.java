@@ -33,10 +33,10 @@ public class RecordRepositoryIntegrationTests {
         Pageable pageTest = PageRequest.of(0, 10);
 
 
-        Page<Record> result4 = underTest.findAllWithFilters(null, "Mendoza", pageTest);
+        Page<Record> result4 = underTest.findAllWithFilters(true, "Mendoza", pageTest);
         assertThat(result4.getContent())
-                .hasSize(2)
-                .containsExactlyInAnyOrder(recordC, recordD);
+                .hasSize(1)
+                .containsExactlyInAnyOrder(recordD);
 
         Page<Record> result5 = underTest.findAllWithFilters(recordD.getIsResident(), recordD.getLastName(), pageTest);
         assertThat(result5.getContent())

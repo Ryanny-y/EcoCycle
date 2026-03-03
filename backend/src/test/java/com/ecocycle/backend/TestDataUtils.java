@@ -2,6 +2,7 @@ package com.ecocycle.backend;
 
 import com.ecocycle.backend.record.model.Gender;
 import com.ecocycle.backend.record.model.Record;
+import com.ecocycle.backend.record.model.Role;
 
 import java.time.LocalDate;
 
@@ -16,7 +17,7 @@ public class TestDataUtils {
                 .birthDate(LocalDate.parse("1995-06-15"))
                 .gender(Gender.MALE)
                 .isResident(true)
-                .address("123 Barangay Greenfield, Quezon City")
+                .role(Role.RESIDENT)
                 .contactNumber("09123456789")
                 .area(1)
                 .subdivision("OTHER")
@@ -32,7 +33,7 @@ public class TestDataUtils {
                 .birthDate(LocalDate.parse("1998-11-02"))
                 .gender(Gender.FEMALE)
                 .isResident(false)
-                .address("456 Purok Mabuhay, Cebu City")
+                .role(Role.RESIDENT)
                 .contactNumber("09987654321")
                 .area(1)
                 .subdivision("OTHER")
@@ -48,7 +49,7 @@ public class TestDataUtils {
                 .birthDate(LocalDate.parse("1987-03-22"))
                 .gender(Gender.MALE)
                 .isResident(false)
-                .address("789 Sitio Maligaya, Davao City")
+                .role(Role.RESIDENT)
                 .contactNumber("09771234567")
                 .area(1)
                 .subdivision("OTHER")
@@ -64,7 +65,7 @@ public class TestDataUtils {
                 .birthDate(LocalDate.parse("1987-03-22"))
                 .gender(Gender.MALE)
                 .isResident(true)
-                .address("789 Sitio Maligaya, Davao City")
+                .role(Role.RESIDENT)
                 .contactNumber("09771234567")
                 .area(1)
                 .subdivision("OTHER")

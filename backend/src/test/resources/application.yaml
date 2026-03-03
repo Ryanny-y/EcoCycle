@@ -16,8 +16,9 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     show-sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
 
   servlet:
     multipart:
@@ -25,7 +26,8 @@ spring:
       max-request-size: 5MB
 
   flyway:
-    enabled: false
+    enabled: true
+    locations: classpath:db/test-migration
 
 jwt:
   secretKey: secretKey
