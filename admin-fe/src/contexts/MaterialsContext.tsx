@@ -6,7 +6,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { Material } from "@/types/dto";
 import useFetchData from "@/hooks/useFetchData";
 import type { ApiResponse } from "@/types/api";
 import useAuth from "./AuthContext";
@@ -16,6 +15,7 @@ import type {
   SortField,
   SortOrder,
 } from "./types/MaterialsTypes";
+import type { IMaterial } from "@/types/material.types";
 
 const MaterialsContext = createContext<MaterialContextType | null>(null);
 
@@ -41,7 +41,7 @@ export const MaterialsProvider = ({ children }: { children: ReactNode }) => {
   }, [search, sortField, sortOrder, authResponse]);
 
   const { data, loading, error, refetchData } =
-    useFetchData<ApiResponse<Material[]>>(url);
+    useFetchData<ApiResponse<IMaterial[]>>(url);
 
   // RESET FILTERS WHEN PAGE CHANGES
   const resetFilters = () => {

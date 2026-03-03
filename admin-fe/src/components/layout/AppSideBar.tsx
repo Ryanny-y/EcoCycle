@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import useAuth, { AuthProvider } from "@/contexts/AuthContext";
+import useAuth from "@/contexts/AuthContext";
 import {
   ArrowLeftRight,
   Boxes,

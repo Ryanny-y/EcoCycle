@@ -1,9 +1,6 @@
 import type { Role } from "@/contexts/types/AuthContextTypes";
 
 // Dashboard Types
-
-
-
 export interface RewardStatisticsResponse {
   totalPointsEarned: number;
   totalPointsRedeemed: number;
@@ -30,16 +27,6 @@ export interface TopContributor {
   earnedPoints: number;
   redeemedPoints: number;
   transactionCount: number;
-}
-
-
-export interface Material {
-  id: string;
-  name: string;
-  description?: string;
-  pointsPerKg: number;
-  imageUrl: string;
-  createdAt: Date;
 }
 
 export type RewardItemMainCategory = "AGRICULTURAL" | "NON_AGRICULTURAL";

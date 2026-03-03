@@ -7,21 +7,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, Gift, Search, X, ArrowLeftRight } from "lucide-react";
-import type { RecordInterface } from "@/types/dto";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import { formatName } from "@/utils/formatter";
+import type { IRecord } from "@/types/records.types";
 
 type SearchRecordProps = {
   recordsData: {
-    records: RecordInterface[] | undefined;
+    records: IRecord[] | undefined;
     loading: boolean;
     error: string | null;
     refetchData: () => Promise<void>;
   };
-  selectedRecord: RecordInterface | null;
+  selectedRecord: IRecord | null;
   setSearch: Dispatch<SetStateAction<string>>;
-  setSelectedRecord: Dispatch<SetStateAction<RecordInterface | null>>;
+  setSelectedRecord: Dispatch<SetStateAction<IRecord | null>>;
 };
 
 const SearchRecord = ({

@@ -1,7 +1,6 @@
 import PageHeader from "@/components/shared/PageHeader";
 import MaterialsHeader from "./materials/MaterialsHeader";
 import { useState } from "react";
-import type { Material } from "@/types/dto";
 import { Card, CardContent } from "@/components/ui/card";
 import MaterialsGrid from "./materials/MaterialsGrid";
 import useMaterials from "@/contexts/MaterialsContext";
@@ -9,6 +8,7 @@ import AddMaterialModal from "./materials/AddMaterialModal";
 import MaterialsTable from "./materials/MaterialsTable";
 import EditMaterialModal from "./materials/EditMaterialModal";
 import DeleteMaterialModal from "./materials/DeleteMaterialModal";
+import type { IMaterial } from "@/types/material.types";
 
 const Materials = () => {
   const [materialsLayout, setMaterialsLayout] = useState<"GRID" | "TABLE">(
@@ -30,17 +30,17 @@ const Materials = () => {
   const [isEditMaterialOpen, setIsEditMaterialOpen] = useState(false);
   const [isDeleteMaterialOpen, setIsDeleteMaterialOpen] = useState(false);
 
-  const [materialToEdit, setMaterialToEdit] = useState<Material | null>(null);
-  const [materialToDelete, setMaterialToDelete] = useState<Material | null>(
+  const [materialToEdit, setMaterialToEdit] = useState<IMaterial | null>(null);
+  const [materialToDelete, setMaterialToDelete] = useState<IMaterial | null>(
     null,
   );
 
-  const openEditMaterial = (material: Material) => {
+  const openEditMaterial = (material: IMaterial) => {
     setIsEditMaterialOpen(true);
     setMaterialToEdit(material);
   };
 
-  const openDeleteMaterial = (material: Material) => {
+  const openDeleteMaterial = (material: IMaterial) => {
     setIsDeleteMaterialOpen(true);
     setMaterialToDelete(material);
   };

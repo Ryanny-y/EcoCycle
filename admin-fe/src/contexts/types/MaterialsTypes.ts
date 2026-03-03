@@ -1,11 +1,11 @@
 import type { ApiResponse } from "@/types/api";
-import type { Material } from "@/types/dto";
+import type { IMaterial } from "@/types/material.types";
 
 export type SortOrder = "ASC" | "DESC";
 export type SortField = "createdAt" | "name" | "pointsPerKg";
 
 export interface MaterialContextType {
-  data: ApiResponse<Material[]> | null;
+  data: ApiResponse<IMaterial[]> | null;
   loading: boolean;
   error: string | null;
   refetchData: () => Promise<void>;

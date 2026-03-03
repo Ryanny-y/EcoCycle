@@ -9,13 +9,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import type { Material } from "@/types/dto";
+import type { IMaterial } from "@/types/material.types";
 import { Minus, Plus, Scale } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
 type Step2Props = {
   materialsData: {
-    materials: Material[] | undefined;
+    materials: IMaterial[] | undefined;
     loading: boolean;
     error: string | null;
     refetchMaterials: () => Promise<void>;

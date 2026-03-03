@@ -25,7 +25,7 @@ type TableSkeletonProps = {
 };
 
 export const TableSkeleton = ({
-  rows = 5,
+  rows = 10,
   headLength = 7,
 }: TableSkeletonProps) => (
   <div className="custom-scroll rounded-xl">

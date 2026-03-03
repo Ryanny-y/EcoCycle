@@ -5,8 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import useFormHandlers from "@/hooks/useFormHandlers";
 import useMutation from "@/hooks/useMutation";
-import type { Material } from "@/types/dto";
-
+import type { IMaterial } from "@/types/material.types";
 import { Edit, Save } from "lucide-react";
 import { useState, type SubmitEvent } from "react";
 import { toast } from "sonner";
@@ -21,8 +20,8 @@ type FormData = {
 };
 
 type EditMaterialModalProps = {
-  materialToEdit: Material | null;
-  setMaterialToEdit: (record: Material | null) => void;
+  materialToEdit: IMaterial | null;
+  setMaterialToEdit: (record: IMaterial | null) => void;
   isEditMaterialOpen: boolean;
   setIsEditMaterialOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;

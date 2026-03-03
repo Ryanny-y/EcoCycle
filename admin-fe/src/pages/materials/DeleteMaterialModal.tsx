@@ -11,14 +11,14 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import useMutation from "@/hooks/useMutation";
 import type { ApiResponse } from "@/types/api";
-import type { Material } from "@/types/dto";
+import type { IMaterial } from "@/types/material.types";
 import { TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 type DeleteMaterialProps = {
-  materialToDelete: Material | null;
-  setMaterialToDelete: (material: Material | null) => void;
+  materialToDelete: IMaterial | null;
+  setMaterialToDelete: (material: IMaterial | null) => void;
   isDeleteMaterialOpen: boolean;
   setIsDeleteMaterialOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;

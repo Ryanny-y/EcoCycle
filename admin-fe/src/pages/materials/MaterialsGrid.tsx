@@ -8,20 +8,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { Material } from "@/types/dto";
+import type { IMaterial } from "@/types/material.types";
 import { truncateSentence } from "@/utils/formatter";
 import dayjs from "dayjs";
 import { Box, MoreVertical, Pencil, Scale, Trash2 } from "lucide-react";
 
 type MaterialsGridProps = {
   materialsData: {
-    materials: Material[] | undefined;
+    materials: IMaterial[] | undefined;
     loading: boolean;
     error: string | null;
     refetchData: () => Promise<void>;
   };
-  openEditMaterial: (material: Material) => void;
-  openDeleteMaterial: (material: Material) => void;
+  openEditMaterial: (material: IMaterial) => void;
+  openDeleteMaterial: (material: IMaterial) => void;
 };
 
 const MaterialsGrid = ({
