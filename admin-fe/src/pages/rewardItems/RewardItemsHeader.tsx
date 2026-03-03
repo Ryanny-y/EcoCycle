@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import useRewardItems from "@/contexts/RewardItemsContext";
 import useDebounce from "@/hooks/useDebounce";
-import type { RewardItemMainCategory } from "@/types/dto";
+import type { IRewardItemMainCategory } from "@/types/rewardItem.types";
 import { Grid2X2, List, Plus, Search } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
@@ -57,7 +57,7 @@ const RewardItemsHeader = ({
             <Select
               defaultValue={mainCategory ?? " "}
               onValueChange={(val) =>
-                setMainCategory(val as RewardItemMainCategory)
+                setMainCategory(val as IRewardItemMainCategory)
               }
             >
               <SelectTrigger className="w-full h-full! min-w-48">

@@ -1,14 +1,14 @@
 import type { ApiResponse } from '@/types/api';
-import type { RewardItem, RewardItemMainCategory, RewardItemType } from '@/types/dto';
+import type { IRewardItem, IRewardItemMainCategory, IRewardItemType } from '@/types/rewardItem.types';
 
 export interface RewardItemsContextType {
-  data: ApiResponse<RewardItem[]> | null;
+  data: ApiResponse<IRewardItem[]> | null;
   loading: boolean;
   error: string | null;
   refetchData: () => Promise<void>;
-  mainCategory: RewardItemMainCategory | null;
-  setMainCategory: (category: RewardItemMainCategory) => void;
+  mainCategory: IRewardItemMainCategory | null;
+  setMainCategory: (category: IRewardItemMainCategory) => void;
   setSearch: (search: string) => void;
-  setItemType: (itemType: RewardItemType) => void;
+  setItemType: (itemType: IRewardItemType) => void;
   resetFilters: () => void;
 }

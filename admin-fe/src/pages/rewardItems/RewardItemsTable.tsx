@@ -18,18 +18,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { RewardItem } from "@/types/dto";
+import type { IRewardItem } from "@/types/rewardItem.types";
 import { Boxes, Edit, MoreVertical, Trash2 } from "lucide-react";
 
 type RewardItemsTableProps = {
   rewardItemsData: {
-    rewardItems: RewardItem[] | undefined;
+    rewardItems: IRewardItem[] | undefined;
     loading: boolean;
     error: string | null;
     refetchData: () => void;
   };
-  openEditReward: (rewardItem: RewardItem) => void;
-  openDeleteReward: (rewardItem: RewardItem) => void;
+  openEditReward: (rewardItem: IRewardItem) => void;
+  openDeleteReward: (rewardItem: IRewardItem) => void;
 };
 
 const RewardItemsTable = ({

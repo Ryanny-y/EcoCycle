@@ -6,9 +6,9 @@ import AddRewardItemModal from "./rewardItems/AddRewardItemModal";
 import RewardItemsTable from "./rewardItems/RewardItemsTable";
 import useRewardItems from "@/contexts/RewardItemsContext";
 import { Card, CardContent } from "@/components/ui/card";
-import type { RewardItem } from "@/types/dto";
 import EditRewardItemModal from "./rewardItems/EditRewardItemModal";
 import DeleteRewardItemModal from "./rewardItems/DeleteRewardItemModal";
+import type { IRewardItem } from "@/types/rewardItem.types";
 
 const RewardItems = () => {
   const [rewardItemsLayout, setRewardItemsLayout] = useState<"GRID" | "TABLE">(
@@ -29,15 +29,15 @@ const RewardItems = () => {
   const [isEditRewardOpen, setIsEditRewardOpen] = useState(false);
   const [isDeleteRewardOpen, setIsDeleteRewardOpen] = useState(false);
 
-  const [rewardToEdit, setRewardToEdit] = useState<RewardItem | null>(null);
-  const [rewardToDelete, setRewardToDelete] = useState<RewardItem | null>(null);
+  const [rewardToEdit, setRewardToEdit] = useState<IRewardItem | null>(null);
+  const [rewardToDelete, setRewardToDelete] = useState<IRewardItem | null>(null);
 
-  const openEditReward = (rewardItem: RewardItem) => {
+  const openEditReward = (rewardItem: IRewardItem) => {
     setIsEditRewardOpen(true);
     setRewardToEdit(rewardItem);
   };
 
-  const openDeleteReward = (rewardItem: RewardItem) => {
+  const openDeleteReward = (rewardItem: IRewardItem) => {
     setIsDeleteRewardOpen(true);
     setRewardToDelete(rewardItem);
   };

@@ -7,15 +7,11 @@ import {
   type ReactNode,
 } from "react";
 import type { RewardItemsContextType } from "./types/RewardItemsTypes";
-import type {
-  RewardItem,
-  RewardItemMainCategory,
-  RewardItemType,
-} from "@/types/dto";
 import useFetchData from "@/hooks/useFetchData";
 import type { ApiResponse } from "@/types/api";
 import useAuth from "./AuthContext";
 import { useLocation } from "react-router";
+import type { IRewardItem, IRewardItemMainCategory, IRewardItemType } from "@/types/rewardItem.types";
 
 const RewardItemsContext = createContext<RewardItemsContextType | null>(null);
 
@@ -27,9 +23,9 @@ export const RewardItemsProvider = ({ children }: { children: ReactNode }) => {
   const [search, setSearch] = useState<string>("");
 
   // Other Filters
-  const [itemType, setItemType] = useState<RewardItemType | null>(null);
+  const [itemType, setItemType] = useState<IRewardItemType | null>(null);
   const [mainCategory, setMainCategory] =
-    useState<RewardItemMainCategory | null>(null);
+    useState<IRewardItemMainCategory | null>(null);
 
   // Build URL
   const url = useMemo(() => {
@@ -46,7 +42,7 @@ export const RewardItemsProvider = ({ children }: { children: ReactNode }) => {
   }, [search, mainCategory, itemType, authResponse]);
 
   const { data, loading, error, refetchData } =
-    useFetchData<ApiResponse<RewardItem[]>>(url);
+    useFetchData<ApiResponse<IRewardItem[]>>(url);
 
   // RESET FILTERS WHEN PAGE CHANGES
   const resetFilters = () => {

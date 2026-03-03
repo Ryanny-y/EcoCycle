@@ -11,14 +11,14 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import useMutation from "@/hooks/useMutation";
 import type { ApiResponse } from "@/types/api";
-import type { RewardItem } from "@/types/dto";
+import type { IRewardItem } from "@/types/rewardItem.types";
 import { TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
 type DeleteRewardItemModalProps = {
-  rewardToDelete: RewardItem | null;
-  setRewardToDelete: (reward: RewardItem | null) => void;
+  rewardToDelete: IRewardItem | null;
+  setRewardToDelete: (reward: IRewardItem | null) => void;
   isDeleteRewardOpen: boolean;
   setIsDeleteRewardOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;

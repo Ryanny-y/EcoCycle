@@ -6,12 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import useFormHandlers from "@/hooks/useFormHandlers";
 import useMutation from "@/hooks/useMutation";
-import type {
-  RewardItem,
-  RewardItemMainCategory,
-  RewardItemType,
-  RewardItemUnit,
-} from "@/types/dto";
+import type { IRewardItem, IRewardItemMainCategory, IRewardItemType, IRewardItemUnit } from "@/types/rewardItem.types";
 import { Edit, Save } from "lucide-react";
 import { useState, type SubmitEvent } from "react";
 import { toast } from "sonner";
@@ -20,20 +15,20 @@ type FormData = {
   id: string;
   name: string;
   description: string | undefined;
-  itemType: RewardItemType | "";
-  mainCategory: RewardItemMainCategory | "";
+  itemType: IRewardItemType | "";
+  mainCategory: IRewardItemMainCategory | "";
   subCategory: string;
   stocks: number;
   requiredPoints: number;
-  unit: RewardItemUnit;
+  unit: IRewardItemUnit;
   farmOrigin?: string;
   imageFile: File | null;
   imageUrl: string;
 };
 
 type EditRewardItemModalProps = {
-  rewardToEdit: RewardItem | null;
-  setRewardToEdit: (record: RewardItem | null) => void;
+  rewardToEdit: IRewardItem | null;
+  setRewardToEdit: (record: IRewardItem | null) => void;
   isEditRewardOpen: boolean;
   setIsEditRewardOpen: (open: boolean) => void;
   refetchData: () => Promise<void>;
@@ -185,7 +180,7 @@ const EditRewardItemModal = ({
               </Label>
               <Select
                 value={formData.itemType}
-                onValueChange={(value: RewardItemType) =>
+                onValueChange={(value: IRewardItemType) =>
                   handleSelectChange("itemType", value)
                 }
               >
@@ -205,7 +200,7 @@ const EditRewardItemModal = ({
               </Label>
               <Select
                 value={formData.mainCategory}
-                onValueChange={(value: RewardItemMainCategory) =>
+                onValueChange={(value: IRewardItemMainCategory) =>
                   handleSelectChange("mainCategory", value)
                 }
               >
@@ -269,7 +264,7 @@ const EditRewardItemModal = ({
               </Label>
               <Select
                 value={formData.unit}
-                onValueChange={(value: RewardItemUnit) =>
+                onValueChange={(value: IRewardItemUnit) =>
                   handleSelectChange("unit", value)
                 }
               >

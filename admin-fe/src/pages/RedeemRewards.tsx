@@ -1,5 +1,4 @@
 import PageHeader from "@/components/shared/PageHeader";
-import type { RewardItem } from "@/types/dto";
 import { useState } from "react";
 import SearchRecord from "./redeemRewards/SearchRecord";
 import AvailableRewards from "./redeemRewards/AvailableRewards";
@@ -8,6 +7,7 @@ import useRewardItems from "@/contexts/RewardItemsContext";
 import type { PaginatedResponse } from "@/types/api";
 import useFetchData from "@/hooks/useFetchData";
 import type { IRecord } from "@/types/records.types";
+import type { IRewardItem } from "@/types/rewardItem.types";
 
 const RedeemRewards = () => {
   const [selectedRecord, setSelectedRecord] = useState<IRecord | null>(null);
@@ -32,7 +32,7 @@ const RedeemRewards = () => {
 
   // Modals
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
-  const [rewardToRedeem, setRewardToRedeem] = useState<RewardItem | null>(null);
+  const [rewardToRedeem, setRewardToRedeem] = useState<IRewardItem | null>(null);
 
   return (
     <div id="redeem_points" className="space-y-8">

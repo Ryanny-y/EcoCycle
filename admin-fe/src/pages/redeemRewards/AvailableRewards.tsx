@@ -3,20 +3,20 @@ import { RewardCardSkeleton } from "@/components/shared/SkeletonLoadings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import type { RewardItem } from "@/types/dto";
 import type { IRecord } from "@/types/records.types";
+import type { IRewardItem } from "@/types/rewardItem.types";
 import { ShoppingBag } from "lucide-react";
 import type { Dispatch, SetStateAction } from "react";
 
 type AvailableRewardsProps = {
   rewardsData: {
-    rewards: RewardItem[] | undefined;
+    rewards: IRewardItem[] | undefined;
     loading: boolean;
     error: string | null;
     refetchData: () => Promise<void>
   }
   selectedRecord: IRecord;
-  setRewardToRedeem: Dispatch<SetStateAction<RewardItem | null>>;
+  setRewardToRedeem: Dispatch<SetStateAction<IRewardItem | null>>;
   setIsRedeemModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -34,7 +34,7 @@ const AvailableRewards = ({
     (reward) => reward.requiredPoints <= selectedRecord.points,
   );
 
-  const onRedeemClick = (reward: RewardItem) => {
+  const onRedeemClick = (reward: IRewardItem) => {
     setRewardToRedeem(reward);
     setIsRedeemModalOpen(true);
   };

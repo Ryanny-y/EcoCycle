@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { RewardItem } from "@/types/dto";
+import type { IRewardItem } from "@/types/rewardItem.types";
 import { truncateSentence } from "@/utils/formatter";
 import {
   Boxes,
@@ -21,13 +21,13 @@ import {
 
 type RewardItemsGridProps = {
   rewardItemsData: {
-    rewardItems: RewardItem[] | undefined;
+    rewardItems: IRewardItem[] | undefined;
     loading: boolean;
     error: string | null;
     refetchData: () => void;
   };
-  openEditReward: (rewardItem: RewardItem) => void;
-  openDeleteReward: (rewardItem: RewardItem) => void;
+  openEditReward: (rewardItem: IRewardItem) => void;
+  openDeleteReward: (rewardItem: IRewardItem) => void;
 };
 
 const RewardItemsGrid = ({

@@ -18,11 +18,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import useFormHandlers from "@/hooks/useFormHandlers";
 import useMutation from "@/hooks/useMutation";
-import type {
-  RewardItemMainCategory,
-  RewardItemType,
-  RewardItemUnit,
-} from "@/types/dto";
+import type { IRewardItemMainCategory, IRewardItemType, IRewardItemUnit } from "@/types/rewardItem.types";
 import { Box, Save } from "lucide-react";
 import {
   useState,
@@ -35,12 +31,12 @@ import { toast } from "sonner";
 type FormData = {
   name: string;
   description: string | undefined;
-  itemType: RewardItemType | "";
-  mainCategory: RewardItemMainCategory | "";
+  itemType: IRewardItemType | "";
+  mainCategory: IRewardItemMainCategory | "";
   subCategory: string;
   stocks: number;
   requiredPoints: number;
-  unit: RewardItemUnit;
+  unit: IRewardItemUnit;
   farmOrigin?: string;
   image: File | null;
 };
@@ -187,7 +183,7 @@ const AddRewardItemModal = ({
               </Label>
               <Select
                 value={formData.itemType}
-                onValueChange={(value: RewardItemType) =>
+                onValueChange={(value: IRewardItemType) =>
                   handleSelectChange("itemType", value)
                 }
               >
@@ -207,7 +203,7 @@ const AddRewardItemModal = ({
               </Label>
               <Select
                 value={formData.mainCategory}
-                onValueChange={(value: RewardItemMainCategory) =>
+                onValueChange={(value: IRewardItemMainCategory) =>
                   handleSelectChange("mainCategory", value)
                 }
               >
@@ -271,7 +267,7 @@ const AddRewardItemModal = ({
               </Label>
               <Select
                 value={formData.unit}
-                onValueChange={(value: RewardItemUnit) =>
+                onValueChange={(value: IRewardItemUnit) =>
                   handleSelectChange("unit", value)
                 }
               >
