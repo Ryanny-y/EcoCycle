@@ -1,0 +1,20 @@
+version: '3.9'
+
+name: "ecocycle"
+
+services:
+  db:
+    image: postgres:16
+    container_name: ecocycle_backend
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: ecocycle
+    volumes:
+      - postgres_data_ecocycle:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_ecocycle:
