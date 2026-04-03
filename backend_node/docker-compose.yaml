@@ -16,5 +16,11 @@ services:
     volumes:
       - postgres_data_ecocycle:/var/lib/postgresql/data
 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+      
 volumes:
   postgres_data_ecocycle:
