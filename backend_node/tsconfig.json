@@ -8,6 +8,7 @@
     // Environment Settings
     "module": "commonjs",
     "target": "es2020",
+    "types": ["node"],
     "esModuleInterop": true,
 
     // Stricter Typechecking Options
@@ -20,7 +21,8 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "typeRoots": ["./src/types", "./node_modules/@types"]
+    // "typeRoots": ["./src/types", "./node_modules/@types"]
   },
+  "include": ["src"],
   "exclude": ["node_modules", "prisma.config.ts"]
 }
