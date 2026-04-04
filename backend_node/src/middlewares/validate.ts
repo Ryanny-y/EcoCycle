@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodError } from "zod";
-import { AnyZodObject } from "zod/v3";
+import { ZodError, ZodObject } from "zod";
 
 type Schema = {
-  body?: AnyZodObject;
-  params?: AnyZodObject;
-  query?: AnyZodObject;
-  cookies?: AnyZodObject;
+  body?: ZodObject;
+  params?: ZodObject;
+  query?: ZodObject;
+  cookies?: ZodObject;
 };
 
 export const validate =
