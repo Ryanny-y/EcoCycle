@@ -1,0 +1,45 @@
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+  LGBTQIA_PLUST
+  PREFER_NOT_TO_SAY
+}
+
+enum Role {
+  RESIDENT
+  STAFF
+  NON_RESIDENT
+}
+
+model Subdivision {
+  id   String @id @default(uuid())
+  name String
+  area Int
+
+  records Record[]
+}
+
+model Record {
+  id            String   @id @default(uuid())
+  firstName     String
+  middleName    String?
+  lastName      String
+  suffix        String?
+  birthDate     DateTime?
+  gender        Gender
+  isResident    Boolean  @default(true)
+  role          Role     @default(RESIDENT)
+  address       String?
+  contactNumber String?
+
+  subdivision   Subdivision @relation(fields: [subdivisionId], references: [id])
+  subdivisionId String
+  
+  // Reward related 
+  points  Decimal @default(0) @db.Decimal(10, 2) 
+  // rewardActivities RewardActivity[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
