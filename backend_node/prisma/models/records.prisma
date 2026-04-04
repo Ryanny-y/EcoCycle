@@ -2,7 +2,7 @@ enum Gender {
   MALE
   FEMALE
   OTHER
-  LGBTQIA_PLUST
+  LGBTQIA_PLUS
   PREFER_NOT_TO_SAY
 }
 
