@@ -1,4 +1,4 @@
-import { LoginBody, LoginDto, SignupBody } from "./auth.types";
+import { LoginBody, AuthDto, SignupBody } from "./auth.types";
 import { CustomError } from "../../middlewares/errorHandler";
 import * as userRepo from "../user/user.repository";
 import * as userService from "../user/user.service";
@@ -75,6 +75,49 @@ export const signup = async (data: SignupBody): Promise<UserDto> => {
   const createdUser = await userService.registerUser(data);
 
   return mapToDto(createdUser);
+};
+
+export const refreshToken = async (
+  refreshToken: string,
+): Promise<AuthDto> => {
+  let payload: any;
+  try {
+    payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+  } catch {
+    throw new CustomError(401, "Unauthorized");
+  }
+
+  const foundUser = await userRepo.findById(payload.sub);
+
+  if (!foundUser || !foundUser?.refreshTokenHash)
+    throw new CustomError(401, "Unauthorized");
+
+  const isSameToken = await bcrypt.compare(
+    refreshToken,
+    foundUser.refreshTokenHash,
+  );
+
+  if (
+    !foundUser.refreshTokenExp ||
+    !isSameToken ||
+    foundUser.refreshTokenExp.getTime() < Date.now()
+  ) {
+    throw new CustomError(401, "Unauthorized");
+  }
+
+  const newAccessToken = jwt.sign(
+    {
+      sub: foundUser.id,
+      role: foundUser.role,
+    },
+    process.env.ACCESS_TOKEN_SECRET!,
+    { expiresIn: "15m" },
+  );
+
+  return {
+    userData: mapToDto(foundUser),
+    accessToken: newAccessToken,
+  };
 };
 
 const generateAccessToken = (user: User) => {

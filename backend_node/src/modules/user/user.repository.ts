@@ -1,6 +1,13 @@
 import { prisma } from "../../config/prisma";
 import { UserCreateInput, UserUpdateInput } from "../../generated/prisma/models";
 
+export const findById = async (id: string) => {
+  return prisma.user.findUnique({
+    where: { id },
+  });
+};
+
+
 export const findByUsername = async (username: string) => {
   return prisma.user.findUnique({
     where: { username },

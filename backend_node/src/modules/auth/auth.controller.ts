@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import {
   LoginBody,
   LoginResponse,
+  RefreshTokenResponse,
   SignupBody,
   SignupResponse,
 } from "./auth.types";
@@ -46,6 +47,25 @@ export const signup = asyncHandler(
       message: "User Created Successfully.",
       success: true,
       data: createdUser,
+    });
+  },
+);
+
+export const refreshToken = asyncHandler(
+  async (
+    req: Request,
+    res: Response<RefreshTokenResponse>,
+    next: NextFunction,
+  ) => {
+    const { cookies } = req;
+    const { refresh_token } = cookies;
+
+    const refreshResponse = await authService.refreshToken(refresh_token);
+
+    res.json({
+      success: true,
+      message: "Access Token Refreshed",
+      data: refreshResponse,
     });
   },
 );

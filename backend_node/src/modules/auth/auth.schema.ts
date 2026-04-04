@@ -34,3 +34,9 @@ export const signupSchema = {
     }),
   }),
 };
+
+export const refreshTokenSchema = {
+  cookies: z.object({
+    refreshToken: z.string("Refresh Token is required."),
+  }),
+};

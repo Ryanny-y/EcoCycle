@@ -17,3 +17,4 @@ export type SignupBody = z.infer<typeof signupSchema.body>;
 // Response
 export type LoginResponse = ApiResponse<AuthDto>;
 export type SignupResponse = ApiResponse<UserDto>;
+export type RefreshTokenResponse = ApiResponse<AuthDto>;
