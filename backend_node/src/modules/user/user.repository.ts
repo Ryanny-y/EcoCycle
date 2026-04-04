@@ -19,3 +19,14 @@ export const createUser = async (data: UserCreateInput) => {
     data,
   });
 };
+
+export const findUserByEmailOrUsername = async (email: string, username: string) => {
+  return prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: email.toLowerCase() },
+        { username: username.toLowerCase() },
+      ],
+    },
+  });
+};

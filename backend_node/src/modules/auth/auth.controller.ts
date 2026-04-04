@@ -5,7 +5,7 @@ import {
   LoginBody,
   LoginResponse,
   SignupBody,
-  SignupReponse,
+  SignupResponse,
 } from "./auth.types";
 
 export const login = asyncHandler(
@@ -35,7 +35,7 @@ export const login = asyncHandler(
 export const signup = asyncHandler(
   async (
     req: Request<{}, {}, SignupBody>,
-    res: Response<SignupReponse>,
+    res: Response<SignupResponse>,
     next: NextFunction,
   ) => {
     const createdUser = await authService.signup(req.body);

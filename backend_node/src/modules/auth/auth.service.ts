@@ -1,7 +1,7 @@
 import { LoginBody, LoginDto, SignupBody } from "./auth.types";
 import { CustomError } from "../../middlewares/errorHandler";
 import * as userRepo from "../user/user.repository";
-import * as userService from "../user/user.service"
+import * as userService from "../user/user.service";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { addDays } from "date-fns";
@@ -14,10 +14,12 @@ export const login = async (data: LoginBody): Promise<LoginDto> => {
 
   const foundUser = await userRepo.findByUsername(username.toLowerCase());
 
-  const passwordHash = foundUser?.passwordHash || '$2b$10$CwTycUXWue0Thq9StjUM0uJ8xG9.KqH6B1aD0K7wVfP5a0Nf2r4a'
+  const passwordHash =
+    foundUser?.passwordHash ||
+    "$2b$10$CwTycUXWue0Thq9StjUM0uJ8xG9.KqH6B1aD0K7wVfP5a0Nf2r4a";
 
   const match = await bcrypt.compare(password, passwordHash);
-  
+
   if (!foundUser || !match)
     throw new CustomError(401, `Username or password is incorrect.`);
 
@@ -45,12 +47,30 @@ export const login = async (data: LoginBody): Promise<LoginDto> => {
 };
 
 export const signup = async (data: SignupBody): Promise<UserDto> => {
-  const { username, password, confirmPassword } = data;
+  const { username, email, password, confirmPassword } = data;
 
-  const foundUser = await userRepo.findByUsername(username.toLowerCase());
-  if(foundUser) throw new CustomError(409, `User with ${username} already exists.`);
+  const foundUser = await userRepo.findUserByEmailOrUsername(
+    email.toLowerCase(),
+    username.toLowerCase(),
+  );
 
-  if(password !== confirmPassword) throw new CustomError(400, `Password and Confirm Password does not match.`);
+  if (foundUser) {
+    if (foundUser.username.toLowerCase() === data.username.toLowerCase()) {
+      throw new CustomError(
+        409,
+        `User with username '${data.username}' already exists.`,
+      );
+    }
+    if (foundUser.email.toLowerCase() === data.email.toLowerCase()) {
+      throw new CustomError(
+        409,
+        `User with email '${data.email}' already exists.`,
+      );
+    }
+  }
+
+  if (password !== confirmPassword)
+    throw new CustomError(400, `Password and Confirm Password does not match.`);
 
   const createdUser = await userService.registerUser(data);
 
