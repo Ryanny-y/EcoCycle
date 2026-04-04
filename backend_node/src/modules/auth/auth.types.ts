@@ -1,22 +1,20 @@
 import z from "zod";
-import { loginSchema } from "./auth.schema";
+import { loginSchema, signupSchema } from "./auth.schema";
 import { ApiResponse } from "../../common/api";
 import { UserRole } from "../../generated/prisma/enums";
+import { UserDto } from "../user/user.types";
 
 // DTO
 export interface LoginDto {
   accessToken: string,
   refreshToken?: string;
-  userData: {
-    id: string;
-    username: string;
-    email: string;
-    role: UserRole;
-  };
+  userData: UserDto
 }
 
 // Request
 export type LoginBody = z.infer<typeof loginSchema.body>;
+export type SignupBody = z.infer<typeof signupSchema.body>;
 
 // Response
 export type LoginResponse = ApiResponse<LoginDto>;
+export type SignupReponse = ApiResponse<UserDto>;
