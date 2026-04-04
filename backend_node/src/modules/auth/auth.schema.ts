@@ -37,6 +37,6 @@ export const signupSchema = {
 
 export const refreshTokenSchema = {
   cookies: z.object({
-    refreshToken: z.string("Refresh Token is required."),
+    refresh_token: z.string("Refresh Token is required."),
   }),
 };

@@ -77,9 +77,7 @@ export const signup = async (data: SignupBody): Promise<UserDto> => {
   return mapToDto(createdUser);
 };
 
-export const refreshToken = async (
-  refreshToken: string,
-): Promise<AuthDto> => {
+export const refreshToken = async (refreshToken: string): Promise<AuthDto> => {
   let payload: any;
   try {
     payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
@@ -118,6 +116,27 @@ export const refreshToken = async (
     userData: mapToDto(foundUser),
     accessToken: newAccessToken,
   };
+};
+
+export const logout = async (refreshToken: string) => {
+  let payload: any;
+  try {
+    payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!);
+  } catch {
+    return;
+  }
+
+  const foundUser = await userRepo.findById(payload.sub);
+
+  if(!foundUser || !foundUser.refreshTokenHash) return;
+
+  const isValid = await bcrypt.compare(refreshToken, foundUser.refreshTokenHash);
+  if(!isValid) return;
+
+  await userRepo.updateUser(foundUser.id, {
+    refreshTokenHash: null,
+    refreshTokenExp: null,
+  })
 };
 
 const generateAccessToken = (user: User) => {

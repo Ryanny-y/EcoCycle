@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import {
   LoginBody,
   LoginResponse,
+  LogoutResponse,
   RefreshTokenResponse,
   SignupBody,
   SignupResponse,
@@ -17,7 +18,7 @@ export const login = asyncHandler(
   ) => {
     const loginData = await authService.login(req.body);
 
-    res.cookie("refresh-token", loginData.refreshToken as string, {
+    res.cookie("refresh_token", loginData.refreshToken as string, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000 * 7,
       secure: process.env.NODE_ENV === "production",
@@ -28,7 +29,7 @@ export const login = asyncHandler(
     res.json({
       message: "Login Successful.",
       success: true,
-      data: { 
+      data: {
         accessToken: loginData.accessToken,
         userData: loginData.userData,
       },
@@ -59,13 +60,34 @@ export const refreshToken = asyncHandler(
   ) => {
     const { cookies } = req;
     const { refresh_token } = cookies;
-
+    
     const refreshResponse = await authService.refreshToken(refresh_token);
 
     res.json({
       success: true,
       message: "Access Token Refreshed",
       data: refreshResponse,
+    });
+  },
+);
+
+export const logout = asyncHandler(
+  async (req: Request, res: Response<LogoutResponse>, next: NextFunction) => {
+    const { cookies } = req;
+    const { refresh_token } = cookies;
+
+    authService.logout(refresh_token);
+
+    res.clearCookie("refresh_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      path: "/api/auth",
+    });
+
+    res.json({
+      success: true,
+      message: "Logged out successfully.",
     });
   },
 );
