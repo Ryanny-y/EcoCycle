@@ -4,7 +4,7 @@ import { ApiResponse } from "../../common/api";
 import { UserDto } from "../user/user.types";
 
 // DTO
-export interface LoginDto {
+export interface AuthDto {
   accessToken: string,
   refreshToken?: string;
   userData: UserDto
@@ -15,5 +15,5 @@ export type LoginBody = z.infer<typeof loginSchema.body>;
 export type SignupBody = z.infer<typeof signupSchema.body>;
 
 // Response
-export type LoginResponse = ApiResponse<LoginDto>;
+export type LoginResponse = ApiResponse<AuthDto>;
 export type SignupResponse = ApiResponse<UserDto>;

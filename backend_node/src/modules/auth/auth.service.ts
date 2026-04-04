@@ -9,10 +9,10 @@ import { User } from "../../generated/prisma/client";
 import { UserDto } from "../user/user.types";
 import { mapToDto } from "../user/user.mapper";
 
-export const login = async (data: LoginBody): Promise<LoginDto> => {
+export const login = async (data: LoginBody): Promise<AuthDto> => {
   const { username, password } = data;
 
-  const foundUser = await userRepo.findByUsername(username.toLowerCase());
+  const foundUser = await userRepo.findByUsername(username);
 
   const passwordHash =
     foundUser?.passwordHash ||

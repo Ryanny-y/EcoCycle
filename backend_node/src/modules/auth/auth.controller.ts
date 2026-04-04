@@ -27,7 +27,10 @@ export const login = asyncHandler(
     res.json({
       message: "Login Successful.",
       success: true,
-      data: loginData,
+      data: { 
+        accessToken: loginData.accessToken,
+        userData: loginData.userData,
+      },
     });
   },
 );
