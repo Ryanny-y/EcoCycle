@@ -28,7 +28,7 @@ const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
     const payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!) as AccessTokenPayload;
 
     req.userId = payload.sub;
-    req.role = payload.roles;
+    req.role = payload.role;
 
     next();
   } catch (error) {

@@ -1,7 +1,7 @@
 import z from "zod";
 import { ApiResponse, PaginatedResponse } from "../../common/api";
 import { Gender, Role } from "../../generated/prisma/enums";
-import { getRecordsQuery } from './record.schema';
+import { createRecord, getRecordsQuery } from './record.schema';
 
 // DTO
 export interface RecordDto {
@@ -30,7 +30,8 @@ export interface RecordDto {
 
 // REQUEST
 export type GetRecordsQuery = z.infer<typeof getRecordsQuery.query>;
-
+export type CreateRecordBody = z.infer<typeof createRecord.body>;
 
 // RESPONSE
 export type GetRecordsResponse = ApiResponse<PaginatedResponse<RecordDto>>;
+export type CreateRecordResponse = ApiResponse<RecordDto>;

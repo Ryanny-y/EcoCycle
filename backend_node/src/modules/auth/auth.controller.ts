@@ -14,7 +14,6 @@ export const login = asyncHandler(
   async (
     req: Request<{}, {}, LoginBody>,
     res: Response<LoginResponse>,
-    next: NextFunction,
   ) => {
     const loginData = await authService.login(req.body);
 
@@ -41,7 +40,6 @@ export const signup = asyncHandler(
   async (
     req: Request<{}, {}, SignupBody>,
     res: Response<SignupResponse>,
-    next: NextFunction,
   ) => {
     const createdUser = await authService.signup(req.body);
     res.status(201).json({
@@ -56,7 +54,6 @@ export const refreshToken = asyncHandler(
   async (
     req: Request,
     res: Response<RefreshTokenResponse>,
-    next: NextFunction,
   ) => {
     const { cookies } = req;
     const { refresh_token } = cookies;

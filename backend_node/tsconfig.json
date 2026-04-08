@@ -6,7 +6,6 @@
     "outDir": "./dist",
 
     // Environment Settings
-    "module": "commonjs",
     "target": "es2020",
     "types": ["node"],
     "esModuleInterop": true,
@@ -20,8 +19,8 @@
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true,
-    // "typeRoots": ["./src/types", "./node_modules/@types"]
+    "skipLibCheck": true, 
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "prisma.config.ts"]
