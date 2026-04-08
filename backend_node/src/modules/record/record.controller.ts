@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import * as recordService from "./record.service";
+import * as recordService from "./record.service.js";
 import {
   CreateRecordBody,
   CreateRecordResponse,
   GetRecordsQuery,
   GetRecordsResponse,
-} from "./record.types";
+} from "./record.types.js";
 
 export const getRecords = asyncHandler(
   async (

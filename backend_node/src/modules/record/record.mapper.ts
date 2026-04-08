@@ -1,5 +1,5 @@
-import { Record } from "../../generated/prisma/client";
-import { RecordDto } from "./record.types";
+import { Record } from "../../generated/prisma/client.js";
+import { RecordDto } from "./record.types.js";
 
 export const toDto = (record: Record): RecordDto => {
   return {

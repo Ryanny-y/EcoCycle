@@ -1,5 +1,5 @@
 import z from "zod";
-import { Gender, Role } from "../../generated/prisma/enums";
+import { Gender, Role } from "../../generated/prisma/enums.js";
 
 export const getRecordsQuery = {
   query: z.object({

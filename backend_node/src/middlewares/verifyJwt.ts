@@ -1,12 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import jwt, {
-  JsonWebTokenError,
-  JwtPayload,
-  TokenExpiredError,
-} from "jsonwebtoken";
-import { UserRole } from "../generated/prisma/enums";
+import jwt from "jsonwebtoken";
+import { UserRole } from "../generated/prisma/enums.js";
 
-interface AccessTokenPayload extends JwtPayload {
+interface AccessTokenPayload extends jwt.JwtPayload {
   sub: string;
   role: UserRole;
 }
@@ -25,20 +21,23 @@ const verifyJwt = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!) as AccessTokenPayload;
+    const payload = jwt.verify(
+      accessToken,
+      process.env.ACCESS_TOKEN_SECRET!,
+    ) as AccessTokenPayload;
 
     req.userId = payload.sub;
     req.role = payload.role;
 
     next();
   } catch (error) {
-    if (error instanceof TokenExpiredError) {
+    if (error instanceof jwt.TokenExpiredError) {
       return res.status(401).json({
         message: "Access token expired",
       });
     }
 
-    if (error instanceof JsonWebTokenError) {
+    if (error instanceof jwt.JsonWebTokenError) {
       return res.status(403).json({
         message: "Invalid access token",
       });

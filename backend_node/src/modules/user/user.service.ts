@@ -1,6 +1,6 @@
-import { User } from "../../generated/prisma/client";
-import { SignupBody } from "../auth/auth.types";
-import * as userRepo from "./user.repository";
+import { User } from "../../generated/prisma/client.js";
+import { SignupBody } from "../auth/auth.types.js";
+import * as userRepo from "./user.repository.js";
 import bcrypt from "bcrypt";
 
 export const registerUser = async (data: SignupBody): Promise<User> => {

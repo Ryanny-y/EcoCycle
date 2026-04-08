@@ -1,7 +1,7 @@
 import z from "zod";
-import { loginSchema, signupSchema } from "./auth.schema";
-import { ApiResponse } from "../../common/api";
-import { UserDto } from "../user/user.types";
+import { loginSchema, signupSchema } from "./auth.schema.js";
+import { ApiResponse } from "../../common/api.js";
+import { UserDto } from "../user/user.types.js";
 
 // DTO
 export interface AuthDto {

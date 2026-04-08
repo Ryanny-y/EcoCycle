@@ -1,5 +1,5 @@
-import { User } from "../../generated/prisma/client";
-import { UserDto } from "./user.types";
+import { User } from "../../generated/prisma/client.js";
+import { UserDto } from "./user.types.js";
 
 export const mapToDto = (data: User): UserDto => {
   return {

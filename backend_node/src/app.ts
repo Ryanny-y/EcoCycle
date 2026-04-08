@@ -1,8 +1,8 @@
 import express from "express";
-import corsMiddleware from "./middlewares/corsMiddleware";
+import corsMiddleware from "./middlewares/corsMiddleware.js";
 import cookieParser from 'cookie-parser';
-import errorHandler from "./middlewares/errorHandler";
-import moduleRoutes from './modules';
+import errorHandler from "./middlewares/errorHandler.js";
+import moduleRoutes from './modules/index.js';
 
 const app = express();
 

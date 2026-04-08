@@ -1,7 +1,7 @@
 import z from "zod";
-import { ApiResponse, PaginatedResponse } from "../../common/api";
-import { Gender, Role } from "../../generated/prisma/enums";
-import { createRecord, getRecordsQuery } from './record.schema';
+import { ApiResponse, PaginatedResponse } from "../../common/api.js";
+import { Gender, Role } from "../../generated/prisma/enums.js";
+import { createRecord, getRecordsQuery } from './record.schema.js';
 
 // DTO
 export interface RecordDto {

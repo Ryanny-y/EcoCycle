@@ -1,9 +1,10 @@
-import { CreateRecordBody, GetRecordsQuery, RecordDto } from "./record.types";
-import * as recordRepo from "./record.repository";
-import { RecordWhereInput } from "../../generated/prisma/models";
-import { PaginatedResponse } from "../../common/api";
-import { toDto } from "./record.mapper";
-import { CustomError } from "../../middlewares/errorHandler";
+import { CreateRecordBody, GetRecordsQuery, RecordDto } from "./record.types.js";
+import * as recordRepo from "./record.repository.js";
+import { RecordWhereInput } from "../../generated/prisma/models.js";
+import { PaginatedResponse } from "../../common/api.js";
+import { toDto } from "./record.mapper.js";
+import { CustomError } from "../../middlewares/errorHandler.js";
+import { Record } from "../../generated/prisma/client.js";
 
 export const getRecords = async (
   query: GetRecordsQuery,
@@ -34,7 +35,7 @@ export const getRecords = async (
   );
   const totalPages = Math.ceil(totalItems / sizeNumer);
 
-  const pageContent = records.map((record) => toDto(record));
+  const pageContent = records.map((record: Record) => toDto(record));
 
   return {
     content: pageContent,

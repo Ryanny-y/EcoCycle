@@ -1,13 +1,13 @@
-import { LoginBody, AuthDto, SignupBody } from "./auth.types";
-import { CustomError } from "../../middlewares/errorHandler";
-import * as userRepo from "../user/user.repository";
-import * as userService from "../user/user.service";
+import { LoginBody, AuthDto, SignupBody } from "./auth.types.js";
+import { CustomError } from "../../middlewares/errorHandler.js";
+import * as userRepo from "../user/user.repository.js";
+import * as userService from "../user/user.service.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { addDays } from "date-fns";
-import { User } from "../../generated/prisma/client";
-import { UserDto } from "../user/user.types";
-import { mapToDto } from "../user/user.mapper";
+import { User } from "../../generated/prisma/client.js";
+import { UserDto } from "../user/user.types.js";
+import { mapToDto } from "../user/user.mapper.js";
 
 export const login = async (data: LoginBody): Promise<AuthDto> => {
   const { username, password } = data;

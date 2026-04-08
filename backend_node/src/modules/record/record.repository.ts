@@ -1,6 +1,5 @@
-import { prisma } from "../../config/prisma";
-import { RecordCreateInput, RecordWhereInput } from "../../generated/prisma/models";
-import { CreateRecordBody } from "./record.types";
+import { prisma } from "../../config/prisma.js";
+import { RecordCreateInput, RecordWhereInput } from "../../generated/prisma/models.js";
 
 export const getRecordCount = async (
   where: RecordWhereInput,

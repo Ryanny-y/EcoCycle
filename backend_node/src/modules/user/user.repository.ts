@@ -1,5 +1,5 @@
-import { prisma } from "../../config/prisma";
-import { UserCreateInput, UserUpdateInput } from "../../generated/prisma/models";
+import { prisma } from "../../config/prisma.js";
+import { UserCreateInput, UserUpdateInput } from "../../generated/prisma/models.js";
 
 export const findById = async (id: string) => {
   return prisma.user.findUnique({

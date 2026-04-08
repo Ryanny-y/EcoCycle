@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import * as authService from "./auth.service";
+import * as authService from "./auth.service.js";
 import asyncHandler from "express-async-handler";
 import {
   LoginBody,
@@ -8,7 +8,7 @@ import {
   RefreshTokenResponse,
   SignupBody,
   SignupResponse,
-} from "./auth.types";
+} from "./auth.types.js";
 
 export const login = asyncHandler(
   async (

@@ -5,18 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --files --respawn src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
     "build": "npm run prisma:generate && tsc",
     "start": "node dist/server.js"
   },
   "keywords": [],
+  "type": "module",
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "@prisma/adapter-pg": "^7.6.0",
+    "@prisma/adapter-pg": "^7.6.0 ",
     "@prisma/client": "^7.6.0",
     "@types/express": "^5.0.6",
     "bcrypt": "^6.0.0",
@@ -39,6 +39,7 @@
     "@types/cors": "^2.8.19",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.5.2",
-    "@types/pg": "^8.20.0"
+    "@types/pg": "^8.20.0",
+    "tsx": "^4.21.0"
   }
 }
