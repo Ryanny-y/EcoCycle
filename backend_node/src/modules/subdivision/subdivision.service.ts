@@ -3,18 +3,39 @@ import * as subdivisionRepo from "./subdivision.repository.js";
 import { CustomError } from "../../middlewares/errorHandler.js";
 import { toDto } from "./subdivision.mapper.js";
 
-export const createSubdivision = async (data: CreateSubdivisionBody): Promise<SubdivisionDto> => {
+import { Prisma } from "../../generated/prisma/client.js";
+
+export const createSubdivision = async (
+  data: CreateSubdivisionBody
+): Promise<SubdivisionDto> => {
   const { name, area } = data;
 
-  const foundSubdivision = await subdivisionRepo.getByNameAndArea(name, area);
+  try {
+    const foundSubdivision =
+      await subdivisionRepo.getByNameAndArea(name, area);
 
-  if (foundSubdivision)
-    throw new CustomError(
-      404,
-      `Subdivision already exists with ${name} and ${area}.`,
-    );
+    if (foundSubdivision) {
+      throw new CustomError(
+        409,
+        `Subdivision already exists with ${name} and ${area}.`
+      );
+    }
 
-  const createdSubdivision = await subdivisionRepo.createSubdivision(name, area);
+    const createdSubdivision =
+      await subdivisionRepo.createSubdivision(name, area);
 
-  return toDto(createdSubdivision);
+    return toDto(createdSubdivision);
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      throw new CustomError(
+        409,
+        `Subdivision already exists with ${name} and ${area}.`
+      );
+    }
+
+    throw error;
+  }
 };
