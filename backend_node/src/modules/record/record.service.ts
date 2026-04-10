@@ -8,7 +8,7 @@ import { RecordWhereInput } from "../../generated/prisma/models.js";
 import { PaginatedResponse } from "../../common/api.js";
 import { toDto } from "./record.mapper.js";
 import { CustomError } from "../../middlewares/errorHandler.js";
-import { Record } from "../../generated/prisma/client.js";
+import { Prisma, Record } from "../../generated/prisma/client.js";
 
 export const getRecords = async (
   query: GetRecordsQuery,
@@ -127,4 +127,18 @@ export const updateRecord = async (
   const updatedRecord = await recordRepo.updateRecord(id, updateData);
 
   return toDto(updatedRecord);
+};
+
+export const deleteRecord = async (id: string) => {
+  try {
+    await recordRepo.deleteRecord(id);
+  } catch (error: unknown) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    ) {
+      throw new CustomError(404, "Record not found");
+    }
+    throw error;
+  }
 };

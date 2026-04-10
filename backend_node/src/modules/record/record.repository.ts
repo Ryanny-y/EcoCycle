@@ -42,6 +42,14 @@ export const updateRecord = (id: string, data: RecordUpdateInput) => {
     where: {
       id
     },
-    data
-  })
-}
+    data,
+  });
+};
+
+export const deleteRecord = async (id: string) => {
+  await prisma.record.delete({
+    where: {
+      id,
+    },
+  });
+};

@@ -4,9 +4,9 @@ import * as recordService from "./record.service.js";
 import {
   CreateRecordBody,
   CreateRecordResponse,
+  DeleteRecordParams,
   GetRecordsQuery,
   GetRecordsResponse,
-  RecordIdSchema,
   UpdateRecordBody,
 } from "./record.types.js";
 
@@ -55,6 +55,16 @@ export const updateRecord = asyncHandler(
       success: true,
       message: "Record updated successfully",
       data: updatedRecord,
+    });
+  },
+);
+
+export const deleteRecord = asyncHandler(
+  async (req: Request<DeleteRecordParams>, res: Response) => {
+    await recordService.deleteRecord(req.params.id);
+    res.json({
+      success: true,
+      message: "Record deleted successfully",
     });
   },
 );

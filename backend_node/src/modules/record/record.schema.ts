@@ -1,7 +1,7 @@
 import z from "zod";
 import { Gender, Role } from "../../generated/prisma/enums.js";
 
-export const recordIdSchema = z.object({
+export const recordParamsSchema = z.object({
   id: z.uuid("Invalid Resident Id."),
 });
 
@@ -47,7 +47,7 @@ export const createRecord = {
 };
 
 export const updateRecord = {
-  params: recordIdSchema,
+  params: recordParamsSchema,
   body: z.object({
     firstName: z
       .string("First name is required")
@@ -81,3 +81,7 @@ export const updateRecord = {
     subdivisionId: z.uuid("Subdivision is required."),
   }),
 };
+
+export const deleteRecord = {
+  params: recordParamsSchema
+}

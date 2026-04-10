@@ -1,7 +1,7 @@
 import z from "zod";
 import { ApiResponse, PaginatedResponse } from "../../common/api.js";
 import { Gender, Role } from "../../generated/prisma/enums.js";
-import { createRecord, getRecordsQuery, recordIdSchema, updateRecord } from './record.schema.js';
+import { createRecord, deleteRecord, getRecordsQuery, updateRecord } from './record.schema.js';
 
 // DTO
 export interface RecordDto {
@@ -29,10 +29,11 @@ export interface RecordDto {
 }
 
 // REQUEST
-export type RecordIdSchema = z.infer<typeof recordIdSchema>;
 export type GetRecordsQuery = z.infer<typeof getRecordsQuery.query>;
 export type CreateRecordBody = z.infer<typeof createRecord.body>;
 export type UpdateRecordBody = z.infer<typeof updateRecord.body>;
+export type UpdateRecordParams = z.infer<typeof updateRecord.params>;
+export type DeleteRecordParams = z.infer<typeof deleteRecord.params>;
 
 // RESPONSE
 export type GetRecordsResponse = ApiResponse<PaginatedResponse<RecordDto>>;
