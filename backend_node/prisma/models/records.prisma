@@ -18,6 +18,8 @@ model Subdivision {
   area Int
 
   records Record[]
+
+  @@unique([name, area])
 }
 
 model Record {
