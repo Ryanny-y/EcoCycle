@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import * as recordService from "./record.service.js";
 import {
@@ -8,6 +8,7 @@ import {
   GetRecordsQuery,
   GetRecordsResponse,
   UpdateRecordBody,
+  UpdateRecordParams,
 } from "./record.types.js";
 
 export const getRecords = asyncHandler(
@@ -43,7 +44,7 @@ export const createRecord = asyncHandler(
 
 export const updateRecord = asyncHandler(
   async (
-    req: Request<RecordIdSchema, {}, UpdateRecordBody>,
+    req: Request<UpdateRecordParams, {}, UpdateRecordBody>,
     res: Response,
   ) => {
     const updatedRecord = await recordService.updateRecord(

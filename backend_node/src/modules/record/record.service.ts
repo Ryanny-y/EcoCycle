@@ -86,45 +86,31 @@ export const createRecord = async (
 
 export const updateRecord = async (
   id: string,
-  data: Partial<CreateRecordBody>,
+  data: CreateRecordBody,
 ): Promise<RecordDto> => {
-  const { subdivisionId, ...rest } = data;
+  const foundRecord = await recordRepo.getRecordById(id);
 
-  const updateData = {
-    ...(rest.firstName !== undefined && { firstName: rest.firstName }),
-    ...(rest.lastName !== undefined && { lastName: rest.lastName }),
-    ...(rest.gender !== undefined && { gender: rest.gender }),
-    ...(rest.isResident !== undefined && { isResident: rest.isResident }),
-    ...(rest.role !== undefined && { role: rest.role }),
+  if (!foundRecord) {
+    throw new CustomError(404, `Record not found with ID: ${id}.`);
+  }
 
-    ...(rest.middleName !== undefined && {
-      middleName: rest.middleName ?? null,
+  const updatedRecord = await recordRepo.updateRecord(id, {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    gender: data.gender,
+    isResident: data.isResident,
+    role: data.role,
+
+    middleName: data.middleName ?? null,
+    suffix: data.suffix ?? null,
+    birthDate: data.birthDate ? new Date(data.birthDate) : null,
+    address: data.address ?? null,
+    contactNumber: data.contactNumber ?? null,
+
+    ...(data.subdivisionId && {
+      subdivision: { connect: { id: data.subdivisionId } },
     }),
-
-    ...(rest.suffix !== undefined && {
-      suffix: rest.suffix ?? null,
-    }),
-
-    ...(rest.birthDate !== undefined && {
-      birthDate: rest.birthDate ? new Date(rest.birthDate) : null,
-    }),
-
-    ...(rest.address !== undefined && {
-      address: rest.address ?? null,
-    }),
-
-    ...(rest.contactNumber !== undefined && {
-      contactNumber: rest.contactNumber ?? null,
-    }),
-
-    ...(subdivisionId !== undefined && {
-      subdivision: {
-        connect: { id: subdivisionId },
-      },
-    }),
-  };
-
-  const updatedRecord = await recordRepo.updateRecord(id, updateData);
+  });
 
   return toDto(updatedRecord);
 };
