@@ -68,7 +68,7 @@ export const createRecord = async (
 
     middleName: rest.middleName ?? null,
     suffix: rest.suffix ?? null,
-    birthDate: rest.birthDate ?? null,
+    birthDate: rest.birthDate ? new Date(rest.birthDate) : null,
     address: rest.address ?? null,
     contactNumber: rest.contactNumber ?? null,
 
