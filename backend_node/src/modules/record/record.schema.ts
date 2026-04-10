@@ -85,3 +85,10 @@ export const updateRecord = {
 export const deleteRecord = {
   params: recordParamsSchema
 }
+
+export const lookupRecord = {
+  query: z.object({
+    lastName: z.string("Last name is required"),
+    firstName: z.string().optional()
+  })
+}

@@ -7,9 +7,12 @@ import {
   DeleteRecordParams,
   GetRecordsQuery,
   GetRecordsResponse,
+  LookupQueries,
+  LookupRecordResponse,
   UpdateRecordBody,
   UpdateRecordParams,
 } from "./record.types.js";
+import { ApiResponse } from "../../common/api.js";
 
 export const getRecords = asyncHandler(
   async (
@@ -52,7 +55,7 @@ export const updateRecord = asyncHandler(
       req.body,
     );
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Record updated successfully",
       data: updatedRecord,
@@ -61,11 +64,29 @@ export const updateRecord = asyncHandler(
 );
 
 export const deleteRecord = asyncHandler(
-  async (req: Request<DeleteRecordParams>, res: Response) => {
+  async (
+    req: Request<DeleteRecordParams>,
+    res: Response<ApiResponse<void>>,
+  ) => {
     await recordService.deleteRecord(req.params.id);
     res.json({
       success: true,
       message: "Record deleted successfully",
+    });
+  },
+);
+
+export const lookupRecord = asyncHandler(
+  async (
+    req: Request<{}, {}, {}, LookupQueries>,
+    res: Response<LookupRecordResponse>,
+  ) => {
+    const record = await recordService.lookupRecord(req.query);
+
+    res.json({
+      success: true,
+      message: "Record fetched",
+      data: record
     });
   },
 );

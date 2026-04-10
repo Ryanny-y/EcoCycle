@@ -131,3 +131,24 @@ export const deleteRecord = async (id: string) => {
     throw error;
   }
 };
+
+export const lookupRecord = async (query: {
+  lastName: string;
+  firstName?: string | undefined;
+}): Promise<RecordDto> => {
+  const { firstName, lastName } = query;
+
+  const record = await recordRepo.getRecordByFilter({
+    lastName,
+    ...(firstName && { firstName }),
+  });
+
+  if (!record) {
+    throw new CustomError(
+      404,
+      `Record not found with Last name: ${lastName} ${firstName && `and First Name: ${firstName}`}}`,
+    );
+  };
+
+  return toDto(record);
+};
