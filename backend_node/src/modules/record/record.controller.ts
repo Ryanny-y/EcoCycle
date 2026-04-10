@@ -6,6 +6,8 @@ import {
   CreateRecordResponse,
   GetRecordsQuery,
   GetRecordsResponse,
+  RecordIdSchema,
+  UpdateRecordBody,
 } from "./record.types.js";
 
 export const getRecords = asyncHandler(
@@ -36,5 +38,23 @@ export const createRecord = asyncHandler(
       data: newRecord,
     };
     res.status(201).json(response);
+  },
+);
+
+export const updateRecord = asyncHandler(
+  async (
+    req: Request<RecordIdSchema, {}, UpdateRecordBody>,
+    res: Response,
+  ) => {
+    const updatedRecord = await recordService.updateRecord(
+      req.params.id,
+      req.body,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Record updated successfully",
+      data: updatedRecord,
+    });
   },
 );

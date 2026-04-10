@@ -1,4 +1,8 @@
-import { CreateRecordBody, GetRecordsQuery, RecordDto } from "./record.types.js";
+import {
+  CreateRecordBody,
+  GetRecordsQuery,
+  RecordDto,
+} from "./record.types.js";
 import * as recordRepo from "./record.repository.js";
 import { RecordWhereInput } from "../../generated/prisma/models.js";
 import { PaginatedResponse } from "../../common/api.js";
@@ -78,4 +82,49 @@ export const createRecord = async (
   });
 
   return toDto(newRecord);
+};
+
+export const updateRecord = async (
+  id: string,
+  data: Partial<CreateRecordBody>,
+): Promise<RecordDto> => {
+  const { subdivisionId, ...rest } = data;
+
+  const updateData = {
+    ...(rest.firstName !== undefined && { firstName: rest.firstName }),
+    ...(rest.lastName !== undefined && { lastName: rest.lastName }),
+    ...(rest.gender !== undefined && { gender: rest.gender }),
+    ...(rest.isResident !== undefined && { isResident: rest.isResident }),
+    ...(rest.role !== undefined && { role: rest.role }),
+
+    ...(rest.middleName !== undefined && {
+      middleName: rest.middleName ?? null,
+    }),
+
+    ...(rest.suffix !== undefined && {
+      suffix: rest.suffix ?? null,
+    }),
+
+    ...(rest.birthDate !== undefined && {
+      birthDate: rest.birthDate ? new Date(rest.birthDate) : null,
+    }),
+
+    ...(rest.address !== undefined && {
+      address: rest.address ?? null,
+    }),
+
+    ...(rest.contactNumber !== undefined && {
+      contactNumber: rest.contactNumber ?? null,
+    }),
+
+    ...(subdivisionId !== undefined && {
+      subdivision: {
+        connect: { id: subdivisionId },
+      },
+    }),
+  };
+
+  const updatedRecord = await recordRepo.updateRecord(id, updateData);
+
+  return toDto(updatedRecord);
 };

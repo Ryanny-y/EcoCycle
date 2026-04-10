@@ -1,5 +1,5 @@
 import { prisma } from "../../config/prisma.js";
-import { RecordCreateInput, RecordWhereInput } from "../../generated/prisma/models.js";
+import { RecordCreateInput, RecordUpdateInput, RecordWhereInput } from "../../generated/prisma/models.js";
 
 export const getRecordCount = async (
   where: RecordWhereInput,
@@ -36,3 +36,12 @@ export const getRecordByFilter = (where: RecordWhereInput) => {
 export const createRecord = (data: RecordCreateInput) => {
   return prisma.record.create({ data });
 };
+
+export const updateRecord = (id: string, data: RecordUpdateInput) => {
+  return prisma.record.update({
+    where: {
+      id
+    },
+    data
+  })
+}
