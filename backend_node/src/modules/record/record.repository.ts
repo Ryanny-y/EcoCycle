@@ -37,6 +37,10 @@ export const getRecordByFilter = (where: RecordWhereInput) => {
   return prisma.record.findFirst({ where });
 };
 
+export const getRecordsByFilter = (where: RecordWhereInput) => {
+  return prisma.record.findMany({ where });
+};
+
 export const createRecord = (data: RecordCreateInput) => {
   return prisma.record.create({ data });
 };

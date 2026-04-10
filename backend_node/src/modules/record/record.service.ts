@@ -148,7 +148,37 @@ export const lookupRecord = async (query: {
       404,
       `Record not found with Last name: ${lastName} ${firstName && `and First Name: ${firstName}`}}`,
     );
-  };
+  }
 
   return toDto(record);
+};
+
+export const exporRecords = async (isResident: boolean): Promise<string> => {
+  const records = await recordRepo.getRecordsByFilter({
+    isResident,
+  });
+
+  let csv =
+    "id,last_name,first_name,middle_name,suffix,birth_date,gender,is_resident,address,points,contact_number,updated_at,created_at\n";
+
+  for (const r of records) {
+    csv +=
+      [
+        r.id,
+        r.lastName,
+        r.firstName,
+        r.middleName ?? "",
+        r.suffix ?? "",
+        r.birthDate ?? "",
+        r.gender,
+        r.isResident,
+        r.address ?? "",
+        r.points ?? "",
+        r.contactNumber ?? "",
+        r.updatedAt,
+        r.createdAt,
+      ].join(",") + "\n";
+  }
+
+  return csv;
 };

@@ -83,12 +83,25 @@ export const updateRecord = {
 };
 
 export const deleteRecord = {
-  params: recordParamsSchema
-}
+  params: recordParamsSchema,
+};
 
 export const lookupRecord = {
   query: z.object({
     lastName: z.string("Last name is required"),
-    firstName: z.string().optional()
-  })
-}
+    firstName: z.string().optional(),
+  }),
+};
+
+export const exportRecord = {
+  query: z.object({
+    isResident: z
+      .string({ message: "Resident Status is required." })
+      .transform((val) => {
+        if (val !== "true" && val !== "false") {
+          throw new Error("Resident Status must be true or false.");
+        }
+        return val === "true";
+      }),
+  }),
+};

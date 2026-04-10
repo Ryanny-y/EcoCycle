@@ -86,7 +86,24 @@ export const lookupRecord = asyncHandler(
     res.json({
       success: true,
       message: "Record fetched",
-      data: record
+      data: record,
     });
+  },
+);
+
+export const exportRecord = asyncHandler(
+  async (req: Request, res: Response) => {
+    const isResident = req.query.isResident === "true";
+
+    const csv = await recordService.exporRecords(isResident);
+
+    const fileName = isResident
+      ? "resident_records.csv"
+      : "non_resident_records.csv";
+
+    res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+    res.setHeader("Content-Type", "text/csv; charset=UTF-8");
+
+    res.status(200).send(csv);
   },
 );
