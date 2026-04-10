@@ -63,8 +63,11 @@ export const createRecord = async (
     lastName: data.lastName,
   });
 
-  if (foundRecord) {
-    throw new CustomError(409, "Record with ");
+  if (!foundRecord) {
+    throw new CustomError(
+      409,
+      `Record not found with name: ${data.firstName} ${data.lastName}.`,
+    );
   }
 
   const newRecord = await recordRepo.createRecord({
