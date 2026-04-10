@@ -12,4 +12,5 @@ export interface SubdivisionDto {
 export type CreateSubdivisionBody = z.infer<typeof createSubdivision.body>;
 
 // Response
+export type GetSubdivisionResponse = ApiResponse<SubdivisionDto[]>;
 export type createSubdivisionResponse = ApiResponse<SubdivisionDto>;

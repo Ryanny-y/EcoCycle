@@ -6,23 +6,24 @@ import { toDto } from "./subdivision.mapper.js";
 import { Prisma } from "../../generated/prisma/client.js";
 
 export const createSubdivision = async (
-  data: CreateSubdivisionBody
+  data: CreateSubdivisionBody,
 ): Promise<SubdivisionDto> => {
   const { name, area } = data;
 
   try {
-    const foundSubdivision =
-      await subdivisionRepo.getByNameAndArea(name, area);
+    const foundSubdivision = await subdivisionRepo.getByNameAndArea(name, area);
 
     if (foundSubdivision) {
       throw new CustomError(
         409,
-        `Subdivision already exists with ${name} and ${area}.`
+        `Subdivision already exists with ${name} and ${area}.`,
       );
     }
 
-    const createdSubdivision =
-      await subdivisionRepo.createSubdivision(name, area);
+    const createdSubdivision = await subdivisionRepo.createSubdivision(
+      name,
+      area,
+    );
 
     return toDto(createdSubdivision);
   } catch (error) {
@@ -32,10 +33,20 @@ export const createSubdivision = async (
     ) {
       throw new CustomError(
         409,
-        `Subdivision already exists with ${name} and ${area}.`
+        `Subdivision already exists with ${name} and ${area}.`,
       );
     }
 
     throw error;
   }
+};
+
+export const getSubdivisionByArea = async (
+  area: number,
+): Promise<SubdivisionDto[]> => {
+  const foundSubdivisions = await subdivisionRepo.getSubdivisionsByFilter({
+    area,
+  });
+
+  return foundSubdivisions.map(subdivision => toDto(subdivision)); 
 };

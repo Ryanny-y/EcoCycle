@@ -1,7 +1,6 @@
 import { prisma } from "../../config/prisma.js";
 import { Prisma } from "../../generated/prisma/client.js";
 import { SubdivisionWhereInput } from "../../generated/prisma/models.js";
-import { CustomError } from "../../middlewares/errorHandler.js";
 
 export const getByNameAndArea = async (name: string, area: number) => {
   return await prisma.subdivision.findUnique({
@@ -11,6 +10,12 @@ export const getByNameAndArea = async (name: string, area: number) => {
         area,
       },
     },
+  });
+};
+
+export const getSubdivisionsByFilter = async (where: SubdivisionWhereInput) => {
+  return await prisma.subdivision.findMany({
+    where,
   });
 };
 
