@@ -1,20 +1,37 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodError, ZodObject } from "zod";
+import { ZodError, ZodObject, ZodType } from "zod";
 
-type Schema = {
+export type ValidationSchema = {
   body?: ZodObject;
   params?: ZodObject;
   query?: ZodObject;
   cookies?: ZodObject;
+  file?: ZodType;
+  files?: ZodType;
 };
 
 export const validate =
-  (schema: Schema) => (req: Request, res: Response, next: NextFunction) => {
+  (schema: ValidationSchema) =>
+  (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (schema.body) schema.body.parse(req.body);
-      if (schema.params) schema.params.parse(req.params);
-      if (schema.query) schema.query.parse(req.query);
-      if (schema.cookies) schema.cookies.parse(req.cookies);
+      if (schema.body) {
+        req.body = schema.body.parse(req.body);
+      }
+      if (schema.params) {
+        req.params = schema.params.parse(req.params) as typeof req.params;
+      }
+      if (schema.query) {
+        req.query = schema.query.parse(req.query) as typeof req.query;
+      }
+      if (schema.cookies) {
+        req.cookies = schema.cookies.parse(req.cookies) as typeof req.cookies;
+      }
+      if (schema.file) {
+        req.file = schema.file.parse(req.file) as Express.Multer.File;
+      }
+      if (schema.files) {
+        req.files = schema.files.parse(req.files) as Express.Multer.File[];
+      }
 
       next();
     } catch (err) {
