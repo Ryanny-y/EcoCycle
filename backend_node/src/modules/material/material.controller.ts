@@ -60,9 +60,11 @@ export const updateMaterial = asyncHandler(
     req: Request<UpdateMaterialParams, {}, UpdateMaterialBody>,
     res: Response<UpdateMaterialResponse>
   ) => {
+    const file = req.file as MulterType | undefined;
     const updatedMaterial = await materialService.updateMaterial(
       req.params.id,
-      req.body
+      req.body,
+      file
     );
     res.json({
       success: true,

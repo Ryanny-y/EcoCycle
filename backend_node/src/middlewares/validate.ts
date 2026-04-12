@@ -15,7 +15,7 @@ export const validate =
   (req: Request, res: Response, next: NextFunction) => {
     try {
       if (schema.body) {
-        req.body = schema.body.parse(req.body);
+        req.body = schema.body.parse(req.body ?? {});
       }
       if (schema.params) {
         req.params = schema.params.parse(req.params) as typeof req.params;

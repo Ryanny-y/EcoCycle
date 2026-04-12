@@ -12,33 +12,27 @@ export const createMaterial = {
     name: z
       .string("Material name is required.")
       .min(1, "Material name cannot be empty."),
-    description: z
-      .string()
-      .optional(),
-    pointsPerKg: z
-      .coerce
+    description: z.string().optional(),
+    pointsPerKg: z.coerce
       .number("Points per kg must be a number.")
       .int("Points per kg must be an integer.")
       .min(1, "Points per kg must be at least 1."),
   }),
-  file: uploadedFileSchema
+  file: uploadedFileSchema,
 };
 
 export const updateMaterial = {
   params: materialParams.params,
   body: z.object({
     name: z
-      .string("Material name is required.")
-      .min(1, "Material name cannot be empty."),
+      .string()
+      .optional(),
     description: z
-      .string("Description is required.")
-      .min(1, "Description cannot be empty."),
-    pointsPerKg: z
-      .number("Points per kg must be a number.")
-      .int("Points per kg must be an integer.")
-      .min(1, "Points per kg must be at least 1."),
-    imageUrl: z
-      .string("Image URL is required.")
-      .url("Image URL must be a valid URL."),
+      .string()
+      .optional(),
+    pointsPerKg: z.coerce
+      .number()
+      .optional(),
   }),
+  file: uploadedFileSchema.optional(),
 };

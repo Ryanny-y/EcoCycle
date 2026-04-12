@@ -68,6 +68,7 @@ export const createMaterial = async (
 export const updateMaterial = async (
   id: string,
   data: UpdateMaterialBody,
+  file?: MulterType,
 ): Promise<MaterialDto> => {
   const foundMaterial = await materialRepo.getMaterialById(id);
 
@@ -75,7 +76,35 @@ export const updateMaterial = async (
     throw new CustomError(404, `Material not found with ID: ${id}.`);
   }
 
-  const updatedMaterial = await materialRepo.updateMaterial(id, data);
+  let imageUrl = foundMaterial.imageUrl;
+  let imageKey = foundMaterial.imageKey;
+
+  if (file) {
+    const uploadResult = await uploadFile(
+      file.buffer,
+      file.originalname,
+      file.mimetype,
+      "materials",
+    );
+
+    imageUrl = uploadResult.url;
+    imageKey = uploadResult.key;
+
+    if (foundMaterial.imageKey) {
+      await deleteFile(foundMaterial.imageKey);
+    }
+  }
+
+  const cleanedData = Object.fromEntries(
+    Object.entries(data).filter(([_, v]) => v !== undefined),
+  );
+
+  const updatedMaterial = await materialRepo.updateMaterial(id, {
+    ...cleanedData,
+    imageUrl,
+    imageKey,
+  });
+
   return toDto(updatedMaterial);
 };
 
