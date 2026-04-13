@@ -1,7 +1,15 @@
 import z from "zod";
 import { ApiResponse } from "../../../common/api.js";
-import { createRewardItem, rewardItemParams, updateRewardItem } from "./rewardItem.schema.js";
-import { MainCategory, RewardItemType, Unit } from "../../../generated/prisma/enums.js";
+import {
+  createRewardItem,
+  rewardItemParams,
+  updateRewardItem,
+} from "./rewardItem.schema.js";
+import {
+  MainCategory,
+  RewardItemType,
+  Unit,
+} from "../../../generated/prisma/enums.js";
 
 // DTO
 export interface RewardItemDto {
@@ -10,13 +18,14 @@ export interface RewardItemDto {
   description: string;
   itemType: RewardItemType;
   mainCategory: MainCategory;
-  subCategory?: string;
+  subCategory: string | null;
   requiredPoints: number;
   unit: Unit;
-  farmOrigin?: string;
+  farmOrigin: string | null;
   stocks: number;
-  lastRestocked?: string;
-  imageUrl?: string;
+  lastRestocked: string | null;
+  imageUrl: string | null;
+  imageKey: string | null;
   createdAt: string;
   updatedAt: string;
 }
