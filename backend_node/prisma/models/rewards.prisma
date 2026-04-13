@@ -1,0 +1,41 @@
+// REWARD ITEMS
+enum RewardItemType {
+  PRODUCT
+  FARM
+}
+
+enum MainCategory {
+  AGRICULTURAL
+  NON_AGRICULTURAL
+}
+
+enum Unit {
+  KG
+  PIECE
+  BUNDLE
+  SACK
+  POT
+}
+
+model RewardItem {
+  id             String         @id @default(uuid())
+  name           String         @unique
+  description    String         @db.Text
+  itemType       RewardItemType
+  mainCategory   MainCategory
+  subCategory    String?
+  requiredPoints Int            @default(1)
+  unit           Unit
+  farmOrigin     String?
+
+  stocks        Int       @default(0)
+  lastRestocked DateTime?
+
+  imageUrl String?
+  imageKey String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@map("reward_items")
+}
