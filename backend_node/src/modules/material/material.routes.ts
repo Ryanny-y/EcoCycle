@@ -30,11 +30,6 @@ router.patch(
   "/:id",
   verifyJwt,
   upload.single("image"),
-  (req, res, next) => {
-    console.log(req.body);
-    console.log(req.file);
-    next()
-  },
   validate(updateMaterial),
   materialController.updateMaterial,
 );
