@@ -39,3 +39,41 @@ model RewardItem {
 
   @@map("reward_items")
 }
+
+// REWARD MATERIAL
+model RewardMaterial {
+  id         String         @id @default(uuid())
+  activity   RewardActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId String
+
+  material   Material @relation(fields: [materialId], references: [id])
+  materialId String
+
+  weight Decimal @db.Decimal(10, 2)
+  points Decimal @db.Decimal(10, 2)
+
+  @@unique([activityId, materialId])
+  @@map("reward_materials")
+}
+
+// REWARD ACTIVITY
+enum RewardType {
+  EARN
+  REDEEM
+}
+
+model RewardActivity {
+  id String @id @default(uuid())
+
+  record   Record @relation(fields: [recordId], references: [id], onDelete: Cascade)
+  recordId String
+
+  points Decimal    @db.Decimal(10, 2)
+  type   RewardType
+
+  rewardMaterials RewardMaterial[]
+
+  createdAt DateTime @default(now())
+
+  @@map("reward_activities")
+}

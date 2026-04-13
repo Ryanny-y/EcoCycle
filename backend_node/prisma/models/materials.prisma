@@ -9,5 +9,7 @@ model Material {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  rewardMaterials RewardMaterial[]
+
   @@map("materials")
 }

@@ -40,8 +40,10 @@ model Record {
   
   // Reward related 
   points  Decimal @default(0) @db.Decimal(10, 2) 
-  // rewardActivities RewardActivity[]
+  rewardActivities RewardActivity[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("records")
 }
