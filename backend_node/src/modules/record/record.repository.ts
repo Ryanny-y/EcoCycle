@@ -8,7 +8,7 @@ import {
 export const getRecordCount = async (
   where: RecordWhereInput,
 ): Promise<number> => {
-  return await prisma.record.count({
+  return prisma.record.count({
     where,
   });
 };
@@ -18,7 +18,7 @@ export const getPaginatedRecords = async (
   page: number,
   size: number,
 ) => {
-  return await prisma.record.findMany({
+  return prisma.record.findMany({
     where,
     skip: page * size,
     take: size,
@@ -55,7 +55,7 @@ export const updateRecord = (id: string, data: RecordUpdateInput) => {
 };
 
 export const deleteRecord = async (id: string) => {
-  await prisma.record.delete({
+  prisma.record.delete({
     where: {
       id,
     },

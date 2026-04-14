@@ -20,7 +20,7 @@ export const getRecords = async (
   const where: RecordWhereInput = {};
 
   if (isResident !== undefined) {
-    where.isResident = isResident;
+    where.isResident = Boolean(isResident);
   }
 
   if (search) {
@@ -63,10 +63,10 @@ export const createRecord = async (
     lastName: data.lastName,
   });
 
-  if (!foundRecord) {
+  if (foundRecord) {
     throw new CustomError(
       409,
-      `Record not found with name: ${data.firstName} ${data.lastName}.`,
+      `Record with name already exists: ${data.firstName} ${data.lastName}.`,
     );
   }
 

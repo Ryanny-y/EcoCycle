@@ -7,7 +7,7 @@ export const recordParamsSchema = z.object({
 
 export const getRecordsQuery = {
   query: z.object({
-    isResident: z.boolean().optional(),
+    isResident: z.coerce.boolean().optional(),
     search: z.string().optional(),
     size: z.string().optional(),
     page: z.string().optional(),
