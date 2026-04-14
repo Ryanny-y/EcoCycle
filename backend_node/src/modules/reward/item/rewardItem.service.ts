@@ -47,6 +47,7 @@ export const createRewardItem = async (
 
     const newRewardItem = await rewardItemRepo.createRewardItem({
       ...data,
+      description: data.description ?? "",
       subCategory: data.subCategory ?? null,
       farmOrigin: data.farmOrigin ?? null,
       stocks: data.stocks ?? 0,

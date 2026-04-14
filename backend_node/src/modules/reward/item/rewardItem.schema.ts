@@ -14,7 +14,8 @@ export const createRewardItem = {
       .min(1, "Reward item name cannot be empty."),
     description: z
       .string("Description is required.")
-      .min(1, "Description cannot be empty."),
+      .min(1, "Description cannot be empty.")
+      .optional(),
     itemType: z.enum([RewardItemType.PRODUCT, RewardItemType.FARM], {
       message: "Item type must be either PRODUCT or FARM.",
     }),
