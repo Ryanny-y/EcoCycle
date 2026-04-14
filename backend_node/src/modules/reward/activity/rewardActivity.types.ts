@@ -1,6 +1,6 @@
 import z from "zod";
 import { ApiResponse } from "../../../common/api.js";
-import { earnPoints } from "./rewardActivity.schema.js";
+import { earnPoints, redeemItem } from "./rewardActivity.schema.js";
 import { RewardType } from "../../../generated/prisma/enums.js";
 
 // DTO
@@ -27,9 +27,23 @@ export interface EarnPointsDto {
   newRecordPoints: number;
 }
 
+export interface RedeemItemDto {
+  activity: RewardActivityDto;
+  rewardItemId: string;
+  rewardItemName: string;
+  quantity: number;
+  totalCost: number;
+  newRecordPoints: number;
+  newItemStocks: number;
+}
+
 // REQUEST
 export type EarnPointsBody = z.infer<typeof earnPoints.body>;
-export type EarnPointsParams = { recordId: string };
+export type EarnPointsParams = z.infer<typeof earnPoints.params>;
+
+export type RedeemItemBody = z.infer<typeof redeemItem.body>;
+export type RedeemItemParams = z.infer<typeof redeemItem.params>;
 
 // RESPONSE
 export type EarnPointsResponse = ApiResponse<EarnPointsDto>;
+export type RedeemItemResponse = ApiResponse<RedeemItemDto>;

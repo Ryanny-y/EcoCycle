@@ -10,9 +10,25 @@ const materialInput = z.object({
 });
 
 export const earnPoints = {
+  params: z.object({
+    recordId: z.uuid()
+  }),
   body: z.object({
     materials: z
       .array(materialInput)
       .min(1, "At least one material is required."),
+  }),
+};
+
+export const redeemItem = {
+  params: z.object({
+    recordId: z.uuid()
+  }),
+  body: z.object({
+    rewardItemId: z.uuid("Invalid reward item ID."),
+    quantity: z.coerce
+      .number("Quantity must be a number.")
+      .int("Quantity must be an integer.")
+      .min(1, "Quantity must be at least 1."),
   }),
 };
