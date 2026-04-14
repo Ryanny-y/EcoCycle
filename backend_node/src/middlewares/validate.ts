@@ -21,7 +21,8 @@ export const validate =
         req.params = schema.params.parse(req.params) as typeof req.params;
       }
       if (schema.query) {
-        req.query = schema.query.parse(req.query) as typeof req.query;
+        const parsedQuery = schema.query.parse(req.query);
+        Object.assign(req.query, parsedQuery);
       }
       if (schema.cookies) {
         req.cookies = schema.cookies.parse(req.cookies) as typeof req.cookies;
