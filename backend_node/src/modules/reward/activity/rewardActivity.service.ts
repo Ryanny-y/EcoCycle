@@ -3,6 +3,7 @@ import {
   EarnPointsDto,
   RedeemItemBody,
   RedeemItemDto,
+  StatisticsDto,
 } from "./rewardActivity.types.js";
 import { CustomError } from "../../../middlewares/errorHandler.js";
 import { Decimal } from "decimal.js";
@@ -98,4 +99,115 @@ export const redeemItem = async (
     Number(totalCost),
     updatedRewardItem.stocks,
   );
+};
+
+export const getStatistics = async (): Promise<StatisticsDto> => {
+  const { earnedActivities, redeemedActivities, allRecords } =
+    await rewardActivityRepo.getStatistics();
+
+  const totalPointsEarned = earnedActivities.reduce(
+    (sum, activity) => sum + Number(activity.points),
+    0
+  );
+
+  const totalPointsRedeemed = redeemedActivities.reduce(
+    (sum, activity) => sum + Number(activity.points),
+    0
+  );
+
+  const totalActivePoints = allRecords.reduce(
+    (sum, record) => sum + Number(record.points),
+    0
+  );
+
+  const now = new Date();
+  const lastMonthTrend = [];
+  for (let i = 5; i >= 0; i--) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+    const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 59, 59);
+
+    const earnedPoints = earnedActivities
+      .filter(
+        (a) => a.createdAt >= monthStart && a.createdAt <= monthEnd
+      )
+      .reduce((sum, a) => sum + Number(a.points), 0);
+
+    const redeemedPoints = redeemedActivities
+      .filter(
+        (a) => a.createdAt >= monthStart && a.createdAt <= monthEnd
+      )
+      .reduce((sum, a) => sum + Number(a.points), 0);
+
+    lastMonthTrend.push({
+      month: date.toLocaleString("en-US", { month: "short", year: "numeric" }),
+      earnedPoints,
+      redeemedPoints,
+    });
+  }
+
+  const materialMap = new Map<string, number>();
+  earnedActivities.forEach((activity) => {
+    activity.rewardMaterials.forEach((rm) => {
+      const current = materialMap.get(rm.material.name) || 0;
+      materialMap.set(rm.material.name, current + Number(rm.weight));
+    });
+  });
+
+  const materialCollections = Array.from(materialMap.entries()).map(
+    ([materialName, totalWeight]) => ({
+      materialName,
+      totalWeight,
+    })
+  );
+
+  const contributorMap = new Map<
+    string,
+    { earnedPoints: number; redeemedPoints: number; activityCount: number; record: any }
+  >();
+
+  earnedActivities.forEach((activity) => {
+    const recordId = activity.recordId;
+    const current = contributorMap.get(recordId) || {
+      earnedPoints: 0,
+      redeemedPoints: 0,
+      activityCount: 0,
+      record: activity.record,
+    };
+    current.earnedPoints += Number(activity.points);
+    current.activityCount += 1;
+    contributorMap.set(recordId, current);
+  });
+
+  redeemedActivities.forEach((activity) => {
+    const recordId = activity.recordId;
+    const current = contributorMap.get(recordId) || {
+      earnedPoints: 0,
+      redeemedPoints: 0,
+      activityCount: 0,
+      record: activity.record,
+    };
+    current.redeemedPoints += Number(activity.points);
+    current.activityCount += 1;
+    contributorMap.set(recordId, current);
+  });
+
+  const topContributors = Array.from(contributorMap.entries())
+    .map(([_, data]) => ({
+      fullName: `${data.record.firstName} ${data.record.lastName}`,
+      earnedPoints: data.earnedPoints,
+      redeemedPoints: data.redeemedPoints,
+      activityCount: data.activityCount,
+    }))
+    .sort((a, b) => b.earnedPoints - a.earnedPoints)
+    .slice(0, 10);
+
+  return {
+    totalPointsEarned,
+    totalPointsRedeemed,
+    totalActivePoints,
+    lastMonthTrend,
+    materialCollections,
+    topContributors,
+  };
 };

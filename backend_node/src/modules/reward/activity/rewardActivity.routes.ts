@@ -21,4 +21,10 @@ router.post(
   rewardActivityController.redeemItem
 );
 
+router.get(
+  "/statistics",
+  verifyJwt,
+  rewardActivityController.getStatistics
+);
+
 export default router;

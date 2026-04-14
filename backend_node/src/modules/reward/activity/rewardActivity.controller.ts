@@ -8,6 +8,7 @@ import {
   RedeemItemBody,
   RedeemItemParams,
   RedeemItemResponse,
+  StatisticsResponse,
 } from "./rewardActivity.types.js";
 
 export const earnPoints = asyncHandler(
@@ -39,6 +40,17 @@ export const redeemItem = asyncHandler(
     res.status(201).json({
       success: true,
       message: "Item redeemed successfully",
+      data: result,
+    });
+  }
+);
+
+export const getStatistics = asyncHandler(
+  async (req: Request, res: Response<StatisticsResponse>) => {
+    const result = await rewardActivityService.getStatistics();
+    res.json({
+      success: true,
+      message: "Statistics fetched successfully",
       data: result,
     });
   }

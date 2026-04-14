@@ -37,6 +37,33 @@ export interface RedeemItemDto {
   newItemStocks: number;
 }
 
+export interface MonthlyTrendDto {
+  month: string;
+  earnedPoints: number;
+  redeemedPoints: number;
+}
+
+export interface MaterialCollectionDto {
+  materialName: string;
+  totalWeight: number;
+}
+
+export interface TopContributorDto {
+  fullName: string;
+  earnedPoints: number;
+  redeemedPoints: number;
+  activityCount: number;
+}
+
+export interface StatisticsDto {
+  totalPointsEarned: number;
+  totalPointsRedeemed: number;
+  totalActivePoints: number;
+  lastMonthTrend: MonthlyTrendDto[];
+  materialCollections: MaterialCollectionDto[];
+  topContributors: TopContributorDto[];
+}
+
 // REQUEST
 export type EarnPointsBody = z.infer<typeof earnPoints.body>;
 export type EarnPointsParams = z.infer<typeof earnPoints.params>;
@@ -47,3 +74,4 @@ export type RedeemItemParams = z.infer<typeof redeemItem.params>;
 // RESPONSE
 export type EarnPointsResponse = ApiResponse<EarnPointsDto>;
 export type RedeemItemResponse = ApiResponse<RedeemItemDto>;
+export type StatisticsResponse = ApiResponse<StatisticsDto>;

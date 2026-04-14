@@ -105,3 +105,30 @@ export const redeemItemTransaction = async (
     return { rewardActivity, updatedRecord, updatedRewardItem };
   });
 };
+
+export const getStatistics = async () => {
+  return await prisma.$transaction(async (tx) => {
+    const earnedActivities = await tx.rewardActivity.findMany({
+      where: { type: "EARN" },
+      include: {
+        rewardMaterials: {
+          include: {
+            material: true,
+          },
+        },
+        record: true,
+      },
+    });
+
+    const redeemedActivities = await tx.rewardActivity.findMany({
+      where: { type: "REDEEM" },
+      include: {
+        record: true,
+      },
+    });
+
+    const allRecords = await tx.record.findMany();
+
+    return { earnedActivities, redeemedActivities, allRecords };
+  });
+};
